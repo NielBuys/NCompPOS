@@ -1,0 +1,228 @@
+object StockReportsForm: TStockReportsForm
+  Left = 517
+  Top = 140
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'Stock Reports'
+  ClientHeight = 277
+  ClientWidth = 397
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object JvBitBtn1: TJvBitBtn
+    Left = 48
+    Top = 104
+    Width = 153
+    Height = 25
+    Caption = 'Stock List'
+    TabOrder = 0
+    OnClick = JvBitBtn1Click
+    Glyph.Data = {
+      76010000424D7601000000000000760000002800000020000000100000000100
+      04000000000000010000120B0000120B00001000000000000000000000000000
+      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333330000000
+      00003333377777777777333330FFFFFFFFF03FF3F7FFFF33FFF7003000000FF0
+      00F077F7777773F77737E00FBFBFB0FFFFF07773333FF7FF33F7E0FBFB00000F
+      F0F077F333777773F737E0BFBFBFBFB0FFF077F3333FFFF733F7E0FBFB00000F
+      F0F077F333777773F737E0BFBFBFBFB0FFF077F33FFFFFF733F7E0FB0000000F
+      F0F077FF777777733737000FB0FFFFFFFFF07773F7F333333337333000FFFFFF
+      FFF0333777F3FFF33FF7333330F000FF0000333337F777337777333330FFFFFF
+      0FF0333337FFFFFF7F37333330CCCCCC0F033333377777777F73333330FFFFFF
+      0033333337FFFFFF773333333000000003333333377777777333}
+    NumGlyphs = 2
+    HotTrackFont.Charset = DEFAULT_CHARSET
+    HotTrackFont.Color = clWindowText
+    HotTrackFont.Height = -11
+    HotTrackFont.Name = 'MS Sans Serif'
+    HotTrackFont.Style = []
+  end
+  object JvBitBtn2: TJvBitBtn
+    Left = 208
+    Top = 104
+    Width = 153
+    Height = 25
+    Caption = 'Out of Stock List'
+    TabOrder = 1
+    OnClick = JvBitBtn2Click
+    Glyph.Data = {
+      76010000424D7601000000000000760000002800000020000000100000000100
+      04000000000000010000120B0000120B00001000000000000000000000000000
+      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333330000000
+      00003333377777777777333330FFFFFFFFF03FF3F7FFFF33FFF7003000000FF0
+      00F077F7777773F77737E00FBFBFB0FFFFF07773333FF7FF33F7E0FBFB00000F
+      F0F077F333777773F737E0BFBFBFBFB0FFF077F3333FFFF733F7E0FBFB00000F
+      F0F077F333777773F737E0BFBFBFBFB0FFF077F33FFFFFF733F7E0FB0000000F
+      F0F077FF777777733737000FB0FFFFFFFFF07773F7F333333337333000FFFFFF
+      FFF0333777F3FFF33FF7333330F000FF0000333337F777337777333330FFFFFF
+      0FF0333337FFFFFF7F37333330CCCCCC0F033333377777777F73333330FFFFFF
+      0033333337FFFFFF773333333000000003333333377777777333}
+    NumGlyphs = 2
+    HotTrackFont.Charset = DEFAULT_CHARSET
+    HotTrackFont.Color = clWindowText
+    HotTrackFont.Height = -11
+    HotTrackFont.Name = 'MS Sans Serif'
+    HotTrackFont.Style = []
+  end
+  object JvBitBtn3: TJvBitBtn
+    Left = 232
+    Top = 232
+    Width = 153
+    Height = 25
+    TabOrder = 2
+    Kind = bkClose
+    HotTrackFont.Charset = DEFAULT_CHARSET
+    HotTrackFont.Color = clWindowText
+    HotTrackFont.Height = -11
+    HotTrackFont.Name = 'MS Sans Serif'
+    HotTrackFont.Style = []
+  end
+  object GroupBox1: TGroupBox
+    Left = 48
+    Top = 8
+    Width = 313
+    Height = 89
+    Caption = 'Branch select'
+    TabOrder = 3
+    object Label1: TLabel
+      Left = 16
+      Top = 46
+      Width = 68
+      Height = 13
+      Caption = 'Branch select:'
+    end
+    object CheckBox1: TCheckBox
+      Left = 16
+      Top = 16
+      Width = 105
+      Height = 17
+      Caption = 'Local Stock list'
+      Checked = True
+      State = cbChecked
+      TabOrder = 0
+      OnClick = CheckBox1Click
+    end
+    object JvDBLookupCombo1: TJvDBLookupCombo
+      Left = 112
+      Top = 40
+      Width = 185
+      Height = 21
+      Enabled = False
+      LookupField = 'Name'
+      LookupSource = DataForm2.BranchSource
+      TabOrder = 1
+    end
+    object JvCheckBox1: TJvCheckBox
+      Left = 16
+      Top = 66
+      Width = 138
+      Height = 17
+      Caption = 'Exclude zero stock items'
+      Checked = True
+      State = cbChecked
+      TabOrder = 2
+      LinkedControls = <>
+      HotTrackFont.Charset = DEFAULT_CHARSET
+      HotTrackFont.Color = clWindowText
+      HotTrackFont.Height = -11
+      HotTrackFont.Name = 'MS Sans Serif'
+      HotTrackFont.Style = []
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 16
+    Top = 136
+    Width = 369
+    Height = 89
+    Caption = 'Average sales per month (Dates must span more than one Month)'
+    TabOrder = 4
+    object Label2: TLabel
+      Left = 8
+      Top = 30
+      Width = 70
+      Height = 13
+      Caption = 'From Inv Date:'
+    end
+    object Label3: TLabel
+      Left = 192
+      Top = 30
+      Width = 60
+      Height = 13
+      Caption = 'To Inv Date:'
+    end
+    object JvBitBtn5: TJvBitBtn
+      Left = 184
+      Top = 56
+      Width = 177
+      Height = 25
+      Caption = 'Print Average sales per month'
+      TabOrder = 0
+      OnClick = JvBitBtn5Click
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333330000000
+        00003333377777777777333330FFFFFFFFF03FF3F7FFFF33FFF7003000000FF0
+        00F077F7777773F77737E00FBFBFB0FFFFF07773333FF7FF33F7E0FBFB00000F
+        F0F077F333777773F737E0BFBFBFBFB0FFF077F3333FFFF733F7E0FBFB00000F
+        F0F077F333777773F737E0BFBFBFBFB0FFF077F33FFFFFF733F7E0FB0000000F
+        F0F077FF777777733737000FB0FFFFFFFFF07773F7F333333337333000FFFFFF
+        FFF0333777F3FFF33FF7333330F000FF0000333337F777337777333330FFFFFF
+        0FF0333337FFFFFF7F37333330CCCCCC0F033333377777777F73333330FFFFFF
+        0033333337FFFFFF773333333000000003333333377777777333}
+      NumGlyphs = 2
+      HotTrackFont.Charset = DEFAULT_CHARSET
+      HotTrackFont.Color = clWindowText
+      HotTrackFont.Height = -11
+      HotTrackFont.Name = 'MS Sans Serif'
+      HotTrackFont.Style = []
+    end
+    object FromDate: TJvDateTimePicker
+      Left = 88
+      Top = 24
+      Width = 97
+      Height = 21
+      Date = 39171.426736828700000000
+      Time = 39171.426736828700000000
+      TabOrder = 1
+      DropDownDate = 39171.000000000000000000
+    end
+    object ToDate: TJvDateTimePicker
+      Left = 264
+      Top = 24
+      Width = 97
+      Height = 21
+      Date = 39171.426925266210000000
+      Time = 39171.426925266210000000
+      TabOrder = 2
+      DropDownDate = 39171.000000000000000000
+    end
+  end
+  object RvSystem1: TRvSystem
+    TitleSetup = 'Output Options'
+    TitleStatus = 'Report Status'
+    TitlePreview = 'Report Preview'
+    SystemFiler.StatusFormat = 'Generating page %p'
+    SystemPreview.FormState = wsMaximized
+    SystemPreview.ZoomFactor = 100.000000000000000000
+    SystemPrinter.ScaleX = 100.000000000000000000
+    SystemPrinter.ScaleY = 100.000000000000000000
+    SystemPrinter.StatusFormat = 'Printing page %p'
+    SystemPrinter.Title = 'ReportPrinter Report'
+    SystemPrinter.UnitsFactor = 1.000000000000000000
+    OnPrint = RvSystem1Print
+    Left = 184
+    Top = 232
+  end
+end

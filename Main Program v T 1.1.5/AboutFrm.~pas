@@ -1,0 +1,139 @@
+unit AboutFrm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, regware4, ExtCtrls, reggen4, JvExExtCtrls,
+  JvImage, jpeg;
+
+type
+  TAboutForm = class(TForm)
+    Label1: TLabel;
+    BitBtn1: TBitBtn;
+    Label9: TLabel;
+    Panel2: TPanel;
+    Label10: TLabel;
+    Organization: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    LicenseIdBox: TEdit;
+    OrganizationBox: TEdit;
+    RegCodeBox: TEdit;
+    EmailBox: TEdit;
+    Button1: TButton;
+    Panel3: TPanel;
+    Label13: TLabel;
+    StatusLabel: TLabel;
+    Label14: TLabel;
+    DaysLabel: TLabel;
+    Label15: TLabel;
+    LicenseLabel: TLabel;
+    Label16: TLabel;
+    OrganizationLabel: TLabel;
+    Label17: TLabel;
+    EmailLabel: TLabel;
+    Label20: TLabel;
+    RegCodeLabel: TLabel;
+    JvImage1: TJvImage;
+    GroupBox1: TGroupBox;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    JvImage2: TJvImage;
+    procedure Button1Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure ShowRegInfo;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  AboutForm: TAboutForm;
+
+implementation
+
+uses MainFrm, DataFrm2;
+
+{$R *.dfm}
+
+procedure TAboutForm.Button1Click(Sender: TObject);
+begin
+  if DataForm2.Regware41.DoRegistration(LicenseIDBox.Text, OrganizationBox.Text, RegCodeBox.Text, EmailBox.Text) = true then
+  begin
+    ShowMessage('Successfully Registered Please restart the program!');
+    ShowregInfo;
+    Application.Terminate;
+  end else
+    ShowMessage('Incorrect Registration Code!');
+end;
+
+procedure TAboutForm.ShowRegInfo;
+begin
+  if Dataform2.Regware41.Registered then
+  begin
+    StatusLabel.Caption := 'Registered';
+    LicenseIDBox.Text := Dataform2.Regware41.LicenseID;
+    RegCodeBox.Text := DataForm2.Regware41.RegCode;
+    OrganizationBox.Text := DataForm2.Regware41.Organization;
+    EmailBox.Text := Dataform2.Regware41.Email;
+    DaysLabel.Caption := datetostr(CheckCodeExpiration(Dataform2.Regware41.RegCode));
+    if (date > CheckCodeExpiration(DataForm2.Regware41.RegCode)) then
+      StatusLabel.Caption := 'Expired';
+  end
+  else
+  begin
+    StatusLabel.Caption := 'Unregistered';
+    LicenseIDBox.Text := '';
+    RegCodeBox.Text := '';
+    OrganizationBox.Text := '';
+    EmailBox.Text := '';
+  end;
+
+  LicenseLabel.Caption := DataForm2.Regware41.LicenseID;
+  OrganizationLabel.Caption := DataForm2.Regware41.Organization;
+  EmailLabel.Caption := DataForm2.Regware41.Email;
+  RegCodeLabel.Caption := DataForm2.Regware41.RegCode;
+end;
+
+procedure TAboutForm.BitBtn1Click(Sender: TObject);
+begin
+//        if not DataForm2.Regware41.Registered or (date > CheckCodeExpiration(DataForm2.Regware41.RegCode)) then
+//          MenuRisk.BitBtn1.Click
+//        else
+//          close;
+end;
+
+procedure TAboutForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+        if not DataForm2.Regware41.Registered or (date > CheckCodeExpiration(DataForm2.Regware41.RegCode)) then
+          Application.Terminate
+        else
+        begin
+          close;
+          MainForm.show;
+        end;
+end;
+
+procedure TAboutForm.FormCreate(Sender: TObject);
+begin
+        If DataForm2.IniFile.ReadInteger('Invoice', 'Agent', 0) = 1 then
+        begin
+          Aboutform.Label1.Caption := 'http://www.turbopos.co.za';
+//          Aboutform.JvImage1.Picture := turbopos.jpg;
+          Aboutform.Label3.Caption := 'Sales E Mail: sales@turbopos.co.za';
+          Aboutform.Label4.Caption := 'Support E Mail: support@turbopos.co.za';
+          JvImage2.Visible := False;
+        end
+        else
+        begin
+          AboutForm.Label2.Visible := False;
+          JvImage1.Visible := False;
+        end;
+end;
+
+end.

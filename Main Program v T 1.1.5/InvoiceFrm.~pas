@@ -1,0 +1,2454 @@
+unit InvoiceFrm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs,
+  RpDefine, RpBase, RpSystem, CPort, Menus, JvExStdCtrls, JvRadioButton, DBGrids, JvDBGrid,
+  JvExControls, JvSpeedButton, JvExExtCtrls, JvSpeedbar, ComCtrls, JvExComCtrls, JvDateTimePicker, Mask,
+  Buttons, DBCtrls, JvComponent, ExtCtrls, JvItemsPanel, Grids, JvGroupBox, JvExDBGrids, StdCtrls,
+  JvExButtons, JvBitBtn, Math, JvEdit, JvValidateEdit, JvComponentBase, db,
+  JvFormAutoSize, JvExtComponent, UtilsUnit, JvExMask, JvSpin, JvStatusBar, DateUtils;
+
+type
+  TInvoiceForm = class(TForm)
+    MainMenu1: TMainMenu;
+    File1: TMenuItem;
+    GroupBox1: TGroupBox;
+    DBEdit1: TDBEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    DBEdit2: TDBEdit;
+    Label4: TLabel;
+    DBEdit3: TDBEdit;
+    DBEdit4: TDBEdit;
+    DBEdit5: TDBEdit;
+    DBEdit6: TDBEdit;
+    DBEdit7: TDBEdit;
+    Label5: TLabel;
+    DBEdit8: TDBEdit;
+    DBEdit9: TDBEdit;
+    Label6: TLabel;
+    Label7: TLabel;
+    JvSpeedBar1: TJvSpeedBar;
+    InsertButton: TJvSpeedButton;
+    EditButton: TJvSpeedButton;
+    UndoButton: TJvSpeedButton;
+    JvGroupBox1: TJvGroupBox;
+    JvDBGrid1: TJvDBGrid;
+    InvoiceDateEdit: TJvDateTimePicker;
+    Label8: TLabel;
+    Edit1: TEdit;
+    Label9: TLabel;
+    SearchButton: TJvSpeedButton;
+    SaveButton: TJvSpeedButton;
+    Label11: TLabel;
+    GroupBox2: TGroupBox;
+    Total: TLabel;
+    VAT: TLabel;
+    Label10: TLabel;
+    CloseInvButton: TJvSpeedButton;
+    GroupBox3: TGroupBox;
+    Label12: TLabel;
+    Button2: TButton;
+    ComPort1: TComPort;
+    JvSpeedButton1: TJvSpeedButton;
+    JvSpeedButton2: TJvSpeedButton;
+    PrintButton: TJvSpeedButton;
+    ReceiptPrinting: TRvSystem;
+    Label13: TLabel;
+    JvSpeedButton3: TJvSpeedButton;
+    DeleteInvoice1: TMenuItem;
+    Change: TLabel;
+    Label14: TLabel;
+    DBEdit10: TDBEdit;
+    JvSpeedButton4: TJvSpeedButton;
+    Label15: TLabel;
+    CreditCartLabel: TLabel;
+    JvSpeedButton5: TJvSpeedButton;
+    JvSpeedButton7: TJvSpeedButton;
+    GroupBox4: TGroupBox;
+    Label16: TLabel;
+    Label17: TLabel;
+    JvSpeedButton6: TJvSpeedButton;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    DescDisp: TLabel;
+    DBText2: TDBText;
+    EditInvoice1: TMenuItem;
+    SaveInvoice1: TMenuItem;
+    UndoInvoiceChanges1: TMenuItem;
+    PrintInvoice1: TMenuItem;
+    Clearallinvoices1: TMenuItem;
+    NewCleanInvoice1: TMenuItem;
+    GroupBox5: TGroupBox;
+    Label19: TLabel;
+    DBEdit11: TDBEdit;
+    DBEdit12: TDBEdit;
+    DBEdit13: TDBEdit;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    DBEdit14: TDBEdit;
+    JvBitBtn1: TJvBitBtn;
+    CashEdit: TJvValidateEdit;
+    CreditCardEdit: TJvValidateEdit;
+    ChequesEdit: TJvValidateEdit;
+    OtherEdit: TJvValidateEdit;
+    JvFormAutoSize1: TJvFormAutoSize;
+    JvSpeedButton8: TJvSpeedButton;
+    Label1: TLabel;
+    DBText1: TDBText;
+    Button4: TJvBitBtn;
+    JvBitBtn2: TJvBitBtn;
+    Button1: TJvBitBtn;
+    JvSpeedButton9: TJvSpeedButton;
+    DBText3: TDBText;
+    DBText4: TDBText;
+    DBText5: TDBText;
+    JvSpeedButton10: TJvSpeedButton;
+    GroupBox6: TGroupBox;
+    FindInvEdit: TJvEdit;
+    JvBitBtn3: TJvBitBtn;
+    MarkCurrentInvoicenotendofShifted1: TMenuItem;
+    DBText6: TDBText;
+    Label24: TLabel;
+    DBEdit15: TDBEdit;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
+    JvSpinEdit1: TJvSpinEdit;
+    JvStatusBar1: TJvStatusBar;
+    Options1: TMenuItem;
+    ShowmoreInvoicesthan30days1: TMenuItem;
+    EnableSecondPrice1: TMenuItem;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure EditButtonClick(Sender: TObject);
+    procedure SaveButtonClick(Sender: TObject);
+    procedure InvoiceDateEditChange(Sender: TObject);
+    procedure SearchButtonClick(Sender: TObject);
+    procedure Edit1KeyPress(Sender: TObject; var Key: Char);
+    procedure Edit1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+    procedure JvDBGrid1Exit(Sender: TObject);
+    procedure InsertProduct;
+    procedure Button2Click(Sender: TObject);
+    procedure CloseInvButtonClick(Sender: TObject);
+    procedure CashEditKeyPress(Sender: TObject; var Key: Char);
+    procedure JvSpeedButton1Click(Sender: TObject);
+    procedure JvSpeedButton2Click(Sender: TObject);
+    procedure PrintButtonClick(Sender: TObject);
+    procedure ReceiptPrintingPrint(Sender: TObject);
+    procedure JvDBGrid1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure JvSpeedButton3Click(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Edit1Enter(Sender: TObject);
+    procedure DeleteInvoice1Click(Sender: TObject);
+    procedure JvDBGrid1Enter(Sender: TObject);
+    procedure JvDBGrid1KeyPress(Sender: TObject; var Key: Char);
+    procedure CashEditEnter(Sender: TObject);
+    procedure JvSpeedButton4Click(Sender: TObject);
+    procedure CreditCardEditKeyPress(Sender: TObject; var Key: Char);
+    procedure ChequesEditKeyPress(Sender: TObject; var Key: Char);
+    procedure CreditCardEditEnter(Sender: TObject);
+    procedure ChequesEditEnter(Sender: TObject);
+    procedure CashEditExit(Sender: TObject);
+    procedure CreditCardEditExit(Sender: TObject);
+    procedure ChequesEditExit(Sender: TObject);
+    procedure JvSpeedButton7Click(Sender: TObject);
+    procedure JvSpeedButton5Click(Sender: TObject);
+    procedure JvSpeedButton6Click(Sender: TObject);
+    procedure KickDrawer;
+    procedure CashEditKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CreditCardEditKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EditInvoice1Click(Sender: TObject);
+    procedure SaveInvoice1Click(Sender: TObject);
+    procedure UndoInvoiceChanges1Click(Sender: TObject);
+    procedure PrintInvoice1Click(Sender: TObject);
+    procedure DBEdit1KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit2KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit3KeyPress(Sender: TObject; var Key: Char);
+    procedure InvoiceDateEditKeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit10KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit5KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit6KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit9KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit8KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit4KeyPress(Sender: TObject; var Key: Char);
+    procedure ChequesEditKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure DBEdit7KeyPress(Sender: TObject; var Key: Char);
+    procedure Button4KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Clearallinvoices1Click(Sender: TObject);
+    procedure NewCleanInvoice1Click(Sender: TObject);
+    procedure InsertButtonClick(Sender: TObject);
+    procedure DBEdit11KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit12KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit13KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit11Enter(Sender: TObject);
+    procedure OtherEditEnter(Sender: TObject);
+    procedure OtherEditExit(Sender: TObject);
+    procedure OtherEditKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure OtherEditKeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit14KeyPress(Sender: TObject; var Key: Char);
+    procedure JvBitBtn1Click(Sender: TObject);
+    procedure JvDBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure JvSpeedButton8Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure JvSpeedButton9Click(Sender: TObject);
+    procedure DBEdit10Exit(Sender: TObject);
+    procedure JvSpeedButton10Click(Sender: TObject);
+    procedure JvBitBtn3Click(Sender: TObject);
+    procedure MarkCurrentInvoicenotendofShifted1Click(Sender: TObject);
+    procedure Edit3KeyPress(Sender: TObject; var Key: Char);
+    procedure UndoButtonClick(Sender: TObject);
+    procedure ShowmoreInvoicesthan30days1Click(Sender: TObject);
+  private
+    procedure ShowDates;
+    procedure RefreshTotal;
+    procedure PrintReceipttoCOM;
+    procedure PrintInv(Report: TBaseReport);
+    procedure CloseInvPros;
+    procedure PrintReceipttoLPT;
+    procedure FKeysPress;
+    procedure PrintA4(Report: TBaseReport);
+    procedure NewA4Page(Report:TBaseReport);
+    procedure DeleteInvoiceTrans;
+    procedure CheckDouble;
+    procedure WriteCloseInfo;
+    procedure SaveInvoiceItems;
+    procedure OpenInvoices;
+    procedure InvoiceDetailOpen;
+    procedure InvoiceDetailClose;
+    { Private declarations }
+  public
+    { Public declarations }
+    Totalstr, ItemSalesPrice: extended;
+    FromWherePaid: String;
+    FromWhereStatement: String;
+    procedure DeleteInvoiceItems;
+    procedure QtyCountDown;
+    function OpenLayBuyQty(TCStockNo: String): extended;
+  protected
+    procedure WMSysCommand(var Message: TWMSysCommand); message WM_SYSCOMMAND;
+  end;
+
+var
+  InvoiceForm: TInvoiceForm;
+  AmmTendered, AmmTendered2: extended;
+  su: String;
+  count, linecount: Integer;
+
+implementation
+      uses DataFrm2, StockSearchFrm, UserFrm, LayBuyFrm,
+  BarcodePrintingFrm, PriceChooseFrm;
+
+{$R *.dfm}
+
+procedure TInvoiceForm.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+        Dataform2.InvoiceTable.Close;
+        Dataform2.InvoiceItemTable.Close;
+        Dataform2.StockTable.Close;
+        StockSearchform.FreeOnRelease;
+        InvoiceForm.FreeOnRelease;
+end;
+
+procedure TInvoiceForm.EditButtonClick(Sender: TObject);
+begin
+      if (Dataform2.InvoiceTable.FieldByName('InvClose').AsString = 'Open') or (su = 'True')
+         or (Dataform2.User_dbRights.Value > 4) then
+      begin
+        InvoiceDetailOpen;
+        DBEdit1.SetFocus;
+      end
+      else
+        showmessage('Invoice already closed');
+end;
+
+procedure TInvoiceForm.SaveButtonClick(Sender: TObject);
+var
+    InsertStr: Boolean;
+begin
+        if (DataForm2.InvoiceTablestrState = 'Edit') or (DataForm2.InvoiceTablestrState = 'Insert') then
+        begin
+          if (DataForm2.InvoiceTablestrState = 'Insert') then
+            InsertStr := True
+          else
+            InsertStr := False;
+          try
+            DataForm2.InvoiceTable.Post;
+          except
+            on E : Exception do
+              showmessage(E.Message);
+          end;
+          If InsertStr = True then
+            DataForm2.InvoiceTable.Refresh
+          else
+            Dataform2.InvoiceTable.Resync([rmExact]);
+        end;
+        ShowDates;
+end;
+
+procedure TInvoiceForm.ShowDates();
+begin
+      If DataForm2.InvoiceTable.FieldByname('InvDate').asInteger <> 0 then
+        InvoiceDateEdit.Date := StrtoDate(IntDatetoString(DataForm2.InvoiceTable.FieldByname('InvDate').asInteger))
+      else
+        InvoiceDateEdit.Date := InvoiceDateEdit.NullDate;
+      if Dataform2.InvoiceTableGLDebNo.Value <> DataForm2.IniFile.ReadString ('TCSetup', 'TCCashDebNo', '') then
+        InvoiceForm.Caption := 'Debtor Invoice (' + Dataform2.InvoiceTableClientName.Value + ')'
+      else
+        InvoiceForm.Caption := 'Point of Sale';
+      if (DataForm2.InvoiceTable.FieldByName('InvClose').asString <> 'Open') then
+        InvoiceDetailClose
+      else
+        InvoiceDetailOpen;
+end;
+
+procedure TInvoiceForm.InvoiceDateEditChange(Sender: TObject);
+begin
+        if (DatetoStr(InvoiceDateEdit.Date) <> IntDatetoString(DataForm2.InvoiceTable.FieldByName('InvDate').asInteger)) and (DatetoStr(InvoiceDateEdit.Date) <> '1899/12/30') then
+        begin
+          if (DataForm2.InvoiceTablestrState <> 'Edit') and (DataForm2.InvoiceTablestrState <> 'Insert') then
+            DataForm2.InvoiceTable.Edit;
+          DataForm2.InvoiceTable.FieldByName('InvDate').asInteger := DatetoIntDate(InvoiceDateEdit.Date);
+        end;
+end;
+
+procedure TInvoiceForm.SearchButtonClick(Sender: TObject);
+begin
+    SaveButton.Click;
+    if (DataForm2.InvoiceTable.FieldByName('InvClose').asString <> 'Close')
+      and (DataForm2.InvoiceTable.FieldByName('InvClose').asString <> '')
+      and (Dataform2.InvoiceItemSource.Enabled <> False)
+      and (DataForm2.InvoiceTable.FieldByName('InvClose').asString <> 'LaybO')
+      and (DataForm2.InvoiceTable.FieldByName('InvClose').asString <> 'LaybC') then
+    begin
+      StockSearchform.FromWhereTmp := 'Invoice';
+      StockSearchForm.ShowModal;
+    end
+    else
+      showmessage('Create new Invoice First!');
+end;
+
+procedure TInvoiceForm.Edit1KeyPress(Sender: TObject; var Key: Char);
+begin
+    if (DataForm2.InvoiceTable.FieldByName('InvClose').asString <> 'Close') and (DataForm2.InvoiceTable.FieldByName('InvClose').asString <> '')
+       and (Dataform2.InvoiceItemSource.Enabled <> False)
+       and (DataForm2.InvoiceTable.FieldByName('InvClose').asString <> 'LaybO')
+       and (DataForm2.InvoiceTable.FieldByName('InvClose').asString <> 'LaybC') then
+    begin
+      if Key = #13 then
+      begin
+        If StrtoBool(DataForm2.IniFile.ReadString ('TCSetup', 'TCStockNoBarcode', '0')) = True then
+        begin
+          if not Dataform2.StockTable.Locate('TCStockNo', Edit1.Text,[]) then
+          begin
+            Beep;
+            showmessage('Can''t find product!');
+          end
+          else
+          begin
+            SaveButton.Click;
+            InsertProduct;
+          end;
+        end
+        else
+        begin
+          if not Dataform2.StockTable.Locate('Barcode', Edit1.Text,[]) then
+          begin
+            Beep;
+            showmessage('Can''t find product!');
+          end
+          else
+          begin
+            SaveButton.Click;
+            InsertProduct;
+          end;
+        end;
+        Edit1.Text := '';
+      end;
+    end
+    else
+      showmessage('Create new Invoice First!');
+end;
+
+procedure TInvoiceForm.InsertProduct();
+begin
+      DataForm2.InvoiceItemTable.Insert;
+      DataForm2.InvoiceItemTable.FieldByName('Description').asString := DataForm2.StockTable.FieldByName('Description').asString;
+      DataForm2.InvoiceItemTable.FieldByName('StockNo').asInteger := DataForm2.StockTable.FieldByName('Nr').asInteger;
+      DataForm2.InvoiceItemTable.FieldByName('LinkId').asInteger := DataForm2.InvoiceTable.FieldByName('Nr').asInteger;
+      DataForm2.InvoiceItemTable.FieldByName('Qty').asfloat := 1;
+      If (DataForm2.StockTable.FieldByName('SalesPrice2').asFloat = 0) or (DataForm2.StockTable.FieldByName('SalesPrice2').asFloat = DataForm2.StockTable.FieldByName('SalesPrice').asFloat)
+         or (EnableSecondPrice1.Checked = False) then
+      begin
+        DataForm2.InvoiceItemTable.FieldByName('Price').asfloat := DataForm2.StockTable.FieldByName('SalesPrice').asFloat;
+      end
+      else
+      begin
+        ItemSalesPrice := 0;
+        Application.CreateForm(TPriceChooseForm, PriceChooseForm);
+        PriceChooseForm.Price1.Caption := Floattostrf(Dataform2.StockTable.Fieldbyname('SalesPrice').asFloat ,ffFixed,17,2);
+        PriceChooseForm.Price2.Caption := Floattostrf(Dataform2.StockTable.Fieldbyname('SalesPrice2').asFloat ,ffFixed,17,2);
+        Beep;
+        PriceChooseForm.showmodal;
+        DataForm2.InvoiceItemTable.FieldByName('Price').asfloat := ItemSalesPrice;
+        PriceChooseForm.FreeonRelease;
+//        JvDBgrid1.SetFocus;
+      end;
+      DataForm2.InvoiceItemTable.FieldByName('CostPrice').asfloat := DataForm2.StockTable.FieldByName('CostPrice').asFloat;
+      DescDisp.Caption := DataForm2.InvoiceItemTable.FieldByName('Description').asString + ' ' + Floattostrf(DataForm2.InvoiceItemTable.FieldByName('Price').asfloat,ffCurrency,17,2);
+      DataForm2.InvoiceItemTable.FieldByName('Discount').asfloat := 0.00;
+      DataForm2.InvoiceItemTableTCStockNo.Value := Dataform2.StockTableTCStockNo.Value;
+      SaveInvoiceItems;
+      RefreshTotal;
+      InvoiceForm.Edit1.setFocus;
+end;
+
+procedure TInvoiceForm.Edit1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+      FKeysPress;
+end;
+
+procedure TInvoiceForm.RefreshTotal();
+begin
+      Dataform2.Query3.Close;
+      with DataForm2.Query3.SQL do begin
+        Clear;
+        Add('SELECT SUM(Round(Price * Qty,2) - (Round(Price * Qty,2) * (Discount / 100))) as Total FROM invoiceitem_db');
+        Add('where LinkId = ' + inttostr(Dataform2.InvoiceTable.Fieldbyname('Nr').asInteger));
+      end;
+      Dataform2.Query3.Open;
+      TotalStr := Strtofloat(Floattostrf(DataForm2.Query3.Fieldbyname('Total').asfloat,ffFixed,17,2));
+      Total.Caption := 'Total: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat,ffCurrency,17,2);
+      VAT.Caption := 'VAT: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat * 14 / 114 ,ffCurrency,17,2);
+      CashEdit.Text := '0.00';
+      CreditCardEdit.Text := '0.00';
+      ChequesEdit.Text := '0.00';
+      OtherEdit.Text := '0.00';
+      If (Dataform2.InvoiceTable.FieldByName('InvoiceType').asString = 'Cash') or (Dataform2.InvoiceTable.FieldByName('InvoiceType').asString = 'LayBuy') then
+        CashEdit.Text := Floattostrf(Dataform2.InvoiceTable.Fieldbyname('AmmTendered').asFloat ,ffFixed,17,2)
+      else
+      begin
+        If Dataform2.InvoiceTable.FieldByName('InvoiceType').asString = 'CreditCard' then
+          CreditCardEdit.Text := Floattostrf(Dataform2.InvoiceTable.Fieldbyname('AmmTendered').asFloat ,ffFixed,17,2)
+        else
+        begin
+          if Dataform2.InvoiceTable.FieldByName('InvoiceType').asString = DataForm2.IniFile.ReadString ('Settings', 'OtherDescr', 'Other') then
+            OtherEdit.Text := Floattostrf(Dataform2.InvoiceTable.Fieldbyname('AmmTendered').asFloat ,ffFixed,17,2)
+          else
+            ChequesEdit.Text := Floattostrf(Dataform2.InvoiceTable.Fieldbyname('AmmTendered').asFloat ,ffFixed,17,2);
+        end;
+      end;
+      Dataform2.Query3.Close;
+end;
+
+procedure TInvoiceForm.FormShow(Sender: TObject);
+var
+      Userstr: String;
+begin
+      JvFormAutoSize1.Active := True;
+      If Screen.Width > 800 then
+      begin
+        JvDBGrid1.Font.Size := 10;
+        Edit1.Font.Size := 10;
+        Label1.Font.Size := 10;
+//        Label18.Font.Size := 10;
+        DBText1.Font.Size := 10;
+        DBText2.Font.Size := 10;
+      end;
+      GroupBox5.Visible := StrtoBool(DataForm2.IniFile.ReadString ('Settings', 'ShowAdditions', '0'));
+      JvBitBtn1.Visible := StrtoBool(DataForm2.IniFile.ReadString ('LayBuySetup', 'Enable', '0'));
+      InvoiceForm.WindowState := wsMaximized;
+      OpenInvoices();
+      ShowDates();
+      if (DataForm2.InvoiceTable.FieldByName('InvClose').asString <> 'Open') then
+      begin
+        Dataform2.InvoiceSource.Enabled := False;
+        Dataform2.InvoiceItemSource.Enabled := False;
+      end
+      else
+      begin
+        RefreshTotal();
+      end;
+      Dataform2.StockTable.Close;
+      with Dataform2.StockTable.SQL do
+      begin
+        Clear;
+        Add('select * from stock_db');
+        Add('where BranchNo is null');
+      end;
+      Dataform2.StockTable.Open;
+      su := 'False';
+      DescDisp.Caption := '';
+      AmmTendered := 0;
+      AmmTendered2 := 0;
+      Label22.Caption := DataForm2.IniFile.ReadString ('Settings', 'OtherDescr', 'Other');
+      JvDBGrid1.Columns[6].Title.Caption := DataForm2.IniFile.ReadString('Settings', 'CommentDescr', 'Comment');
+      Application.CreateForm(TStockSearchForm, StockSearchForm);
+      Button4.SetFocus;
+end;
+
+procedure TInvoiceForm.JvDBGrid1Exit(Sender: TObject);
+begin
+        If DataForm2.InvoiceTable.FieldByName('InvClose').AsString = 'Close' then
+          JvDBGrid1.ReadOnly := False;
+        SaveInvoiceItems;
+        RefreshTotal;
+end;
+
+procedure TInvoiceForm.Button2Click(Sender: TObject);
+begin
+        JvSpeedButton4.Click;
+        SaveButton.Click;
+        Edit1.SetFocus;
+end;
+
+procedure TInvoiceForm.CloseInvButtonClick(Sender: TObject);
+begin
+        if Dataform2.InvoiceItemTable.RecordCount < 1 then
+          showmessage('No Items in invoice!')
+        else
+        begin
+          RefreshTotal;
+          CashEdit.SetFocus;
+        end;
+end;
+
+procedure TInvoiceForm.PrintReceipttoCOM();
+var
+        count: Integer;
+begin
+        Comport1.Port := DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0');
+        Comport1.Connected := True;
+        UserForm.Memo2.Lines.loadfromfile(Dataform2.ProgramPath + '\client.txt');
+        for count := 0 to UserForm.Memo2.Lines.Count - 1 do
+        begin
+          Comport1.WriteStr(UserForm.Memo2.Lines[count] + #13 + #10);
+        end;
+        Comport1.WriteStr(#13 + #10);
+        Comport1.WriteStr('RETAIN AS PROOF OF PAYMENT' + #13 + #10);
+        Comport1.WriteStr('------------------------------' + #13 + #10);
+        Comport1.WriteStr('Name: ' + DataForm2.InvoiceTable.FieldByName('ClientName').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientVatNo').asString <> '' then
+          Comport1.WriteStr('Vat No: ' + DataForm2.InvoiceTable.Fieldbyname('ClientVatNo').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr1').asString <> '' then
+          Comport1.WriteStr('Address: ' + DataForm2.InvoiceTable.Fieldbyname('ClientAdr1').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr2').asString <> '' then
+          Comport1.WriteStr(DataForm2.InvoiceTable.Fieldbyname('ClientAdr2').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr3').asString <> '' then
+          Comport1.WriteStr(DataForm2.InvoiceTable.Fieldbyname('ClientAdr3').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientPCode').asString <> '' then
+          Comport1.WriteStr('Postal Code: ' + DataForm2.InvoiceTable.Fieldbyname('ClientPCode').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientTelW').asString <> '' then
+          Comport1.WriteStr('Tel (W): ' + DataForm2.InvoiceTable.Fieldbyname('ClientTelW').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientTelC').asString <> '' then
+          Comport1.WriteStr('Tel (C): ' + DataForm2.InvoiceTable.Fieldbyname('ClientTelC').asString + #13 + #10);
+        Comport1.WriteStr('Invoice By: ' + DataForm2.InvoiceTable.FieldByName('InvBy').asString + #13 + #10);
+        Comport1.WriteStr('------------------------------' + #13 + #10);
+
+        DataForm2.InvoiceItemTable.first;
+        try
+          while not DataForm2.InvoiceItemTable.EOF do
+          begin
+            Comport1.WriteStr(DataForm2.InvoiceItemTable.Fieldbyname('Description').asString + #13 + #10);
+            Comport1.WriteStr('Prc R ' + floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Price').asFloat,ffFixed,17,2) + ' Qty ' + Floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat,ffFixed,17,2) + ' Tot R ' + Floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Price').asFloat * Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat,ffFixed,17,2) + #13 + #10);
+            DataForm2.InvoiceItemTable.Next;
+          end;
+        finally
+        end;
+        Dataform2.Query3.Close;
+        with DataForm2.Query3.SQL do begin
+          Clear;
+          Add('SELECT SUM(Price * Qty - (Price * Qty * (Discount / 100))) as Total FROM invoiceitem_db');
+          Add('where LinkId = ' + inttostr(Dataform2.InvoiceTable.Fieldbyname('Nr').asInteger));
+        end;
+        Dataform2.Query3.Open;
+        Comport1.WriteStr('----------------------------------' + #13 + #10);
+        Comport1.WriteStr('Total: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat,ffCurrency,17,2) + #13 + #10);
+        Comport1.WriteStr('VAT: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat * 14 / 114 ,ffCurrency,17,2) + #13 + #10);
+        Comport1.WriteStr('Paid: ' + Floattostrf(AmmTendered + AmmTendered2,ffCurrency,17,2) + #13 + #10);
+        Comport1.WriteStr('Change: ' + Floattostrf((AmmTendered + AmmTendered2) - TotalStr,ffCurrency,17,2) + #13 + #10);
+        Comport1.WriteStr('----------------------------------' + #13 + #10);
+
+        Comport1.WriteStr(#13 + #10);
+        Comport1.WriteStr('Inv Date: ' + IntDatetoString(DataForm2.InvoiceTable.Fieldbyname('InvDate').asInteger) + '  Inv No: ' + InttoStr(DataForm2.InvoiceTable.Fieldbyname('InvNo').asInteger) + #13 + #10);
+        Comport1.WriteStr(#13 + #10);
+        UserForm.Memo3.Lines.loadfromfile(Dataform2.ProgramPath + '\footer.txt');
+        for count := 0 to UserForm.Memo3.Lines.Count - 1 do
+        begin
+          Comport1.WriteStr(UserForm.Memo3.Lines[count] + #13 + #10);
+        end;
+        Comport1.WriteStr(#13 + #10);
+        Comport1.WriteStr(#13 + #10);
+        Comport1.WriteStr(#13 + #10);
+        Comport1.WriteStr(#13 + #10);
+        Comport1.WriteStr(#13 + #10);
+        Comport1.WriteStr(#13 + #10);
+        Dataform2.Query3.Close;
+        Comport1.Connected := False;
+end;
+
+procedure TInvoiceForm.CashEditKeyPress(Sender: TObject; var Key: Char);
+begin
+      if (Key = #13) and (FromWherePaid <> 'Double') then
+      begin
+        AmmTendered := CashEdit.Value;
+        AmmTendered2 := 0.00;
+        FromWherePaid := 'Cash';
+        Change.Caption := 'Change ' + Floattostrf(AmmTendered - TotalStr,ffCurrency,17,2);
+        Button1.Click;
+      end;
+      if (Key = #13) and (FromWherePaid = 'Double') then
+      begin
+        CheckDouble;
+        Button1.Click;
+      end;
+end;
+
+procedure TInvoiceForm.JvSpeedButton1Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 2) or (su = 'True') then
+      begin
+        if DataForm2.InvoiceSource.Enabled = False then
+        begin
+          Dataform2.InvoiceSource.Enabled := True;
+          Dataform2.InvoiceItemSource.Enabled := True;
+        end;
+        Dataform2.InvoiceItemTable.Close;
+        Dataform2.InvoiceTable.Prior;
+        Dataform2.InvoiceItemTable.Open;
+        ShowDates();
+        RefreshTotal;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TInvoiceForm.JvSpeedButton2Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 2) or (su = 'True') then
+      begin
+        if DataForm2.InvoiceSource.Enabled = False then
+        begin
+          Dataform2.InvoiceSource.Enabled := True;
+          Dataform2.InvoiceItemSource.Enabled := True;
+        end;
+        Dataform2.InvoiceItemTable.Close;
+        Dataform2.InvoiceTable.Next;
+        Dataform2.InvoiceItemTable.Open;
+        ShowDates();
+        refreshTotal;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TInvoiceForm.PrintButtonClick(Sender: TObject);
+begin
+    CloseInvPros;
+end;
+
+procedure TInvoiceForm.PrintInv(Report:TBaseReport);
+begin
+      with report do
+      begin
+        MarginLeft := 0.250;
+        MarginTop := 0.250;
+        SetFont('Arial',9);
+        UserForm.Memo2.Lines.loadfromfile(Dataform2.ProgramPath + '\client.txt');
+        for count := 0 to UserForm.Memo2.Lines.Count - 1 do
+        begin
+          printLeft(UserForm.Memo2.Lines[count], 0.250);
+          NewLine;
+        end;
+        NewLine;
+        printLeft('RETAIN AS PROOF OF PAYMENT', 0.250);
+        NewLine;
+        printLeft('------------------------------', 0.250);
+        NewLine;
+        printLeft('Name: ' + DataForm2.InvoiceTable.FieldByName('ClientName').asString, 0.250);
+        NewLine;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientVatNo').asString <> '' then
+        begin
+          printLeft('Vat No: ' + DataForm2.InvoiceTable.Fieldbyname('ClientVatNo').asString, 0.250);
+          NewLine;
+        end;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr1').asString <> '' then
+        begin
+          printLeft('Address: ' + DataForm2.InvoiceTable.Fieldbyname('ClientAdr1').asString, 0.250);
+          NewLine;
+        end;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr2').asString <> '' then
+        begin
+          printLeft(DataForm2.InvoiceTable.Fieldbyname('ClientAdr2').asString, 0.250);
+          NewLine;
+        end;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr3').asString <> '' then
+        begin
+          printLeft(DataForm2.InvoiceTable.Fieldbyname('ClientAdr3').asString, 0.250);
+          NewLine;
+        end;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientPCode').asString <> '' then
+        begin
+          printLeft('Postal Code: ' + DataForm2.InvoiceTable.Fieldbyname('ClientPCode').asString, 0.250);
+          NewLine;
+        end;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientTelW').asString <> '' then
+        begin
+          printLeft('Tel (W): ' + DataForm2.InvoiceTable.Fieldbyname('ClientTelW').asString, 0.250);
+          NewLine;
+        end;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientTelC').asString <> '' then
+        begin
+          printLeft('Tel (C): ' + DataForm2.InvoiceTable.Fieldbyname('ClientTelC').asString, 0.250);
+          NewLine;
+        end;
+        NewLine;
+        printLeft('Invoice By: ' + DataForm2.InvoiceTable.FieldByName('InvBy').asString, 0.250);
+        NewLine;
+        printLeft('------------------------------', 0.250);
+        NewLine;
+
+        DataForm2.InvoiceItemTable.first;
+        try
+          while not DataForm2.InvoiceItemTable.EOF do
+          begin
+            printLeft(DataForm2.InvoiceItemTable.Fieldbyname('Description').asString, 0.250);
+            NewLine;
+            printLeft('Prc R ' + floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Price').asFloat,ffFixed,17,2) + ' Qty ' + Floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat,ffFixed,17,2) + ' Tot R ' + Floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Price').asFloat * Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat,ffFixed,17,2), 0.250);
+            NewLine;
+            DataForm2.InvoiceItemTable.Next;
+          end;
+        finally
+        end;
+        Dataform2.Query3.Close;
+        with DataForm2.Query3.SQL do begin
+          Clear;
+          Add('SELECT SUM(Price * Qty - (Price * Qty * (Discount / 100))) as Total FROM invoiceitem_db');
+          Add('where LinkId = ' + inttostr(Dataform2.InvoiceTable.Fieldbyname('Nr').asInteger));
+        end;
+        Dataform2.Query3.Open;
+        printLeft('----------------------------------', 0.250);
+        NewLine;
+        printLeft('Total: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat,ffCurrency,17,2), 0.250);
+        NewLine;
+        printLeft('VAT: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat * 14 / 114 ,ffCurrency,17,2), 0.250);
+        NewLine;
+        printLeft('Paid: ' + Floattostrf(AmmTendered + AmmTendered2,ffCurrency,17,2), 0.250);
+        NewLine;
+        printLeft('Change: ' + Floattostrf((AmmTendered + AmmTendered2) - TotalStr,ffCurrency,17,2), 0.250);
+        NewLine;
+        printLeft('----------------------------------', 0.250);
+
+        NewLine;
+        NewLine;
+        printLeft('Inv Date: ' + IntDatetoString(DataForm2.InvoiceTable.Fieldbyname('InvDate').asInteger) + '  Inv No: ' + InttoStr(DataForm2.InvoiceTable.Fieldbyname('InvNo').asInteger), 0.250);
+        NewLine;
+        NewLine;
+        UserForm.Memo3.Lines.loadfromfile(Dataform2.ProgramPath + '\footer.txt');
+        for count := 0 to UserForm.Memo3.Lines.Count - 1 do
+        begin
+          printLeft(UserForm.Memo3.Lines[count], 0.250);
+          NewLine;
+        end;
+        DataForm2.Query3.Close;
+      end;
+end;
+
+procedure TInvoiceForm.ReceiptPrintingPrint(Sender: TObject);
+begin
+      if (DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0') = 'Driver Receipt') then
+        PrintInv(ReceiptPrinting.BaseReport)
+      else
+        PrintA4(ReceiptPrinting.BaseReport)
+end;
+
+procedure TInvoiceForm.QtyCountDown();
+begin
+      DataForm2.InvoiceItemTable.DisableControls;
+      try
+        DataForm2.InvoiceItemTable.First;
+        while not DataForm2.InvoiceItemTable.EOF do
+        begin
+          DataForm2.Query3.Active := False;
+          with DataForm2.Query3.SQL do begin
+                Clear;
+                Add('update Stock_db');
+                Add('set Qty = Qty - ' + floattostr(Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat));
+                Add('where Nr = ' + Inttostr(DataForm2.InvoiceItemTable.Fieldbyname('StockNo').asInteger));
+                Add('and NonStockItem = "False"');
+          end;
+          DataForm2.Query3.ExecSQL;
+          DataForm2.InvoiceItemTable.Next;
+        end;
+      finally
+      end;
+      DataForm2.InvoiceItemTable.EnableControls;
+      Dataform2.StockTable.Requery;
+end;
+
+procedure TInvoiceForm.JvDBGrid1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+      if HiWord(GetKeyState(vk_f1)) <> 0 then
+      begin
+        SaveInvoiceItems;
+        RefreshTotal;
+        Edit1.SetFocus;
+      end;
+      if HiWord(GetKeyState(vk_f3)) <> 0 then
+      begin
+        SaveInvoiceItems;
+        RefreshTotal;
+        Edit1.SetFocus;
+        SearchButton.Click;
+      end;
+      if HiWord(GetKeyState(vk_f8)) <> 0 then
+      begin
+        SaveInvoiceItems;
+        RefreshTotal;
+        JvSpeedButton5.Click;
+      end;
+      if HiWord(GetKeyState(vk_f9)) <> 0 then
+      begin
+        SaveInvoiceItems;
+        RefreshTotal;
+        JvSpeedButton7.Click;
+      end;
+      if HiWord(GetKeyState(vk_f10)) <> 0 then
+      begin
+        SaveInvoiceItems;
+        RefreshTotal;
+        JvSpeedButton4.Click;
+      end;
+      if HiWord(GetKeyState(vk_delete)) <> 0 then
+      begin
+        If (Dataform2.InvoiceTableInvClose.Value <> 'Close') and (Dataform2.InvoiceTableInvClose.Value <> 'LaybO') and (Dataform2.InvoiceTableInvClose.Value <> 'LaybC') then
+        begin
+          if MessageDlg('Are you sure you want to delete line ' + DataForm2.InvoiceItemTable.Fieldbyname('Description').asString, mtConfirmation,
+          [mbYes, mbNo], 0) = mrYes then
+          begin
+            DataForm2.InvoiceItemTable.Edit;
+            DataForm2.InvoiceItemTable.Delete;
+          end;
+          RefreshTotal;
+          Edit1.SetFocus;
+        end
+        else
+          showmessage('You can''t delete an item on an closed Invoice!');
+      end;
+end;
+
+procedure TInvoiceForm.JvSpeedButton3Click(Sender: TObject);
+begin
+      JvDBGrid1.SetFocus;
+end;
+
+procedure TInvoiceForm.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+      if (DataForm2.InvoiceTablestrState = 'Edit') or (DataForm2.InvoiceTablestrState = 'Insert') then
+      begin
+        if MessageDlg('Do you want to exit without saving?',
+        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+        begin
+          DataForm2.InvoiceTable.Cancel;
+        end
+        else
+          CanClose := False;
+      end;
+end;
+
+procedure TInvoiceForm.Edit1Enter(Sender: TObject);
+begin
+        SaveButton.Click;
+end;
+
+procedure TInvoiceForm.DeleteInvoice1Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 4) or (su = 'True') or (DataForm2.InvoiceTableInvClose.Value = 'Open') then
+      begin
+        if MessageDlg('Are you sure you want to Delete the Selected Invoice!',
+        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+        begin
+          DeleteInvoiceItems;
+          DeleteInvoiceTrans;
+          DataForm2.InvoiceTable.Edit;
+          DataForm2.InvoiceTable.Delete;
+          refreshTotal;
+          showdates;
+          Button4.SetFocus;
+        end;
+      end
+      else
+        showmessage('You don''t have permission to go in here!');
+end;
+
+procedure TInvoiceForm.DeleteInvoiceItems();
+begin
+        DataForm2.Query2.Active := False;
+        with DataForm2.Query2.SQL do begin
+          Clear;
+          Add('Delete FROM invoiceitem_db');
+          Add('WHERE LinkId = ' + inttostr(DataForm2.InvoiceTable.fieldbyname('Nr').asInteger));
+        end;
+        DataForm2.Query2.ExecSQL;
+end;
+
+procedure TInvoiceForm.DeleteInvoiceTrans();
+begin
+        DataForm2.Query2.Active := False;
+        with DataForm2.Query2.SQL do begin
+          Clear;
+          Add('Delete FROM trans_db');
+          Add('WHERE LinkId = ' + inttostr(DataForm2.InvoiceTable.fieldbyname('InvNo').asInteger));
+        end;
+        DataForm2.Query2.ExecSQL;
+end;
+
+procedure TInvoiceForm.JvDBGrid1Enter(Sender: TObject);
+begin
+      If DataForm2.InvoiceTable.FieldByName('InvClose').AsString = 'Close' then
+        JvDBGrid1.ReadOnly := True;
+      If DataForm2.IniFile.ReadInteger('Settings', 'MinimumMarkup', 0) <> 0 then
+      begin
+        JvDBGrid1.Columns[4].ReadOnly := False;
+      end
+      else
+      begin
+        JvDBGrid1.Columns[4].ReadOnly := True;
+      end;
+      if (su = 'True') or (Dataform2.User_dbRights.Value > 3) then
+      begin
+        JvDBGrid1.Columns[4].ReadOnly := False;
+        JvDBGrid1.Columns[7].ReadOnly := False;
+      end
+      else
+      begin
+        If DataForm2.IniFile.ReadInteger('Settings', 'MinimumMarkup', 0) = 0 then
+          JvDBGrid1.Columns[4].ReadOnly := True;
+        JvDBGrid1.Columns[7].ReadOnly := True;
+      end;
+      JvDBGrid1.Col := 4;
+      Dataform2.InvoiceItemTable.Last;
+end;
+
+procedure TInvoiceForm.JvDBGrid1KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        SaveInvoiceItems;
+        RefreshTotal;
+        Edit1.SetFocus;
+      end;
+end;
+
+procedure TInvoiceForm.CloseInvPros();
+begin
+    FromWhereStatement := 'POS';
+    if Dataform2.InvoiceItemTable.RecordCount <> 0 then
+    begin
+      If (AmmTendered + AmmTendered2 > TotalStr - 1) or (DataForm2.InvoiceTableInvoiceType.Value = 'LayBuy') or (Dataform2.InvoiceTableGLDebNo.Value <> DataForm2.IniFile.ReadString ('TCSetup', 'TCCashDebNo', '')) then
+      begin
+        WriteCloseInfo;
+        If MessageBox( Self.Handle,
+              'Do you want to print the Receipt?',
+              'Confirm',
+              MB_ICONQUESTION Or MB_YESNO Or MB_DEFBUTTON2 )
+              = IDNO Then
+        begin
+          If (DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0') <> 'Driver Receipt') and (DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0') <> 'Driver A4') then
+          begin
+            KickDrawer;
+          end
+          else
+          begin
+            If (DataForm2.IniFile.ReadString ('ComportSection', 'Printer', '0') = 'Serial Drawer') then
+            begin
+              KickDrawer;
+            end;
+          end;
+        end
+        else
+        begin
+          If (DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0') = 'Driver Receipt') or (DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0') = 'Driver A4') then
+          begin
+            If (DataForm2.IniFile.ReadString ('ComportSection', 'Printer', '0') = 'Serial Drawer') then
+            begin
+              KickDrawer;
+            end;
+            ReceiptPrinting.Execute;
+          end
+          else
+          begin
+            KickDrawer;
+            if copy(DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0'),1,3) = 'COM' then
+              PrintReceipttoCOM()
+            else
+              PrintReceipttoLPT();
+          end;
+        end;
+        ShowDates;
+        Button4.setfocus;
+      end
+      else
+        showmessage('Money is not enough!');
+    end
+    else
+      showmessage('Add Products First!');
+end;
+
+procedure TInvoiceForm.KickDrawer();
+var
+    F: TextFile;
+begin
+      if (copy(DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0'),1,3) = 'COM') or (DataForm2.IniFile.ReadString ('ComportSection', 'Printer', '0') = 'Serial Drawer') then
+      begin
+        if DataForm2.IniFile.ReadString ('ComportSection', 'Printer', '0') = 'Serial Drawer' then
+        begin
+          InvoiceForm.Comport1.Port := DataForm2.IniFile.ReadString ('ComportSection', 'SerialCom', '0');
+          InvoiceForm.Comport1.Connected := True;
+          InvoiceForm.Comport1.WriteStr(#07);
+          InvoiceForm.Comport1.Connected := False;
+        end
+        else
+        begin
+          InvoiceForm.Comport1.Port := DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0');
+          InvoiceForm.Comport1.Connected := True;
+          if DataForm2.IniFile.ReadString ('ComportSection', 'Printer', '0') = 'EPSON' then
+            InvoiceForm.Comport1.WriteStr(#027 + #112 + #000 + #025 + #250);
+          InvoiceForm.Comport1.Connected := False;
+        end;
+      end
+      else
+      begin
+        AssignFile(F, DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0'));
+        Rewrite(F);
+        if DataForm2.IniFile.ReadString ('ComportSection', 'Printer', '0') = 'EPSON' then
+          Write(F, #027 + #112 + #000 + #025 + #250);
+        CloseFile(F);
+      end;
+end;
+
+procedure TInvoiceForm.PrintReceipttoLPT();
+var
+        count: Integer;
+        F: TextFile;
+begin
+        AssignFile(F, DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0'));
+        Rewrite(F);
+        UserForm.Memo2.Lines.loadfromfile(Dataform2.ProgramPath + '\client.txt');
+        for count := 0 to UserForm.Memo2.Lines.Count - 1 do
+        begin
+          Write(F, UserForm.Memo2.Lines[count] + #13 + #10);
+        end;
+        Write(F, #13 + #10);
+        Write(F, 'RETAIN AS PROOF OF PAYMENT' + #13 + #10);
+        Write(F, '------------------------------' + #13 + #10);
+        Write(F, 'Name: ' + DataForm2.InvoiceTable.FieldByName('ClientName').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientVatNo').asString <> '' then
+          Write(F, 'Vat No: ' + DataForm2.InvoiceTable.Fieldbyname('ClientVatNo').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr1').asString <> '' then
+          Write(F, 'Address: ' + DataForm2.InvoiceTable.Fieldbyname('ClientAdr1').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr2').asString <> '' then
+          Write(F, DataForm2.InvoiceTable.Fieldbyname('ClientAdr2').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr3').asString <> '' then
+          Write(F, DataForm2.InvoiceTable.Fieldbyname('ClientAdr3').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientPCode').asString <> '' then
+          Write(F, 'Postal Code: ' + DataForm2.InvoiceTable.Fieldbyname('ClientPCode').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientTelW').asString <> '' then
+          Write(F, 'Tel (W): ' + DataForm2.InvoiceTable.Fieldbyname('ClientTelW').asString + #13 + #10);
+        if DataForm2.InvoiceTable.Fieldbyname('ClientTelC').asString <> '' then
+          Write(F, 'Tel (C): ' + DataForm2.InvoiceTable.Fieldbyname('ClientTelC').asString + #13 + #10);
+        Write(F, 'Invoice By: ' + DataForm2.InvoiceTable.FieldByName('InvBy').asString + #13 + #10);
+        Write(F, '------------------------------' + #13 + #10);
+
+        DataForm2.InvoiceItemTable.first;
+        try
+          while not DataForm2.InvoiceItemTable.EOF do
+          begin
+            Write(F, DataForm2.InvoiceItemTable.Fieldbyname('Description').asString + #13 + #10);
+            Write(F, 'Prc R ' + floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Price').asFloat,ffFixed,17,2) + ' Qty ' + Floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat,ffFixed,17,2) + ' Tot R ' + Floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Price').asFloat * Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat,ffFixed,17,2) + #13 + #10);
+            DataForm2.InvoiceItemTable.Next;
+          end;
+        finally
+        end;
+        Dataform2.Query3.Close;
+        with DataForm2.Query3.SQL do begin
+          Clear;
+          Add('SELECT SUM(Price * Qty - (Price * Qty * (Discount / 100))) as Total FROM invoiceitem_db');
+          Add('where LinkId = ' + inttostr(Dataform2.InvoiceTable.Fieldbyname('Nr').asInteger));
+        end;
+        Dataform2.Query3.Open;
+        Write(F, '----------------------------------' + #13 + #10);
+        Write(F, 'Total: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat,ffCurrency,17,2) + #13 + #10);
+        Write(F, 'VAT: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat * 14 / 114 ,ffCurrency,17,2) + #13 + #10);
+        Write(F, 'Paid: ' + Floattostrf(AmmTendered + AmmTendered2,ffCurrency,17,2) + #13 + #10);
+        Write(F, 'Change: ' + Floattostrf((AmmTendered + AmmTendered2) - TotalStr,ffCurrency,17,2) + #13 + #10);
+        Write(F, '----------------------------------' + #13 + #10);
+
+        Write(F, #13 + #10);
+        Write(F, 'Inv Date: ' + IntDatetoString(DataForm2.InvoiceTable.Fieldbyname('InvDate').asInteger) + '  Inv No: ' + InttoStr(DataForm2.InvoiceTable.Fieldbyname('InvNo').asInteger) + #13 + #10);
+        Write(F, #13 + #10);
+        UserForm.Memo3.Lines.loadfromfile(Dataform2.ProgramPath + '\footer.txt');
+        for count := 0 to UserForm.Memo3.Lines.Count - 1 do
+        begin
+          Write(F, UserForm.Memo3.Lines[count] + #13 + #10);
+        end;
+        Write(F, #13 + #10);
+        Write(F, #13 + #10);
+        Write(F, #13 + #10);
+        Write(F, #13 + #10);
+        Write(F, #13 + #10);
+        Write(F, #13 + #10);
+        dataform2.Query3.Close;
+        CloseFile(F);
+end;
+
+procedure TInvoiceForm.CashEditEnter(Sender: TObject);
+begin
+      if (DataForm2.InvoiceTableInvClose.Value <> 'Close') and (Dataform2.InvoiceTableGLDebNo.Value = DataForm2.IniFile.ReadString ('TCSetup', 'TCCashDebNo', '')) then
+        CashEdit.Text := Floattostrf(TotalStr,ffFixed,17,2);
+      FromWherePaid := '';
+      CashEdit.SelectAll;
+      AmmTendered := 0;
+      AmmTendered2 := 0;
+end;
+
+procedure TInvoiceForm.JvSpeedButton4Click(Sender: TObject);
+begin
+    if GroupBox1.Visible = False then
+    begin
+      GroupBox1.Visible := True;
+      GroupBox1.BringToFront;
+      DbEdit1.SetFocus;
+    end
+    else
+    begin
+      GroupBox1.Visible := False;
+      GroupBox1.SendToBack;
+      Edit1.SetFocus;
+    end;
+end;
+
+procedure TInvoiceForm.CreditCardEditKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+      if (Key = #13) and (FromWherePaid <> 'Double') then
+      begin
+        AmmTendered := CreditCardEdit.Value;
+        AmmTendered2 := 0.00;
+        FromWherePaid := 'CreditCard';
+        Change.Caption := 'Change ' + Floattostrf(AmmTendered - TotalStr,ffCurrency,17,2);
+        Button1.Click;
+      end;
+      if (Key = #13) and (FromWherePaid = 'Double') then
+      begin
+        CheckDouble;
+        Button1.Click;
+      end;
+end;
+
+procedure TInvoiceForm.ChequesEditKeyPress(Sender: TObject; var Key: Char);
+begin
+      if (Key = #13) and (FromWherePaid <> 'Double') then
+      begin
+        AmmTendered := ChequesEdit.Value;
+        AmmTendered2 := 0.00;
+        FromWherePaid := 'Cheques';
+        Change.Caption := 'Change ' + Floattostrf(AmmTendered - TotalStr,ffCurrency,17,2);
+        Button1.Click;
+      end;
+      if (Key = #13) and (FromWherePaid = 'Double') then
+      begin
+        CheckDouble;
+        Button1.Click;
+      end;
+end;
+
+procedure TInvoiceForm.CreditCardEditEnter(Sender: TObject);
+begin
+      if (FromWherePaid <> 'Double') then
+      begin
+        if (DataForm2.InvoiceTableInvClose.Value <> 'Close') and (Dataform2.InvoiceTableGLDebNo.Value = DataForm2.IniFile.ReadString ('TCSetup', 'TCCashDebNo', '')) then
+          CreditCardEdit.Text := Floattostrf(TotalStr,ffFixed,17,2);
+        FromWherePaid := '';
+        CreditCardEdit.SelectAll;
+      end;
+end;
+
+procedure TInvoiceForm.ChequesEditEnter(Sender: TObject);
+begin
+      if (FromWherePaid <> 'Double') then
+      begin
+        if (DataForm2.InvoiceTableInvClose.Value <> 'Close') and (Dataform2.InvoiceTableGLDebNo.Value = DataForm2.IniFile.ReadString ('TCSetup', 'TCCashDebNo', '')) then
+          ChequesEdit.Text := Floattostrf(TotalStr,ffFixed,17,2);
+        FromWherePaid := '';
+        ChequesEdit.SelectAll;
+      end;
+end;
+
+procedure TInvoiceForm.CashEditExit(Sender: TObject);
+begin
+      if DataForm2.InvoiceTableInvClose.Value <> 'Close' then
+      begin
+        if (FromWherePaid <> 'Cash') and (FromWherePaid <> 'Double') then
+          CashEdit.Text := '0.00';
+        If (CashEdit.Value <> 0) and (FromWherePaid = 'Double') then
+        begin
+          AmmTendered := CashEdit.Value;
+        end;
+      end;
+end;
+
+procedure TInvoiceForm.CreditCardEditExit(Sender: TObject);
+begin
+      if DataForm2.InvoiceTableInvClose.Value <> 'Close' then
+      begin
+        if (FromWherePaid <> 'CreditCard') and (FromWherePaid <> 'Double') then
+          CreditCardEdit.Text := '0.00';
+      end;
+end;
+
+procedure TInvoiceForm.ChequesEditExit(Sender: TObject);
+begin
+      if DataForm2.InvoiceTableInvClose.Value <> 'Close' then
+      begin
+        if (FromWherePaid <> 'Cheques') and (FromWherePaid <> 'Double') then
+          ChequesEdit.Text := '0.00';
+      end;
+end;
+
+procedure TInvoiceForm.JvSpeedButton7Click(Sender: TObject);
+begin
+      su := 'False';
+      Edit1.SetFocus;
+end;
+
+procedure TInvoiceForm.JvSpeedButton5Click(Sender: TObject);
+begin
+    if GroupBox4.Visible = False then
+    begin
+      GroupBox4.Visible := True;
+      GroupBox4.BringToFront;
+      Edit2.SetFocus;
+    end
+    else
+    begin
+      GroupBox4.Visible := False;
+      GroupBox4.SendToBack;
+      Edit1.SetFocus;
+    end;
+end;
+
+procedure TInvoiceForm.JvSpeedButton6Click(Sender: TObject);
+begin
+    DataForm2.Query3.Close;
+    with DataForm2.Query3.SQL do begin
+      Clear;
+      Add('Select UserName, Password, Rights from user_db');
+      Add('where UserName = "' + Edit2.Text + '"');
+    end;
+    DataForm2.Query3.Open;
+    If (Dataform2.Query3.FieldByName('UserName').asString = Edit2.Text) and
+       (Dataform2.Query3.FieldByName('Password').AsString = Encrypt(Edit3.text))
+       and (DataForm2.Query3.FieldByName('Rights').asInteger > 4) then
+    begin
+      Dataform2.InvoiceItemTableDiscount.ReadOnly := False;
+      su := 'True';
+      Edit2.Text := '';
+      Edit3.Text := '';
+      GroupBox4.Visible := False;
+      GroupBox4.SendToBack;
+    end
+    else
+    begin
+      showmessage('Wrong Password');
+      su := 'False';
+      Edit2.Text := '';
+      Edit3.Text := '';
+    end;
+    DataForm2.Query3.Close
+end;
+
+procedure TInvoiceForm.CashEditKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+      if (HiWord(GetKeyState(VK_NEXT)) <> 0) then
+      begin
+        FromwherePaid := 'Double';
+      end;
+      FKeysPress;
+end;
+
+procedure TInvoiceForm.CreditCardEditKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+      if (HiWord(GetKeyState(VK_NEXT)) <> 0) then
+      begin
+        FromwherePaid := 'Double';
+      end;
+      FKeysPress;
+end;
+
+procedure TInvoiceForm.EditInvoice1Click(Sender: TObject);
+begin
+      EditButton.Click;
+end;
+
+procedure TInvoiceForm.SaveInvoice1Click(Sender: TObject);
+begin
+      SaveButton.Click;
+end;
+
+procedure TInvoiceForm.UndoInvoiceChanges1Click(Sender: TObject);
+begin
+      UndoButton.Click;
+end;
+
+procedure TInvoiceForm.PrintInvoice1Click(Sender: TObject);
+begin
+      Button1.Click;
+end;
+
+procedure TInvoiceForm.DBEdit1KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit2KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit3KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.InvoiceDateEditKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit10KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit5KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit6KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit9KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit8KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit4KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.ChequesEditKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+//      if (Key = 'd') or (Key = 'D') then
+//      begin
+//        FromwherePaid := 'Double';
+//      end;
+      if (HiWord(GetKeyState(VK_NEXT)) <> 0) then
+      begin
+        FromwherePaid := 'Double';
+      end;
+      FKeysPress;
+end;
+
+procedure TInvoiceForm.DBEdit7KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.Button4KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+      FKeysPress;
+end;
+
+procedure TInvoiceForm.Clearallinvoices1Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 4) then
+      begin
+        if MessageDlg('Are you sure you want to Delete ALL INVOICES including purchase invoices!',
+        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+        begin
+          DataForm2.Query2.Active := False;
+          with DataForm2.Query2.SQL do begin
+                Clear;
+                Add('Delete FROM invoiceitem_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+                Clear;
+                Add('Delete FROM invoice_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          showmessage('Finished with Delete');
+        end;
+      end
+      else
+        showmessage('You don''t have permission to go in here!');
+end;
+
+procedure TInvoiceForm.NewCleanInvoice1Click(Sender: TObject);
+begin
+      Button4.Click;
+end;
+
+procedure TInvoiceForm.InsertButtonClick(Sender: TObject);
+begin
+      Button4.Click;
+end;
+
+procedure TInvoiceForm.FKeysPress();
+begin
+      if HiWord(GetKeyState(vk_f1)) <> 0 then
+      begin
+        if GroupBox1.Visible = True then
+        begin
+          GroupBox1.Visible := False;
+          GroupBox1.SendToBack;
+        end;
+        Edit1.SetFocus;
+        Edit1.SelectAll;
+      end;
+      if HiWord(GetKeyState(vk_f2)) <> 0 then
+      begin
+        SaveButton.Click;
+        CloseInvButton.Click;
+      end;
+      if HiWord(GetKeyState(vk_f3)) <> 0 then
+      begin
+        SaveButton.Click;
+        SearchButton.Click;
+      end;
+      if HiWord(GetKeyState(vk_f4)) <> 0 then
+      begin
+        JvSpeedButton3.Click;
+      end;
+      if HiWord(GetKeyState(vk_f5)) <> 0 then
+      begin
+        DBEdit11.SetFocus;
+      end;
+      if HiWord(GetKeyState(vk_f6)) <> 0 then
+      begin
+        JvBitBtn1.SetFocus;
+        JvBitBtn1.Click;
+      end;
+      if HiWord(GetKeyState(vk_f7)) <> 0 then
+      begin
+        Button4.SetFocus;
+      end;
+      if HiWord(GetKeyState(vk_f8)) <> 0 then
+      begin
+        JvSpeedButton5.Click;
+      end;
+      if HiWord(GetKeyState(vk_f9)) <> 0 then
+      begin
+        JvSpeedButton7.Click;
+      end;
+      if HiWord(GetKeyState(vk_f11)) <> 0 then
+      begin
+        InsertButton.Click;
+      end;
+      if HiWord(GetKeyState(vk_f12)) <> 0 then
+      begin
+        JvSpeedButton4.Click;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit11KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Edit1.SetFocus;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit12KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Edit1.SetFocus;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit13KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Edit1.SetFocus;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit11Enter(Sender: TObject);
+begin
+        DBEdit11.SelectAll;
+end;
+
+procedure TInvoiceForm.PrintA4(Report:TBaseReport);
+var
+    logo: TBitmap;
+begin
+      with report do
+      begin
+        logo := TBitmap.Create;
+        try
+          logo.LoadFromFile(Dataform2.ProgramPath + '\logo.bmp');
+          PrintBitmapRect(0.75,0.50,4,3.25,logo);
+        finally
+        logo.Free;
+        end;
+
+        MarginLeft := 0.250;
+        MarginTop := 0.5;
+        SetFont('Arial',10);
+        Bold := True;
+        UserForm.Memo2.Lines.loadfromfile(Dataform2.ProgramPath + '\client.txt');
+        for count := 0 to UserForm.Memo2.Lines.Count - 1 do
+        begin
+          printLeft(UserForm.Memo2.Lines[count], 4.75);
+          NewLine;
+        end;
+        linecount := 0;
+        printLeft('---------------------------------------------------', 4.75);
+        ClearTabs;
+        SetTab(4.75, pjLeft,1,0,0,0);
+        SetTab(NA, pjLeft,2.5,0,0,0);
+        NewLine;
+        printTab('Name:');
+        PrintTab(DataForm2.InvoiceTable.FieldByName('ClientName').asString);
+        NewLine;
+        NewLine;
+        Bold := False;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientVatNo').asString <> '' then
+        begin
+          printTab('Vat No:');
+          PrintTab(DataForm2.InvoiceTable.Fieldbyname('ClientVatNo').asString);
+          NewLine;
+        end;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr1').asString <> '' then
+        begin
+          printTab('Address:');
+          printTab(DataForm2.InvoiceTable.Fieldbyname('ClientAdr1').asString);
+          NewLine;
+        end;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr2').asString <> '' then
+        begin
+          printTab('');
+          printTab(DataForm2.InvoiceTable.Fieldbyname('ClientAdr2').asString);
+          NewLine;
+        end;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientAdr3').asString <> '' then
+        begin
+          printTab('');
+          printTab(DataForm2.InvoiceTable.Fieldbyname('ClientAdr3').asString + ' ' + DataForm2.InvoiceTable.Fieldbyname('ClientPCode').asString);
+          NewLine;
+        end;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientTelW').asString <> '' then
+        begin
+          printTab('Tel (W):');
+          printTab(DataForm2.InvoiceTable.Fieldbyname('ClientTelW').asString);
+          NewLine;
+        end;
+        if DataForm2.InvoiceTable.Fieldbyname('ClientTelC').asString <> '' then
+        begin
+          printTab('Tel (C):');
+          printTab(DataForm2.InvoiceTable.Fieldbyname('ClientTelC').asString);
+          NewLine;
+        end;
+        NewLine;
+        printTab('Invoice By:');
+        printTab(DataForm2.InvoiceTable.FieldByName('InvBy').asString);
+        NewLine;
+        printTab('Invoice Date:');
+        printTab(IntDatetoString(DataForm2.InvoiceTable.Fieldbyname('InvDate').asInteger));
+        NewLine;
+        printTab('Invoice No:');
+        printTab(InttoStr(DataForm2.InvoiceTable.Fieldbyname('InvNo').asInteger));
+        NewLine;
+        Bold := True;
+        printXY(0.250,3.4,'');
+        NewLine;
+        printCenter('-----------------------------------------------------------------------------------', 4.25);
+        NewLine;
+
+        SetFont('Arial',8);
+
+        ClearTabs;
+        SetTab(0.3, pjCenter,1.5,0,0,0);
+        SetTab(NA, pjCenter,1,0,0,0);
+        SetTab(NA, pjCenter,0.7,0,0,0);
+        SetTab(NA, pjCenter,0.8,0,0,0);
+        SetTab(NA, pjCenter,0.6,0,0,0);
+        SetTab(NA, pjCenter,0.8,0,0,0);
+        SetTab(NA, pjCenter,0.8,0,0,0);
+        SetTab(NA, pjCenter,0.8,0,0,0);
+        SetTab(NA, pjCenter,0.9,0,0,0);
+
+        NewLine;
+        PrintTab('Description');
+        PrintTab('TC Stock No');
+        PrintTab('Quantity');
+        PrintTab('Price');
+        PrintTab('% Disc');
+        PrintTab('Amm Excl');
+        PrintTab('VAT');
+        PrintTab('Amm Incl');
+        PrintTab(DataForm2.IniFile.ReadString('Settings', 'CommentDescr', 'Comment'));
+        Bold := false;
+        ClearTabs;
+        SetTab(0.3, pjLeft,1.5,0,BOXLINEALL,0);
+        SetTab(NA, pjLeft,1,0,BOXLINEALL,0);
+        SetTab(NA, pjRight,0.7,0,BOXLINEALL,0);
+        SetTab(NA, pjRight,0.8,0,BOXLINEALL,0);
+        SetTab(NA, pjRight,0.6,0,BOXLINEALL,0);
+        SetTab(NA, pjRight,0.8,0,BOXLINEALL,0);
+        SetTab(NA, pjRight,0.8,0,BOXLINEALL,0);
+        SetTab(NA, pjRight,0.8,0,BOXLINEALL,0);
+        SetTab(NA, pjRight,0.9,0,BOXLINEALL,0);
+
+        DataForm2.InvoiceItemTable.first;
+        try
+          while not DataForm2.InvoiceItemTable.EOF do
+          begin
+            NewLine;
+            If linecount > DataForm2.IniFile.ReadInteger ('Settings', 'A4InvLineCount', 27) then
+            begin
+              NewPage;
+              NewA4Page(Report);
+            end
+            else
+              Inc(linecount);
+            PrintTab(DataForm2.InvoiceItemTable.Fieldbyname('Description').asString);
+            PrintTab(DataForm2.InvoiceItemTableTCStockNo.Value);
+            PrintTab(Floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat,ffFixed,17,2));
+            PrintTab(floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Price').asFloat,ffFixed,17,2));
+            PrintTab(floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Discount').asFloat,ffFixed,17,2));
+            PrintTab(Floattostrf((Dataform2.InvoiceItemTable.Fieldbyname('Price').asFloat * Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat) * 100 / 114,ffFixed,17,2));
+            PrintTab(Floattostrf((Dataform2.InvoiceItemTable.Fieldbyname('Price').asFloat * Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat) * 14 / 114,ffFixed,17,2));
+            PrintTab(Floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Price').asFloat * Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat,ffFixed,17,2));
+            PrintTab(Dataform2.InvoiceItemTableComment.Value);
+            DataForm2.InvoiceItemTable.Next;
+          end;
+        finally
+        end;
+
+        SetFont('Arial',10);
+
+        If Dataform2.InvoiceTableInvoiceType.Value = 'LayBuy' then
+        begin
+          NewLine;
+          If linecount > DataForm2.IniFile.ReadInteger ('Settings', 'A4InvLineCount', 27) then
+          begin
+            NewPage;
+            NewA4Page(Report);
+          end
+          else
+            Inc(linecount);
+          ClearTabs;
+          SetTab(0.3, pjCenter,2,0,0,0);
+          SetTab(NA, pjCenter,0.9,0,0,0);
+          SetTab(NA, pjCenter,0.9,0,0,0);
+          SetTab(NA, pjCenter,0.9,0,0,0);
+
+          NewLine;
+          If linecount > DataForm2.IniFile.ReadInteger ('Settings', 'A4InvLineCount', 27) then
+          begin
+            NewPage;
+            NewA4Page(Report);
+          end
+          else
+            Inc(linecount);
+          PrintTab('Description');
+          PrintTab('Date');
+          PrintTab('Amount');
+          PrintTab('Nr');
+
+          ClearTabs;
+          SetTab(0.3, pjLeft,2,0,BOXLINEALL,0);
+          SetTab(NA, pjLeft,0.9,0,BOXLINEALL,0);
+          SetTab(NA, pjRight,0.9,0,BOXLINEALL,0);
+          SetTab(NA, pjRight,0.9,0,BOXLINEALL,0);
+
+          If FromWhereStatement <> 'LayBuy' then
+          begin
+            Dataform2.TransQuery.Close;
+            with Dataform2.TransQuery.SQL do begin
+              Clear;
+              Add('Select * from trans_db');
+              Add('where LinkID = ' + InttoStr(Dataform2.InvoiceTable.FieldByName('InvNo').asInteger));
+            end;
+            DataForm2.TransQuery.Open;
+          end;
+          DataForm2.TransQuery.first;
+          try
+            while not DataForm2.TransQuery.EOF do
+            begin
+              NewLine;
+              If linecount > DataForm2.IniFile.ReadInteger ('Settings', 'A4InvLineCount', 27) then
+              begin
+                NewPage;
+                NewA4Page(Report);
+              end
+              else
+                Inc(linecount);
+
+              PrintTab(DataForm2.TransQuery.Fieldbyname('Description').asString);
+              PrintTab(IntDatetoString(Dataform2.TransQuery.Fieldbyname('Date').asInteger));
+              PrintTab(floattostrf(Dataform2.TransQuery.Fieldbyname('Ammount').asFloat,ffFixed,17,2));
+              PrintTab(InttoStr(Dataform2.TransQuery.Fieldbyname('Nr').asInteger));
+
+              DataForm2.TransQuery.Next;
+            end;
+          finally
+          end;
+          If FromWhereStatement <> 'LayBuy' then
+            Dataform2.TransQuery.Close;
+        end;
+
+        Dataform2.Query3.Close;
+        with DataForm2.Query3.SQL do begin
+          Clear;
+          Add('SELECT SUM(Price * Qty - (Price * Qty * (Discount / 100))) as Total FROM invoiceitem_db');
+          Add('where LinkId = ' + inttostr(Dataform2.InvoiceTable.Fieldbyname('Nr').asInteger));
+        end;
+        Dataform2.Query3.Open;
+        NewLine;
+        NewLine;
+        Bold := True;
+        printXY(0.250,DataForm2.IniFile.ReadFloat ('Settings', 'A4InvBottomStart', 8.5),'');
+        NewLine;
+        printCenter('-----------------------------------------------------------------------------------', 4.25);
+        NewLine;
+        If (Dataform2.InvoiceTableGLDebNo.Value = DataForm2.IniFile.ReadString ('TCSetup', 'TCCashDebNo', '')) then
+        begin
+          printLeft('Invoice Total: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat,ffCurrency,17,2) + '   VAT: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat * 14 / 114 ,ffCurrency,17,2), 0.5);
+          printLeft('Invoice Accepted', 5.25);
+          NewLine;
+          If (Dataform2.InvoiceTableInvoiceType.Value <> 'LayBuy') then
+          begin
+            printLeft('Cash Tendered: ' + Floattostrf(AmmTendered + AmmTendered2,ffCurrency,17,2), 0.5);
+            NewLine;
+            printLeft('Change: ' + Floattostrf((Dataform2.InvoiceTableAmmTendered.Value + Dataform2.InvoiceTablePremium.Value) - TotalStr,ffCurrency,17,2), 0.5);
+          end
+          else
+          begin
+            DataForm2.Query2.Close;
+            with DataForm2.Query2.SQL do begin
+              Clear;
+              Add('SELECT Sum(Ammount) as Total FROM trans_db');
+              Add('where LinkID = ' + InttoStr(Dataform2.InvoiceTable.FieldByName('InvNo').asInteger));
+            end;
+            Dataform2.Query2.Open;
+
+            printLeft('Payed: ' + Floattostrf(Dataform2.Query2.FieldByName('Total').asFloat,ffCurrency,17,2), 0.5);
+            NewLine;
+            printLeft('Owing: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat - Dataform2.Query2.FieldByName('Total').asFloat,ffCurrency,17,2), 0.5);
+          end;
+        end
+        else
+        begin
+          printLeft('Debtor Invoice Total: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat,ffCurrency,17,2) + '   VAT: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat * 14 / 114 ,ffCurrency,17,2), 0.5);
+          printLeft('Invoice Accepted', 5.25);
+          NewLine;
+          If Dataform2.InvoiceTableAmmTendered.Value <> 0 then
+          begin
+            printLeft('Payed: ' + Floattostrf(Dataform2.InvoiceTableAmmTendered.Value,ffCurrency,17,2), 0.5);
+            NewLine;
+            If (Dataform2.InvoiceTableAmmTendered.Value + Dataform2.InvoiceTablePremium.Value) > Dataform2.InvoiceTableInvTotal.Value then
+            begin
+              printLeft('Change: ' + Floattostrf((Dataform2.InvoiceTableAmmTendered.Value + Dataform2.InvoiceTablePremium.Value) - TotalStr,ffCurrency,17,2), 0.5);
+            end
+            else
+            begin
+              printLeft('Owing: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asFloat - (Dataform2.InvoiceTableAmmTendered.Value + Dataform2.InvoiceTablePremium.Value),ffCurrency,17,2), 0.5);
+            end;
+          end;
+          NewLine;
+        end;
+        printLeft('Name:',5.25);
+        printLeft('_____________________',6.25);
+        NewLine;
+        printLeft('Date:',5.25);
+        printLeft('_____________________',6.25);
+        NewLine;
+        NewLine;
+        printLeft('Signature:',5.25);
+        printLeft('_____________________',6.25);
+        NewLine;
+        NewLine;
+        SetFont('Arial',DataForm2.IniFile.ReadInteger ('Settings', 'FooterFontSize', 10));
+        UserForm.Memo3.Lines.loadfromfile(Dataform2.ProgramPath + '\footer.txt');
+        for count := 0 to UserForm.Memo3.Lines.Count - 1 do
+        begin
+          printLeft(UserForm.Memo3.Lines[count], 0.5);
+          NewLine;
+        end;
+        Bold := False;
+        DataForm2.Query3.Close;
+      end;
+end;
+
+procedure TInvoiceForm.NewA4Page(Report:TBaseReport);
+begin
+      with report do
+      begin
+        UserForm.Memo2.Lines.loadfromfile(Dataform2.ProgramPath + '\client.txt');
+        for count := 0 to UserForm.Memo2.Lines.Count - 1 do
+        begin
+          printLeft(UserForm.Memo2.Lines[count], 4.75);
+          NewLine;
+        end;
+        printXY(0.250,3.75,'');
+        NewLine;
+        printCenter('-----------------------------------------------------------------------------------', 4.25);
+        NewLine;
+        linecount := 0;
+      end;
+end;
+
+procedure TInvoiceForm.OtherEditEnter(Sender: TObject);
+begin
+      if (FromWherePaid <> 'Double') then
+      begin
+        if (DataForm2.InvoiceTableInvClose.Value <> 'Close') and (Dataform2.InvoiceTableGLDebNo.Value = DataForm2.IniFile.ReadString ('TCSetup', 'TCCashDebNo', '')) then
+          OtherEdit.Text := Floattostrf(TotalStr,ffFixed,17,2);
+        FromWherePaid := '';
+        OtherEdit.SelectAll;
+      end;
+end;
+
+procedure TInvoiceForm.OtherEditExit(Sender: TObject);
+begin
+      if DataForm2.InvoiceTableInvClose.Value <> 'Close' then
+      begin
+        if (FromWherePaid <> Label22.Caption) and (FromWherePaid <> 'Double') then
+          OtherEdit.Text := '0.00';
+      end;
+end;
+
+procedure TInvoiceForm.OtherEditKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+//      if (Key = 'd') or (Key = 'D') then
+//      begin
+//        FromwherePaid := 'Double';
+//      end;
+
+      if (HiWord(GetKeyState(VK_NEXT)) <> 0) then
+      begin
+        FromwherePaid := 'Double';
+      end;
+      FKeysPress;
+end;
+
+procedure TInvoiceForm.OtherEditKeyPress(Sender: TObject; var Key: Char);
+begin
+      if (Key = #13) and (FromWherePaid <> 'Double') then
+      begin
+        AmmTendered := OtherEdit.Value;
+        AmmTendered2 := 0.00;
+        FromWherePaid := Label22.Caption;
+        Change.Caption := 'Change ' + Floattostrf(AmmTendered - TotalStr,ffCurrency,17,2);
+        Button1.Click;
+      end;
+      if (Key = #13) and (FromWherePaid = 'Double') then
+      begin
+        CheckDouble;
+        Button1.Click;
+      end;
+end;
+
+procedure TInvoiceForm.DBEdit14KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        Button2.Click;
+      end;
+end;
+
+procedure TInvoiceForm.JvBitBtn1Click(Sender: TObject);
+begin
+    If DataForm2.InvoiceTable.FieldByName('Invclose').asString <> 'Close' then
+    begin
+      if MessageDlg('Are you sure you want to convert to a lay buy account', mtConfirmation,
+      [mbYes, mbNo], 0) = mrYes then
+      begin
+        if Dataform2.InvoiceItemTable.RecordCount <> 0 then
+        begin
+          Application.CreateForm(TLayBuyForm, LayBuyForm);
+          LayBuyform.FromWhere := 'POS';
+          LayBuyForm.Label13.Caption := Floattostrf(TotalStr,ffCurrency,17,2);
+          LayBuyForm.Label16.Caption := '';
+          LayBuyForm.Edit2.Text := Inttostr(DataForm2.IniFile.ReadInteger('LayBuySetup', 'Term', 0));
+          LayBuyForm.Edit1.text := Floattostr(MyRoundTo(TotalStr * DataForm2.IniFile.ReadFloat ('LayBuySetup', 'Deposit', 0.0) / 100, -2));
+          Button4.SetFocus;
+          LayBuyform.showmodal;
+        end
+        else
+          showmessage('Add Products First!');
+      end;
+    end
+    else
+      showmessage('Invoice already closed!');
+end;
+
+procedure TInvoiceForm.JvDBGrid1DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+var
+  Persentage: String;
+begin
+     //  Rooi as gecancel.
+      If DataForm2.IniFile.ReadInteger('Settings', 'MinimumMarkup', 0) <> 0 then
+      begin
+        If DataForm2.IniFile.ReadInteger('Settings', 'MinimumMarkup', 0) < 10 then
+          Persentage := '1.0' + DataForm2.IniFile.ReadString ('Settings', 'MinimumMarkup', '')
+        else
+        begin
+          If DataForm2.IniFile.ReadInteger('Settings', 'MinimumMarkup', 0) > 99 then
+            Persentage := '2.' + copy(DataForm2.IniFile.ReadString ('Settings', 'MinimumMarkup', ''),2,2)
+          else
+            Persentage := '1.' + DataForm2.IniFile.ReadString ('Settings', 'MinimumMarkup', '');
+        end;
+        If Dataform2.InvoiceItemTablePrice.Value < (Dataform2.InvoiceItemTableCostPrice.Value * StrtoFloat(Persentage)) then
+        begin
+          JvDBGrid1.Canvas.Font.Color := clRed;
+        end;
+      end;
+
+      if StrtoBool(DataForm2.IniFile.ReadString ('Settings', 'NegQty', '0')) = true then
+      begin
+        DataForm2.Query2.Close;
+        with DataForm2.Query2.SQL do begin
+          Clear;
+          Add('Select Qty from stock_db');
+          Add('where Nr = ' + InttoStr(DataForm2.InvoiceItemTable.FieldByName('StockNo').asInteger));
+        end;
+        Dataform2.Query2.Open;
+        If DataForm2.InvoiceItemTableQty.Value > DataForm2.Query2.FieldByName('Qty').asInteger  then
+        begin
+          JvDBGrid1.Canvas.Font.Color := clGreen;
+        end;
+        Dataform2.Query2.Close;
+      end;
+     // Default drawing.
+        JvDBGrid1.DefaultDrawDataCell(Rect, Column.Field,State);
+end;
+
+procedure TInvoiceForm.CheckDouble();
+begin
+  //
+  //  C=Cash, R=CreditCard, H=Cheque, O=Other
+  //
+    If FromWherePaid = 'Double' then
+    begin
+      If (CashEdit.Value > 0) and (CreditCardEdit.Value > 0) then
+      begin
+        FromWherePaid := 'DoubleCR';
+        AmmTendered := CashEdit.Value;
+        AmmTendered2 := CreditCardEdit.Value;
+      end
+      else
+      begin
+        If (CashEdit.Value > 0) and (ChequesEdit.Value > 0) then
+        begin
+          FromWherePaid := 'DoubleCH';
+          AmmTendered := CashEdit.Value;
+          AmmTendered2 := ChequesEdit.Value;
+        end
+        else
+        begin
+          If (CashEdit.Value > 0) and (OtherEdit.Value > 0) then
+          begin
+            FromWherePaid := 'DoubleCO';
+            AmmTendered := CashEdit.Value;
+            AmmTendered2 := OtherEdit.Value;
+          end
+          else
+          begin
+            If (CreditCardEdit.Value > 0) and (ChequesEdit.Value > 0) then
+            begin
+              FromWherePaid := 'DoubleRH';
+              AmmTendered := CreditCardEdit.Value;
+              AmmTendered2 := ChequesEdit.Value;
+            end
+            else
+            begin
+              If (CreditCardEdit.Value > 0) and (OtherEdit.Value > 0) then
+              begin
+                FromWherePaid := 'DoubleRO';
+                AmmTendered := CreditCardEdit.Value;
+                AmmTendered2 := OtherEdit.Value;
+              end
+              else
+              begin
+                If (ChequesEdit.Value > 0) and (OtherEdit.Value > 0) then
+                begin
+                  FromWherePaid := 'DoubleHO';
+                  AmmTendered := ChequesEdit.Value;
+                  AmmTendered2 := OtherEdit.Value;
+                end;
+              end;
+            end;
+          end;
+        end;
+      end;
+    end;
+end;
+
+procedure TInvoiceForm.JvSpeedButton8Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 2) then
+      begin
+        if (DataForm2.InvoiceTableInvClose.Value <> 'Close') then
+        begin
+          Userform.AccTypeID := 1;
+          UserForm.AccFromWhere := 'InvDebAcc';
+          UserForm.AccountShow;
+        end
+        else
+          showMessage('Invoice already closed!');
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TInvoiceForm.Button4Click(Sender: TObject);
+begin
+        SaveButton.Click;
+        If DataForm2.InvoiceSource.Enabled = False then
+        begin
+          Dataform2.InvoiceSource.Enabled := True;
+          DataForm2.InvoiceItemSource.Enabled := True;
+        end;
+        DataForm2.InvoiceTable.Insert;
+        DataForm2.InvoiceTable.FieldByName('InvDate').AsInteger := datetoIntDate(date);
+        DataForm2.InvoiceTable.FieldByName('ClientName').AsString := 'Cash';
+        DataForm2.InvoiceTable.FieldByName('GLDebNo').asString := DataForm2.IniFile.ReadString ('TCSetup', 'TCCashDebNo', '');
+        DataForm2.InvoiceTable.FieldByName('InvBy').asString := Dataform2.User_db.Fieldbyname('UserName').asString;
+        DataForm2.InvoiceTable.FieldByName('InvClose').asString := 'Open';
+        Dataform2.InvoiceTableBranchNo.Value := DataForm2.IniFile.ReadInteger('BranchSetup', 'BranchNo', 0);
+        DataForm2.InvoiceTableShiftSet.Value := '';
+        DescDisp.Caption := '';
+        Change.Caption := 'Change R 0.00';
+        Total.Caption := 'Total R 0.00';
+        VAT.Caption := 'VAT: R 0.00';
+        CashEdit.Text := '0.00';
+        CreditCardEdit.Text := '0.00';
+        ChequesEdit.Text := '0.00';
+        OtherEdit.Text := '0.00';
+        su := 'False';
+        AmmTendered := 0;
+        AmmTendered2 := 0;
+        ShowDates;
+        Edit1.SetFocus;
+end;
+
+procedure TInvoiceForm.Button1Click(Sender: TObject);
+var
+  MSContinue, Persentage: String;
+begin
+      MSContinue := 'True';
+
+//      If TotalStr = 0 then
+//      begin
+//        Refreshtotal;
+//        If TotalStr = 0 then
+//        begin
+//          showmessage('The Invoice Total is Zero try doing payment again!');
+//          MSContinue := 'False';
+//        end;
+//      end;
+
+      If DataForm2.IniFile.ReadInteger ('Settings', 'MinimumMarkup', 0) <> 0 then
+      begin
+        If DataForm2.IniFile.ReadInteger ('Settings', 'MinimumMarkup', 0) < 10 then
+          Persentage := '1.0' + DataForm2.IniFile.ReadString('Settings', 'MinimumMarkup', '')
+        else
+        begin
+          If DataForm2.IniFile.ReadInteger('Settings', 'MinimumMarkup', 0) > 99 then
+            Persentage := '2.' + copy(DataForm2.IniFile.ReadString('Settings', 'MinimumMarkup', ''),2,2)
+          else
+            Persentage := '1.' + DataForm2.IniFile.ReadString ('Settings', 'MinimumMarkup', '');
+        end;
+        DataForm2.InvoiceItemTable.DisableControls;
+        DataForm2.InvoiceItemTable.First;
+        while not DataForm2.InvoiceItemTable.EOF do
+        begin
+          If Dataform2.InvoiceItemTablePrice.Value < (Dataform2.InvoiceItemTableCostPrice.Value * StrtoFloat(Persentage)) then
+          begin
+            showmessage('One Item is below Minimum Sales Price Fix Item!');
+            MSContinue := 'False';
+            break;
+          end;
+          DataForm2.InvoiceItemTable.Next;
+        end;
+        Dataform2.InvoiceItemTable.EnableControls;
+      end;
+
+      if StrtoBool(DataForm2.IniFile.ReadString ('Settings', 'NegQty', '0')) = true then
+      begin
+        DataForm2.InvoiceItemTable.DisableControls;
+        DataForm2.InvoiceItemTable.First;
+        while not DataForm2.InvoiceItemTable.EOF do
+        begin
+          DataForm2.Query2.Close;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('Select Qty from stock_db');
+            Add('where Nr = ' + InttoStr(DataForm2.InvoiceItemTable.FieldByName('StockNo').asInteger));
+          end;
+          Dataform2.Query2.Open;
+          If (DataForm2.InvoiceItemTableQty.Value > DataForm2.Query2.FieldByName('Qty').asInteger) and (DataForm2.User_db.FieldByName('Rights').asInteger < 5) and (su <> 'True')  then
+          begin
+            showmessage('Trying to sell a zero Qty Stock Item!');
+            MSContinue := 'False';
+            break;
+          end;
+          DataForm2.InvoiceItemTable.Next;
+        end;
+        Dataform2.InvoiceItemTable.EnableControls;
+      end;
+
+      If MSContinue <> 'False' then
+      begin
+        If (FromWherePaid = '') then
+        begin
+          Showmessage('No Ammount Added press "ENTER" on payment!');
+          CashEdit.SetFocus;
+        end
+        else
+          CloseInvPros;
+      end
+      else
+        JvDBGrid1.SetFocus;
+end;
+
+procedure TInvoiceForm.JvSpeedButton9Click(Sender: TObject);
+begin
+      if DataForm2.User_db.FieldByName('Rights').asInteger > 2 then
+      begin
+        Application.CreateForm(TBarcodePrintingForm, BarcodePrintingForm);
+        BarCodePrintingForm.Fromwhere := 'InvItem';
+        BarcodePrintingForm.showmodal;
+      end
+      else
+        showmessage('You don''t have permission to go in here!');
+end;
+
+procedure TInvoiceForm.DBEdit10Exit(Sender: TObject);
+begin
+      SaveButton.Click;
+end;
+
+procedure TInvoiceForm.WriteCloseInfo();
+begin
+          If (Dataform2.InvoiceTableGLDebNo.Value = DataForm2.IniFile.ReadString ('TCSetup', 'TCCashDebNo', '')) or
+             (AmmTendered + AmmTendered2 > TotalStr) then
+            Change.Caption := 'Change ' + Floattostrf((AmmTendered + AmmTendered2) - TotalStr,ffCurrency,17,2)
+          else
+            Change.Caption := '';
+          If (DataForm2.InvoiceTable.FieldByName('Invclose').asString <> 'Close') and (DataForm2.InvoiceTable.FieldByName('Invclose').asString <> 'LaybC')
+             and (DataForm2.InvoiceTable.FieldByName('Invclose').asString <> 'LaybO') then
+          begin
+            DataForm2.InvoiceTable.Edit;
+            DataForm2.Query2.Close;
+            with DataForm2.Query2.SQL do begin
+              Clear;
+              Add('SELECT MAX(InvNo) FROM invoice_db');
+              Add('where InvClose = "Close" or InvClose = "LaybC" or InvClose = "LaybO"');
+            end;
+            DataForm2.Query2.Open;
+            Dataform2.GlobalTable.Refresh;
+            Dataform2.GlobalTable.Edit;
+            If DataForm2.GlobalTableInvNo.Value < DataForm2.Query2.FieldByName('MAX(InvNo)').asInteger then
+              DataForm2.GlobalTableInvNo.Value := DataForm2.Query2.FieldByName('MAX(InvNo)').asInteger;
+//              DataForm2.IniFile.WriteInteger('Invoice', 'InvNo', DataForm2.Query2.FieldByName('MAX(InvNo)').asInteger + 1);
+            Dataform2.InvoiceTable.FieldByName('InvNo').asInteger := DataForm2.GlobalTableInvNo.Value + 1;
+            DataForm2.GlobalTableInvNo.Value := Dataform2.InvoiceTable.FieldByName('InvNo').asInteger;
+            Dataform2.GlobalTable.Post;
+
+//            Dataform2.InvoiceTable.FieldByName('InvNo').asInteger := DataForm2.IniFile.ReadInteger('Invoice', 'InvNo', 0) + 1;
+//            DataForm2.IniFile.WriteInteger('Invoice', 'InvNo', DataForm2.InvoiceTable.Fieldbyname('InvNo').asInteger);
+            Dataform2.Query2.Close;
+            DataForm2.InvoiceTable.FieldByName('Invclose').asString := 'Close';
+            DataForm2.InvoiceTable.FieldByName('InvTotal').asfloat := TotalStr;
+            DataForm2.InvoiceTable.FieldByName('AmmTendered').asfloat := AmmTendered;
+            Dataform2.InvoiceTable.FieldByName('Premium').asfloat := AmmTendered2;
+            DataForm2.InvoiceTable.FieldByName('InvoiceType').asString := FromWherePaid;
+            SaveButton.Click;
+            QtyCountDown;
+          end;
+end;
+
+procedure TInvoiceForm.JvSpeedButton10Click(Sender: TObject);
+begin
+    if GroupBox6.Visible = False then
+    begin
+      GroupBox6.Visible := True;
+      GroupBox6.BringToFront;
+      FindInvEdit.SetFocus;
+    end
+    else
+    begin
+      GroupBox6.Visible := False;
+      GroupBox6.SendToBack;
+      Edit1.SetFocus;
+    end;
+end;
+
+procedure TInvoiceForm.JvBitBtn3Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 3) or (su = 'True') then
+      begin
+        if DataForm2.InvoiceSource.Enabled = False then
+        begin
+          Dataform2.InvoiceSource.Enabled := True;
+          Dataform2.InvoiceItemSource.Enabled := True;
+        end;
+        Dataform2.InvoiceItemTable.Close;
+        If not Dataform2.InvoiceTable.Locate('InvNo;BranchNo',VarArrayOf([FindInvEdit.Text,JvSpinEdit1.Text]),[loPartialKey, loCaseInsensitive]) then
+          Dataform2.InvoiceTable.Locate('InvNo',FindInvEdit.Text,[loPartialKey, loCaseInsensitive]);
+        Dataform2.InvoiceItemTable.Open;
+        ShowDates();
+        RefreshTotal;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TInvoiceForm.MarkCurrentInvoicenotendofShifted1Click(
+  Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 4) or (su = 'True') then
+      begin
+        if MessageDlg('Are you sure you want to Mark Current invoice as not end of shifted!',
+        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+        begin
+          If DataForm2.InvoiceTableShiftSet.Value <> '' then
+          begin
+            Dataform2.InvoiceTable.Edit;
+            Dataform2.InvoiceTableShiftSet.Value := '';
+            SaveButton.Click;
+          end
+          else
+            showmessage('Invoice are already marked not end of shifted, run end of shift again or call support!');
+          Button4.SetFocus;
+        end;
+      end
+      else
+        showmessage('You don''t have permission to go in here!');
+end;
+
+procedure TInvoiceForm.Edit3KeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+      begin
+        JvSpeedButton6.Click;
+      end;
+end;
+
+procedure TInvoiceForm.UndoButtonClick(Sender: TObject);
+begin
+        DataForm2.InvoiceItemTable.Cancel;
+        Dataform2.InvoiceTable.Cancel;
+        ShowDates;
+end;
+
+function TInvoiceForm.OpenLayBuyQty(TCStockNo:String): extended;
+begin
+        Dataform2.Query4.Close;
+        with Dataform2.Query4.SQL do
+        begin
+          Clear;
+          Add('SELECT invoiceitem_db.TCStockNo, SUM(invoiceitem_db.Qty) as Total, invoice_db.Invclose');
+          Add('from invoice_db, invoiceitem_db');
+          Add('where invoice_db.Nr = invoiceitem_db.LinkID');
+          Add('and InvClose = ''LaybO''');
+          Add('and TCStockNo = ''' + TCStockNo + '''');
+          Add('Group By invoiceitem_db.Nr');
+        end;
+        Dataform2.Query4.Open;
+        OpenLayBuyQty := Dataform2.Query4.Fieldbyname('Total').asFloat;
+        Dataform2.Query4.Close;
+end;
+
+procedure TInvoiceForm.WMSysCommand(var Message: TWMSysCommand);
+begin
+  if (Message.CmdType and $FFF0 = SC_MINIMIZE)
+    then SendMessage(Application.Handle,
+                     Message.Msg,
+                     TMessage(Message).WParam,
+                     TMessage(Message).WParam)
+    else inherited;
+end;
+
+procedure TInvoiceForm.SaveInvoiceItems();
+var
+    InsertStr: Boolean;
+begin
+        if (DataForm2.InvoiceItemTablestrState = 'Edit') or (DataForm2.InvoiceItemTablestrState = 'Insert') then
+        begin
+//          if (DataForm2.InvoiceItemTablestrState = 'Insert') then
+//            InsertStr := True
+//          else
+//            InsertStr := False;
+          try
+            DataForm2.InvoiceItemTable.Post;
+          except
+            on E : Exception do
+              showmessage(E.Message);
+          end;
+//          If InsertStr = True then
+//            DataForm2.InvoiceItemTable.Refresh
+//          else
+//            Dataform2.InvoiceItemTable.Resync([rmExact]);
+        end;
+end;
+
+procedure TInvoiceForm.OpenInvoices();
+var
+      thirtyDays: String;
+begin
+      If (Dataform2.User_dbRights.Value > 3) and (not StrtoBool(DataForm2.IniFile.ReadString ('Settings', 'CurrentUser', '0'))) then
+        Userstr := ''
+      else
+        Userstr := 'and InvBy = "' + Dataform2.User_dbUserName.Value + '"';
+      If ShowmoreInvoicesthan30days1.Checked = False then
+        thirtyDays := 'and InvDate > ' + inttostr(datetointdate(StartoftheMonth(date)))
+      else
+        thirtyDays := '';
+      Dataform2.InvoiceItemTable.Close;
+      Dataform2.InvoiceTable.Close;
+      with Dataform2.InvoiceTable.SQL do
+      begin
+        Clear;
+        Add('select * from invoice_db');
+        Add('where ((InvClose=''Open'') or (InvClose=''Close'') or (InvClose=''LaybO'') or (InvClose=''LaybC''))');
+        Add(thirtyDays);
+        Add(Userstr);
+      end;
+      Dataform2.InvoiceTable.Open;
+      DataForm2.InvoiceTable.Last;
+      Dataform2.InvoiceItemTable.Open;
+end;
+
+procedure TInvoiceForm.ShowmoreInvoicesthan30days1Click(Sender: TObject);
+begin
+      OpenInvoices();
+      ShowDates;
+end;
+
+procedure TInvoiceForm.InvoiceDetailOpen();
+begin
+      DBEdit1.ReadOnly := False;
+      DBEdit2.ReadOnly := False;
+      DBEdit3.ReadOnly := False;
+      DBEdit4.ReadOnly := False;
+      DBEdit5.ReadOnly := False;
+      DBEdit6.ReadOnly := False;
+      DBEdit7.ReadOnly := False;
+      DBEdit8.ReadOnly := False;
+      DBEdit9.ReadOnly := False;
+      DBEdit10.ReadOnly := False;
+      DBEdit11.ReadOnly := False;
+      DBEdit12.ReadOnly := False;
+      DBEdit13.ReadOnly := False;
+      DBEdit14.ReadOnly := False;
+      DBEdit15.ReadOnly := False;
+      InvoiceDateEdit.Enabled := True;
+end;
+
+procedure TInvoiceForm.InvoiceDetailClose();
+begin
+      DBEdit1.ReadOnly := True;
+      DBEdit2.ReadOnly := True;
+      DBEdit3.ReadOnly := True;
+      DBEdit4.ReadOnly := True;
+      DBEdit5.ReadOnly := True;
+      DBEdit6.ReadOnly := True;
+      DBEdit7.ReadOnly := True;
+      DBEdit8.ReadOnly := True;
+      DBEdit9.ReadOnly := True;
+      DBEdit10.ReadOnly := True;
+      DBEdit11.ReadOnly := True;
+      DBEdit12.ReadOnly := True;
+      DBEdit13.ReadOnly := True;
+      DBEdit14.ReadOnly := True;
+      DBEdit15.ReadOnly := True;
+      InvoiceDateEdit.Enabled := False;
+end;
+
+
+end.

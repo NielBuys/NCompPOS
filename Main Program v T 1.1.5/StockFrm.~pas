@@ -1,0 +1,764 @@
+unit StockFrm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, JvExExtCtrls, JvComponent, JvSpeedbar, JvTabBar,
+  ComCtrls, JvExComCtrls, JvComCtrls, Menus, StdCtrls, Buttons, Grids,
+  DBGrids, JvExDBGrids, JvDBGrid, Mask, DBCtrls, JvExControls,
+  JvSpeedButton, RpDefine, RpRave, RpBase, RpSystem, RpRender,
+  RpRenderCanvas, RpRenderPrinter, db, JvComponentBase, JvFormAutoSize,
+  JvExtComponent, UtilsUnit, JvExButtons, JvBitBtn, TCUtilsFrm;
+
+type
+  TStockForm = class(TForm)
+    MainMenu1: TMainMenu;
+    File1: TMenuItem;
+    JvDBGrid1: TJvDBGrid;
+    JvPageControl1: TJvPageControl;
+    TabSheet1: TTabSheet;
+    DBText1: TDBText;
+    DBEdit1: TDBEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    DBEdit2: TDBEdit;
+    Label3: TLabel;
+    DBEdit3: TDBEdit;
+    DBEdit4: TDBEdit;
+    Label4: TLabel;
+    Label5: TLabel;
+    DBEdit5: TDBEdit;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    JvSpeedBar1: TJvSpeedBar;
+    JvSpeedButton1: TJvSpeedButton;
+    SaveButton: TJvSpeedButton;
+    EditButton: TJvSpeedButton;
+    InsertButton: TJvSpeedButton;
+    DBEdit6: TDBEdit;
+    Label6: TLabel;
+    DBCheckBox1: TDBCheckBox;
+    Label7: TLabel;
+    DBEdit7: TDBEdit;
+    DeleteStockItem1: TMenuItem;
+    Label8: TLabel;
+    DBText2: TDBText;
+    ClearAllStock1: TMenuItem;
+    JvSpeedButton2: TJvSpeedButton;
+    RvProject1: TRvProject;
+    CheckBox1: TCheckBox;
+    FullBarcodeList1: TMenuItem;
+    RvSystem1: TRvSystem;
+    DBText3: TDBText;
+    DBText4: TDBText;
+    Label9: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    DBEdit8: TDBEdit;
+    Label12: TLabel;
+    Label13: TLabel;
+    DBEdit9: TDBEdit;
+    DBEdit10: TDBEdit;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    JvFormAutoSize1: TJvFormAutoSize;
+    ClearallHQStock1: TMenuItem;
+    JvBitBtn1: TJvBitBtn;
+    JvBitBtn2: TJvBitBtn;
+    ImportStock1: TMenuItem;
+    ImportStock2: TMenuItem;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure JvSpeedButton1Click(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormShow(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure SaveButtonClick(Sender: TObject);
+    procedure EditButtonClick(Sender: TObject);
+    procedure InsertButtonClick(Sender: TObject);
+    procedure DeleteStockItem1Click(Sender: TObject);
+    procedure ClearAllStock1Click(Sender: TObject);
+    procedure JvSpeedButton2Click(Sender: TObject);
+    procedure FullBarcodeList1Click(Sender: TObject);
+    procedure JvDBGrid1TitleBtnClick(Sender: TObject; ACol: Integer;
+      Field: TField);
+    procedure JvDBGrid1MouseWheelDown(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure JvDBGrid1MouseWheelUp(Sender: TObject; Shift: TShiftState;
+      MousePos: TPoint; var Handled: Boolean);
+    procedure JvDBGrid1KeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure JvDBGrid1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure JvDBGrid1CellClick(Column: TColumn);
+    procedure JvDBGrid1DblClick(Sender: TObject);
+    function BranchQTY(StockNoStr: Integer): extended;
+    procedure ClearallHQStock1Click(Sender: TObject);
+    procedure JvBitBtn2Click(Sender: TObject);
+    procedure ImportStock2Click(Sender: TObject);
+  private
+    function ConvertBarChar(S:String): Integer;
+    function BarCodeCheck(i: integer): String;
+    procedure StockDetailclose;
+    procedure StockDetailopen;
+    procedure StockOpen;
+    { Private declarations }
+  public
+    { Public declarations }
+    StockOrder: String;
+  end;
+
+var
+  StockForm: TStockForm;
+
+implementation
+    uses DataFrm2, StockSearchFrm, UserFrm, BarcodePrintingFrm, TCDataMod;
+
+{$R *.dfm}
+
+procedure TStockForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+      Dataform2.StockTable.Close;
+      StockForm.FreeOnRelease;
+end;
+
+procedure TStockForm.Button1Click(Sender: TObject);
+begin
+        SaveButton.Click;
+end;
+
+procedure TStockForm.Button2Click(Sender: TObject);
+begin
+        EditButton.Click;
+end;
+
+procedure TStockForm.Button3Click(Sender: TObject);
+begin
+        InsertButton.Click;
+end;
+
+
+procedure TStockForm.JvSpeedButton1Click(Sender: TObject);
+begin
+        DataForm2.StockTable.Cancel;
+        StockDetailclose();
+end;
+
+procedure TStockForm.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+      if (DataForm2.StockTablestrState = 'Edit') or (DataForm2.StockTablestrState = 'Insert') then
+      begin
+        if MessageDlg('Do you want to exit without saving?',
+        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+        begin
+          DataForm2.StockTable.Cancel;
+        end
+        else
+          CanClose := False;
+      end;
+end;
+
+procedure TStockForm.FormShow(Sender: TObject);
+begin
+      JvFormAutoSize1.Active := True;
+      StockOrder := 'Description';
+      StockOpen;
+      StockForm.Width := Screen.Width;
+//      JvDBGrid1.Width := Screen.Width - 35;
+//      BitBtn1.Left := Screen.Width - 150;
+      if DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '') = '' then
+      begin
+        Label16.Caption := Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat - BranchQty(Dataform2.StockTableNr.Value),ffFixed,17,0);
+      end
+      else
+      begin
+        Label16.Caption := '';
+        Label15.Caption := '';
+      end;
+      If not Directoryexists(DataForm2.IniFile.ReadString('TCSetup', 'TCPath', '')) then
+      begin
+        JvBitBtn2.Enabled := False;
+      end;
+      StockDetailclose();
+end;
+
+procedure TStockForm.Button4Click(Sender: TObject);
+begin
+      Application.CreateForm(TStockSearchForm, StockSearchForm);
+      StockSearchForm.fromwheretmp := 'Stock';
+      StockSearchForm.ShowModal;
+      StockSearchform.FreeOnRelease;
+end;
+
+procedure TStockForm.SaveButtonClick(Sender: TObject);
+begin
+      if not StrtoBool(DataForm2.IniFile.ReadString ('TCSetup', 'TCStockEnable', '0')) then
+      begin
+        if (DataForm2.StockTablestrState = 'Edit') or (DataForm2.StockTablestrState = 'Insert') then
+        begin
+          DataForm2.StockTable.FieldByName('DateChanged').asInteger := DatetoIntDate(date);
+          try
+            DataForm2.StockTable.Post;
+          except
+            on E : Exception do
+              showmessage(E.Message);
+          end;
+          DataForm2.StockTable.Refresh;
+          If Dataform2.StockTableTCStockNo.Value = '' then
+          begin
+            Dataform2.StockTable.Edit;
+            Dataform2.StockTableTCStockNo.Value := copy(Dataform2.StockTableDescription.Value,1,2) + InttoStr(Dataform2.StockTableNr.Value);
+            Dataform2.StockTable.Post;
+          end;
+        end;
+        StockDetailclose();
+      end
+      else
+        showmessage ('Do stock in turbocash!');
+end;
+
+procedure TStockForm.EditButtonClick(Sender: TObject);
+begin
+      if not StrtoBool(DataForm2.IniFile.ReadString ('TCSetup', 'TCStockEnable', '0')) then
+      begin
+        StockDetailopen();
+        DBEdit1.SetFocus;
+      end
+      else
+        showmessage ('Do stock in turbocash!');
+end;
+
+procedure TStockForm.InsertButtonClick(Sender: TObject);
+begin
+      if not StrtoBool(DataForm2.IniFile.ReadString ('TCSetup', 'TCStockEnable', '0')) then
+      begin
+        Dataform2.StockTable.Insert;
+        DataForm2.StockTable.FieldByName('DateCreated').asInteger := DatetoIntDate(date);
+        DataForm2.StockTable.FieldByName('DateChanged').asInteger := DatetoIntDate(date);
+        DataForm2.StockTable.FieldByName('Qty').AsFloat := 0;
+        DataForm2.StockTable.FieldByName('AlertQty').AsFloat := 1;
+        DataForm2.StockTable.FieldByName('CostPrice').AsFloat := 0;
+        DataForm2.StockTable.FieldByName('SalesPrice').AsFloat := 0;
+        DataForm2.StockTable.FieldByName('TCStockNo').AsString := '';
+        DataForm2.StockTable.FieldByName('NonStockItem').AsString := 'False';
+        DataForm2.StockTable.FieldByName('Changed').AsString := 'N';
+        Stockdetailopen();
+        DBEdit1.SetFocus;
+      end
+      else
+        showmessage ('Do stock in turbocash!');
+end;
+
+procedure TStockForm.DeleteStockItem1Click(Sender: TObject);
+begin
+      if DataForm2.User_db.FieldByName('Rights').asInteger > 4 then
+      begin
+        if MessageDlg('Are you sure you want to Delete the selected Stock Item!',
+        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+        begin
+          DataForm2.StockTable.Edit;
+          DataForm2.StockTable.Delete;
+        end;
+      end
+      else
+        showmessage('You don''t have permission to go in here!');
+end;
+
+procedure TStockForm.ClearAllStock1Click(Sender: TObject);
+begin
+      if DataForm2.User_db.FieldByName('Rights').asInteger > 4 then
+      begin
+        if MessageDlg('Are you sure you want to Delete ALL THE STOCK!!!!',
+        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+        begin
+          DataForm2.Query2.Active := False;
+          with DataForm2.Query2.SQL do begin
+                Clear;
+                Add('Delete FROM stock_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          Dataform2.StockTable.Requery();
+        end;
+      end
+      else
+        showmessage('You don''t have permission to go in here!');
+end;
+
+procedure TStockForm.JvSpeedButton2Click(Sender: TObject);
+begin
+  if DataForm2.IniFile.ReadString ('Settings', 'Barcodetype', '-1') = '-1' then
+    RvProject1.ProjectFile := Dataform2.ProgramPath + '\Barcode.rav'
+  else
+    RvProject1.ProjectFile := Dataform2.ProgramPath + '\BarcodeSingle.rav';
+  RvProject1.Open;
+  RvProject1.SelectReport('Page1',False);
+  If StrtoBool(DataForm2.IniFile.ReadString ('TCSetup', 'TCStockNoBarcode', '0')) = True then
+    RvProject1.SetParam('Barcode1',Dataform2.StockTable.FieldByName('TCStockNo').asString)
+  else
+    RvProject1.SetParam('Barcode1',Dataform2.StockTable.FieldByName('Barcode').asString);
+  RvProject1.SetParam('Name',Dataform2.StockTable.FieldByName('Description').asString);
+  If StrtoBool(DataForm2.IniFile.ReadString ('Settings', 'Barcodeprice', '0')) = True then
+    RvProject1.SetParam('Price','')
+  else
+    RvProject1.SetParam('Price','R ' + Floattostrf(DataForm2.StockTable.FieldByName('SalesPrice').asFloat,ffFixed,17,2));
+  If CheckBox1.Checked = True then
+  begin
+    if DataForm2.IniFile.ReadString ('Settings', 'Barcodetype', '-1') = '-1' then
+      RvSystem1.SystemPrinter.Copies := StrtoInt(Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat / 2,ffFixed,17,0))
+    else
+      RvSystem1.SystemPrinter.Copies := StrtoInt(Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat,ffFixed,17,0));
+  end
+  else
+    RvSystem1.SystemPrinter.Copies := 1;
+  RvProject1.Execute;
+  RvProject1.Close;
+end;
+
+function TStockForm.ConvertBarChar(S:String): Integer;
+begin
+    If S = '0' then
+      ConvertBarChar := 0;
+    If S = '1' then
+      ConvertBarChar := 1;
+    If S = '2' then
+      ConvertBarChar := 2;
+    If S = '3' then
+      ConvertBarChar := 3;
+    If S = '4' then
+      ConvertBarChar := 4;
+    If S = '5' then
+      ConvertBarChar := 5;
+    If S = '6' then
+      ConvertBarChar := 6;
+    If S = '7' then
+      ConvertBarChar := 7;
+    If S = '8' then
+      ConvertBarChar := 8;
+    If S = '9' then
+      ConvertBarChar := 9;
+    If S = 'A' then
+      ConvertBarChar := 10;
+    If S = 'B' then
+      ConvertBarChar := 11;
+    If S = 'C' then
+      ConvertBarChar := 12;
+    If S = 'D' then
+      ConvertBarChar := 13;
+    If S = 'E' then
+      ConvertBarChar := 14;
+    If S = 'F' then
+      ConvertBarChar := 15;
+    If S = 'G' then
+      ConvertBarChar := 16;
+    If S = 'H' then
+      ConvertBarChar := 17;
+    If S = 'I' then
+      ConvertBarChar := 18;
+    If S = 'J' then
+      ConvertBarChar := 19;
+    If S = 'K' then
+      ConvertBarChar := 20;
+    If S = 'L' then
+      ConvertBarChar := 21;
+    If S = 'M' then
+      ConvertBarChar := 22;
+    If S = 'N' then
+      ConvertBarChar := 23;
+    If S = 'O' then
+      ConvertBarChar := 24;
+    If S = 'P' then
+      ConvertBarChar := 25;
+    If S = 'Q' then
+      ConvertBarChar := 26;
+    If S = 'R' then
+      ConvertBarChar := 27;
+    If S = 'S' Then
+      ConvertBarChar := 28;
+    If S = 'T' then
+      ConvertBarChar := 29;
+    If S = 'I' then
+      ConvertBarChar := 30;
+    If S = 'V' then
+      ConvertBarChar := 31;
+    If S = 'W' then
+      ConvertBarChar := 32;
+    If S = 'X' then
+      ConvertBarChar := 33;
+    If S = 'Y' then
+      ConvertBarChar := 34;
+    If S = 'Z' then
+      ConvertBarChar := 35;
+    If S = '-' then
+      ConvertBarChar := 36;
+    If S = '.' then
+      ConvertBarChar := 37;
+    If S = ' ' then
+      ConvertBarChar := 38;
+    If S = '$' then
+      ConvertBarChar := 39;
+    If S = '/' then
+      ConvertBarChar := 40;
+    If S = '+' then
+      ConvertBarChar := 41;
+    If S = '%' then
+      ConvertBarChar := 42;
+end;
+
+function TStockForm.BarCodeCheck(i:integer): String;
+begin
+  case i of
+    0: BarCodeCheck := '0';
+    1: BarCodeCheck := '1';
+    2: BarCodeCheck := '2';
+    3: BarCodeCheck := '3';
+    4: BarCodeCheck := '4';
+    5: BarCodeCheck := '5';
+    6: BarCodeCheck := '6';
+    7: BarCodeCheck := '7';
+    8: BarCodeCheck := '8';
+    9: BarCodeCheck := '9';
+    10: BarCodeCheck := 'A';
+    11: BarCodeCheck := 'B';
+    12: BarCodeCheck := 'C';
+    13: BarCodeCheck := 'D';
+    14: BarCodeCheck := 'E';
+    15: BarCodeCheck := 'F';
+    16: BarCodeCheck := 'G';
+    17: BarCodeCheck := 'H';
+    18: BarCodeCheck := 'I';
+    19: BarCodeCheck := 'J';
+    20: BarCodeCheck := 'K';
+    21: BarCodeCheck := 'L';
+    22: BarCodeCheck := 'M';
+    23: BarCodeCheck := 'N';
+    24: BarCodeCheck := 'O';
+    25: BarCodeCheck := 'P';
+    26: BarCodeCheck := 'Q';
+    27: BarCodeCheck := 'R';
+    28: BarCodeCheck := 'S';
+    29: BarCodeCheck := 'T';
+    30: BarCodeCheck := 'U';
+    31: BarCodeCheck := 'V';
+    32: BarCodeCheck := 'W';
+    33: BarCodeCheck := 'X';
+    34: BarCodeCheck := 'Y';
+    35: BarCodeCheck := 'Z';
+    36: BarCodeCheck := '-';
+    37: BarCodeCheck := '.';
+    38: BarCodeCheck := ' ';
+    39: BarCodeCheck := '$';
+    40: BarCodeCheck := '/';
+    41: BarCodeCheck := '+';
+    42: BarCodeCheck := '%';
+  end;
+end;
+
+procedure TStockForm.FullBarcodeList1Click(Sender: TObject);
+begin
+      if DataForm2.User_db.FieldByName('Rights').asInteger > 2 then
+      begin
+        Application.CreateForm(TBarcodePrintingForm, BarcodePrintingForm);
+        BarCodePrintingForm.Fromwhere := 'StockA';
+        Dataform2.StockQuery.Close;
+        with DataForm2.StockQuery.SQL do begin
+          Clear;
+          Add('SELECT * FROM stock_db');
+          Add('Where NonStockItem = "False"');
+          Add('and Qty > 0');
+          Add('and Barcode <> ''''');
+        end;
+        Dataform2.StockQuery.Open;
+        BarcodePrintingForm.showmodal;
+      end
+      else
+        showmessage('You don''t have permission to go in here!');
+end;
+
+procedure TStockForm.JvDBGrid1TitleBtnClick(Sender: TObject; ACol: Integer;
+  Field: TField);
+begin
+      If ACol = 0 then
+      begin
+        If StockOrder = 'Description' then
+          StockOrder := 'Description DESC'
+        else
+          StockOrder := 'Description';
+      end;
+      If ACol = 1 then
+      begin
+        If StockOrder = 'CostPrice' then
+          StockOrder := 'CostPrice DESC'
+        else
+          StockOrder := 'CostPrice';
+      end;
+      If ACol = 2 then
+      begin
+        If StockOrder = 'SalesPrice' then
+          StockOrder := 'SalesPrice DESC'
+        else
+          StockOrder := 'SalesPrice';
+      end;
+      If ACol = 3 then
+      begin
+        If StockOrder = 'SalesPrice2' then
+          StockOrder := 'SalesPrice2 DESC'
+        else
+          StockOrder := 'SalesPrice2';
+      end;
+      If ACol = 4 then
+      begin
+        If StockOrder = 'Qty' then
+          StockOrder := 'Qty DESC'
+        else
+          StockOrder := 'Qty';
+      end;
+      If ACol = 5 then
+      begin
+        If StockOrder = 'ModelNo' then
+          StockOrder := 'ModelNo DESC'
+        else
+          StockOrder := 'ModelNo';
+      end;
+      If ACol = 6 then
+      begin
+        If StockOrder = 'TCStockNo' then
+          StockOrder := 'TCStockNo DESC'
+        else
+          StockOrder := 'TCStockNo';
+      end;
+      If ACol = 7 then
+      begin
+        If StockOrder = 'Nr' then
+          StockOrder := 'Nr DESC'
+        else
+          StockOrder := 'Nr';
+      end;
+      If ACol = 8 then
+      begin
+        If StockOrder = 'BranchNo' then
+          StockOrder := 'BranchNo DESC'
+        else
+          StockOrder := 'BranchNo';
+      end;
+      If ACol = 9 then
+      begin
+        If StockOrder = 'ExtraDescr' then
+          StockOrder := 'ExtraDescr DESC'
+        else
+          StockOrder := 'ExtraDescr';
+      end;
+      If ACol = 10 then
+      begin
+        If StockOrder = 'Barcode' then
+          StockOrder := 'Barcode DESC'
+        else
+          StockOrder := 'Barcode';
+      end;
+      If ACol = 11 then
+      begin
+        If StockOrder = 'DateCreated' then
+          StockOrder := 'DateCreated DESC'
+        else
+          StockOrder := 'DateCreated';
+      end;
+      If ACol = 12 then
+      begin
+        If StockOrder = 'DateChanged' then
+          StockOrder := 'DateChanged DESC'
+        else
+          StockOrder := 'DateChanged';
+      end;
+      If ACol = 13 then
+      begin
+        If StockOrder = 'NonStockItem' then
+          StockOrder := 'NonStockItem DESC'
+        else
+          StockOrder := 'NonStockItem';
+      end;
+      StockOpen;
+end;
+
+function TStockForm.BranchQTY(StockNoStr: Integer): extended;
+begin
+        Dataform2.Query2.Close;
+        with DataForm2.Query2.SQL do begin
+          Clear;
+          Add('SELECT stocktrnsferitem_db.StockNo, Sum(stocktrnsferitem_db.Qty) as TotalQTy');
+          Add('FROM stocktrnsferitem_db, stocktrnsfer_db');
+          Add('where stocktrnsferitem_db.LinkID = stocktrnsfer_db.Nr');
+          Add('and stocktrnsfer_db.Closed = ''True''');
+          Add('and StockNo = ' + InttoStr(StockNoStr));
+          Add('Group By stocktrnsferitem_db.StockNo');
+        end;
+        Dataform2.Query2.Open;
+        BranchQty := Dataform2.Query2.Fieldbyname('TotalQty').asFloat;
+        dataform2.Query2.Close;
+end;
+
+procedure TStockForm.JvDBGrid1MouseWheelDown(Sender: TObject;
+  Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+      if DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '') = '' then
+      begin
+        Label16.Caption := Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat - BranchQty(Dataform2.StockTableNr.Value),ffFixed,17,0);
+      end;
+end;
+
+procedure TStockForm.JvDBGrid1MouseWheelUp(Sender: TObject;
+  Shift: TShiftState; MousePos: TPoint; var Handled: Boolean);
+begin
+      if DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '') = '' then
+      begin
+        Label16.Caption := Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat - BranchQty(Dataform2.StockTableNr.Value),ffFixed,17,0);
+      end;
+end;
+
+procedure TStockForm.JvDBGrid1KeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+      if DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '') = '' then
+      begin
+        Label16.Caption := Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat - BranchQty(Dataform2.StockTableNr.Value),ffFixed,17,0);
+      end;
+end;
+
+procedure TStockForm.JvDBGrid1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+      if DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '') = '' then
+      begin
+        Label16.Caption := Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat - BranchQty(Dataform2.StockTableNr.Value),ffFixed,17,0);
+      end;
+end;
+
+procedure TStockForm.JvDBGrid1CellClick(Column: TColumn);
+begin
+      if DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '') = '' then
+      begin
+        Label16.Caption := Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat - BranchQty(Dataform2.StockTableNr.Value),ffFixed,17,0);
+      end;
+end;
+
+procedure TStockForm.JvDBGrid1DblClick(Sender: TObject);
+begin
+      if DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '') = '' then
+      begin
+        Label16.Caption := Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat - BranchQty(Dataform2.StockTableNr.Value),ffFixed,17,0);
+      end;
+end;
+
+procedure TStockForm.StockDetailclose();
+begin
+        DBEdit1.ReadOnly := True;
+        DBEdit2.ReadOnly := True;
+        DBEdit3.ReadOnly := True;
+        DBEdit4.ReadOnly := True;
+        DBEdit5.ReadOnly := True;
+        DBEdit6.ReadOnly := True;
+        DBEdit7.ReadOnly := True;
+        DBEdit8.ReadOnly := True;
+        DBEdit9.ReadOnly := True;
+        DBEdit10.ReadOnly := True;
+        DBCheckBox1.ReadOnly := True;
+end;
+
+procedure TStockForm.StockDetailopen();
+begin
+        DBEdit1.ReadOnly := False;
+        DBEdit2.ReadOnly := False;
+        DBEdit3.ReadOnly := False;
+        DBEdit4.ReadOnly := False;
+        DBEdit5.ReadOnly := False;
+        DBEdit6.ReadOnly := False;
+        DBEdit7.ReadOnly := False;
+        DBEdit8.ReadOnly := False;
+        DBEdit9.ReadOnly := False;
+        DBEdit10.ReadOnly := False;
+        DBCheckBox1.ReadOnly := False;
+end;
+
+procedure TStockForm.ClearallHQStock1Click(Sender: TObject);
+begin
+      if DataForm2.User_db.FieldByName('Rights').asInteger > 4 then
+      begin
+        if MessageDlg('Are you sure you want to Delete ALL THE STOCK!!!!',
+        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+        begin
+          DataForm2.Query2.Active := False;
+          with DataForm2.Query2.SQL do begin
+                Clear;
+                Add('Delete FROM stock_db');
+                Add('where BranchNo is null');
+          end;
+          DataForm2.Query2.ExecSQL;
+          Dataform2.StockTable.Requery();
+        end;
+      end
+      else
+        showmessage('You don''t have permission to go in here!');
+end;
+
+procedure TStockForm.JvBitBtn2Click(Sender: TObject);
+begin
+    if MessageDlg('Are you sure you want to Update to turbocash. this will only update Description, Extra descr and Sales prices!',
+    mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+    begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 3) then
+      begin
+        with TCData.TurbocashDb.Params do
+        begin
+          clear;
+          Add('path=' + DataForm2.IniFile.ReadString('TCSetup', 'TCPath', ''));
+        end;
+        TCData.TurbocashDb.Open;
+        TCData.TCStockTable.Open;
+
+        if TCData.TCStockTable.Locate('SStockCode', Dataform2.StockTableTCStockNo.Value,[]) then
+        begin
+          UpdateTCStock;
+        end
+        else
+          showmessage('Turbocash stock item not found, You can''t create a TC stock item from here create a purchase invoice');
+        TCData.TCStockTable.Close;
+        TCData.TurbocashDb.Close;
+      end
+      else
+        showmessage('You don''t have permission to go in here!');
+    end;
+end;
+
+procedure TStockForm.StockOpen();
+var
+   StockPlace: Integer;
+begin
+      If Dataform2.StockTable.Active = True then
+        StockPlace := Dataform2.StockTableNr.Value
+      else
+        StockPlace := 0;
+      Dataform2.StockTable.Close;
+      with Dataform2.StockTable.SQL do
+      begin
+        Clear;
+        Add('select * from stock_db');
+        Add('where BranchNo is null');
+        Add('order by ' + StockOrder);
+      end;
+      Dataform2.StockTable.Open;
+      If StockPlace <> 0 then
+        Dataform2.StockTable.Locate('Nr', InttoStr(StockPlace),[]);
+end;
+
+procedure TStockForm.ImportStock2Click(Sender: TObject);
+begin
+        Application.CreateForm(TImportForm, ImportForm);
+        ImportForm.showmodal;
+end;
+
+end.

@@ -1,0 +1,795 @@
+object UserForm: TUserForm
+  Left = 302
+  Top = 114
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'Setup'
+  ClientHeight = 484
+  ClientWidth = 792
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 320
+    Top = 184
+    Width = 46
+    Height = 13
+    Caption = 'Password'
+  end
+  object Label2: TLabel
+    Left = 320
+    Top = 208
+    Width = 83
+    Height = 13
+    Caption = 'Retype Password'
+  end
+  object JvDBGrid1: TJvDBGrid
+    Left = 8
+    Top = 8
+    Width = 329
+    Height = 161
+    DataSource = DataForm2.UserSource
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+    OnCellClick = JvDBGrid1CellClick
+    SelectColumnsDialogStrings.Caption = 'Select columns'
+    SelectColumnsDialogStrings.RealNamesOption = '[With the real field name]'
+    SelectColumnsDialogStrings.OK = '&OK'
+    SelectColumnsDialogStrings.NoSelectionWarning = 'At least one column must be visible!'
+    EditControls = <>
+    RowsHeight = 17
+    TitleRowHeight = 17
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'Nr'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'UserName'
+        Width = 160
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Rights'
+        Visible = True
+      end>
+  end
+  object Memo1: TMemo
+    Left = 336
+    Top = 8
+    Width = 169
+    Height = 137
+    Lines.Strings = (
+      'Rights'
+      ''
+      '3 - POS'
+      '4 - POS Manager'
+      '5 - Everything')
+    TabOrder = 1
+  end
+  object Button1: TButton
+    Left = 232
+    Top = 176
+    Width = 81
+    Height = 25
+    Caption = 'Set Password:'
+    TabOrder = 2
+    OnClick = Button1Click
+  end
+  object Password1: TEdit
+    Left = 408
+    Top = 176
+    Width = 97
+    Height = 21
+    PasswordChar = '*'
+    TabOrder = 3
+    Text = 'Password1'
+  end
+  object Password2: TEdit
+    Left = 408
+    Top = 200
+    Width = 97
+    Height = 21
+    PasswordChar = '*'
+    TabOrder = 4
+    Text = 'Password2'
+  end
+  object BitBtn1: TBitBtn
+    Left = 688
+    Top = 440
+    Width = 75
+    Height = 25
+    Caption = 'Close'
+    TabOrder = 5
+    Kind = bkClose
+  end
+  object Button2: TButton
+    Left = 8
+    Top = 176
+    Width = 75
+    Height = 25
+    Caption = 'Save'
+    TabOrder = 6
+    OnClick = Button2Click
+  end
+  object Button3: TButton
+    Left = 80
+    Top = 176
+    Width = 75
+    Height = 25
+    Caption = 'Insert'
+    TabOrder = 7
+    OnClick = Button3Click
+  end
+  object Button5: TButton
+    Left = 152
+    Top = 176
+    Width = 75
+    Height = 25
+    Caption = 'Delete User'
+    TabOrder = 8
+    OnClick = Button5Click
+  end
+  object GroupBox1: TGroupBox
+    Left = 16
+    Top = 224
+    Width = 481
+    Height = 209
+    Caption = 'Receipt Options'
+    TabOrder = 9
+    object Label3: TLabel
+      Left = 264
+      Top = 24
+      Width = 99
+      Height = 13
+      Caption = 'Printer receipt select:'
+    end
+    object Label4: TLabel
+      Left = 264
+      Top = 48
+      Width = 101
+      Height = 13
+      Caption = 'Printer drawer Select:'
+    end
+    object Label12: TLabel
+      Left = 264
+      Top = 72
+      Width = 90
+      Height = 13
+      Caption = 'Serial Drawer Com:'
+    end
+    object Label30: TLabel
+      Left = 312
+      Top = 182
+      Width = 80
+      Height = 13
+      Caption = 'Footer Font Size:'
+    end
+    object Label31: TLabel
+      Left = 312
+      Top = 158
+      Width = 88
+      Height = 13
+      Caption = 'A4 Inv Line Count:'
+    end
+    object Label32: TLabel
+      Left = 312
+      Top = 134
+      Width = 93
+      Height = 13
+      Caption = 'A4 Inv Bottom start:'
+    end
+    object Memo2: TMemo
+      Left = 8
+      Top = 16
+      Width = 249
+      Height = 73
+      Hint = 'Receipt Heading Space'
+      Lines.Strings = (
+        'Memo2')
+      TabOrder = 0
+      WordWrap = False
+    end
+    object ComportSelect: TComboBox
+      Left = 368
+      Top = 16
+      Width = 105
+      Height = 21
+      ItemHeight = 13
+      TabOrder = 1
+      OnClick = ComportSelectClick
+      Items.Strings = (
+        'Driver Receipt'
+        'Driver A4'
+        'COM1'
+        'COM2'
+        'COM3'
+        'COM4'
+        'COM5'
+        'COM6'
+        'COM7'
+        'COM8'
+        'COM9'
+        'COM10'
+        'COM11'
+        'COM12'
+        'COM13'
+        'COM14'
+        'COM15'
+        'COM16'
+        'COM17'
+        'COM18'
+        'COM19'
+        'COM20'
+        'LPT1'
+        'LPT2'
+        'LPT3'
+        'LPT4')
+    end
+    object PrinterSelect: TComboBox
+      Left = 368
+      Top = 40
+      Width = 105
+      Height = 21
+      ItemHeight = 13
+      TabOrder = 2
+      OnClick = PrinterSelectClick
+      Items.Strings = (
+        'EPSON'
+        'Serial Drawer')
+    end
+    object Memo3: TMemo
+      Left = 8
+      Top = 120
+      Width = 289
+      Height = 81
+      Lines.Strings = (
+        'Memo3')
+      ScrollBars = ssBoth
+      TabOrder = 3
+      WordWrap = False
+    end
+    object ComboBox1: TComboBox
+      Left = 368
+      Top = 64
+      Width = 81
+      Height = 21
+      ItemHeight = 13
+      TabOrder = 4
+      OnClick = ComboBox1Click
+      Items.Strings = (
+        'COM1'
+        'COM2'
+        'COM3'
+        'COM4'
+        'COM5'
+        'COM6'
+        'COM7'
+        'COM8'
+        'COM9'
+        'COM10'
+        'COM11'
+        'COM12'
+        'COM13'
+        'COM14'
+        'COM15'
+        'COM16'
+        'COM17'
+        'COM18'
+        'COM19'
+        'COM20')
+    end
+    object Button8: TButton
+      Left = 368
+      Top = 88
+      Width = 97
+      Height = 25
+      Caption = 'Test Kick Drawer'
+      TabOrder = 5
+      OnClick = Button8Click
+    end
+    object JvBitBtn1: TJvBitBtn
+      Left = 160
+      Top = 96
+      Width = 91
+      Height = 25
+      Caption = 'Save Footer'
+      TabOrder = 6
+      OnClick = JvBitBtn1Click
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333033333
+        33333333373F33333333333330B03333333333337F7F33333333333330F03333
+        333333337F7FF3333333333330B00333333333337F773FF33333333330F0F003
+        333333337F7F773F3333333330B0B0B0333333337F7F7F7F3333333300F0F0F0
+        333333377F73737F33333330B0BFBFB03333337F7F33337F33333330F0FBFBF0
+        3333337F7333337F33333330BFBFBFB033333373F3333373333333330BFBFB03
+        33333337FFFFF7FF3333333300000000333333377777777F333333330EEEEEE0
+        33333337FFFFFF7FF3333333000000000333333777777777F33333330000000B
+        03333337777777F7F33333330000000003333337777777773333}
+      NumGlyphs = 2
+      HotTrackFont.Charset = DEFAULT_CHARSET
+      HotTrackFont.Color = clWindowText
+      HotTrackFont.Height = -11
+      HotTrackFont.Name = 'MS Sans Serif'
+      HotTrackFont.Style = []
+    end
+    object JvBitBtn2: TJvBitBtn
+      Left = 16
+      Top = 88
+      Width = 105
+      Height = 25
+      Caption = 'Save Heading'
+      TabOrder = 7
+      OnClick = JvBitBtn2Click
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333000000000
+        333333777777777F33333330B00000003333337F7777777F3333333000000000
+        333333777777777F333333330EEEEEE033333337FFFFFF7F3333333300000000
+        333333377777777F3333333330BFBFB03333333373333373F33333330BFBFBFB
+        03333337F33333F7F33333330FBFBF0F03333337F33337F7F33333330BFBFB0B
+        03333337F3F3F7F7333333330F0F0F0033333337F7F7F773333333330B0B0B03
+        3333333737F7F7F333333333300F0F03333333337737F7F33333333333300B03
+        333333333377F7F33333333333330F03333333333337F7F33333333333330B03
+        3333333333373733333333333333303333333333333373333333}
+      NumGlyphs = 2
+      HotTrackFont.Charset = DEFAULT_CHARSET
+      HotTrackFont.Color = clWindowText
+      HotTrackFont.Height = -11
+      HotTrackFont.Name = 'MS Sans Serif'
+      HotTrackFont.Style = []
+    end
+    object JvSpinEdit1: TJvSpinEdit
+      Left = 408
+      Top = 176
+      Width = 57
+      Height = 21
+      Decimal = 0
+      Value = 10.000000000000000000
+      TabOrder = 8
+      OnChange = JvSpinEdit1Change
+    end
+    object JvSpinEdit2: TJvSpinEdit
+      Left = 408
+      Top = 152
+      Width = 57
+      Height = 21
+      Decimal = 0
+      Value = 27.000000000000000000
+      TabOrder = 9
+      OnChange = JvSpinEdit2Change
+    end
+    object JvSpinEdit3: TJvSpinEdit
+      Left = 408
+      Top = 128
+      Width = 57
+      Height = 21
+      Decimal = 1
+      ValueType = vtFloat
+      Value = 8.500000000000000000
+      TabOrder = 10
+      OnChange = JvSpinEdit3Change
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 512
+    Top = 336
+    Width = 257
+    Height = 97
+    Caption = 'E Mail setup'
+    TabOrder = 10
+    object Label5: TLabel
+      Left = 8
+      Top = 16
+      Width = 59
+      Height = 13
+      Caption = 'Smtp server:'
+    end
+    object Label6: TLabel
+      Left = 40
+      Top = 40
+      Width = 26
+      Height = 13
+      Caption = 'From:'
+    end
+    object SmtpEdit: TEdit
+      Left = 80
+      Top = 8
+      Width = 161
+      Height = 21
+      TabOrder = 0
+      Text = 'SmtpEdit'
+      OnChange = SmtpEditChange
+    end
+    object FromEdit: TEdit
+      Left = 80
+      Top = 32
+      Width = 161
+      Height = 21
+      TabOrder = 1
+      Text = 'FromEdit'
+      OnChange = FromEditChange
+    end
+    object StatusMemo: TMemo
+      Left = 8
+      Top = 56
+      Width = 233
+      Height = 33
+      ScrollBars = ssVertical
+      TabOrder = 2
+      WordWrap = False
+    end
+  end
+  object GroupBox4: TGroupBox
+    Left = 512
+    Top = 8
+    Width = 265
+    Height = 177
+    Caption = 'Standard Options'
+    TabOrder = 11
+    object Label15: TLabel
+      Left = 8
+      Top = 154
+      Width = 58
+      Height = 13
+      Caption = 'Last Inv No:'
+    end
+    object Label16: TLabel
+      Left = 8
+      Top = 112
+      Width = 129
+      Height = 13
+      Caption = 'Other Payment Description:'
+    end
+    object Label21: TLabel
+      Left = 8
+      Top = 133
+      Width = 106
+      Height = 13
+      Caption = 'Last Purchase Inv No:'
+    end
+    object Label28: TLabel
+      Left = 8
+      Top = 89
+      Width = 168
+      Height = 13
+      Caption = 'Minimum Markup % (1 - 199, 0=Off):'
+    end
+    object Label33: TLabel
+      Left = 8
+      Top = 66
+      Width = 103
+      Height = 13
+      Caption = 'Comment Description:'
+    end
+    object CheckBox3: TCheckBox
+      Left = 8
+      Top = 16
+      Width = 129
+      Height = 17
+      Caption = 'Show POS Additions'
+      TabOrder = 0
+      OnClick = CheckBox3Click
+    end
+    object CheckBox4: TCheckBox
+      Left = 8
+      Top = 30
+      Width = 185
+      Height = 17
+      Caption = 'Activate 2 column Barcode Printing'
+      TabOrder = 2
+      OnClick = CheckBox4Click
+    end
+    object CheckBox5: TCheckBox
+      Left = 8
+      Top = 44
+      Width = 145
+      Height = 17
+      Caption = 'Don'#39't show Barcode Price'
+      TabOrder = 3
+      OnClick = CheckBox5Click
+    end
+    object Edit6: TEdit
+      Left = 144
+      Top = 104
+      Width = 89
+      Height = 21
+      TabOrder = 4
+      Text = 'Edit6'
+      OnChange = Edit6Change
+    end
+    object Edit18: TJvValidateEdit
+      Left = 184
+      Top = 83
+      Width = 49
+      Height = 21
+      CriticalPoints.CheckPoints = cpMaxValue
+      CriticalPoints.MaxValue = 199.000000000000000000
+      CriticalPoints.MaxValueIncluded = False
+      CriticalPoints.MinValueIncluded = False
+      EditText = '000'
+      HasMaxValue = True
+      MaxValue = 199.000000000000000000
+      TabOrder = 5
+      OnChange = Edit18Change
+    end
+    object CheckBox6: TCheckBox
+      Left = 135
+      Top = 16
+      Width = 128
+      Height = 17
+      Caption = 'Disallow Negative Qty'
+      TabOrder = 1
+      OnClick = CheckBox6Click
+    end
+    object Edit20: TEdit
+      Left = 120
+      Top = 61
+      Width = 81
+      Height = 21
+      TabOrder = 6
+      OnChange = Edit20Change
+    end
+    object CheckBox7: TCheckBox
+      Left = 154
+      Top = 44
+      Width = 97
+      Height = 17
+      Caption = 'Show only User'
+      TabOrder = 7
+      OnClick = CheckBox7Click
+    end
+    object DBEdit1: TDBEdit
+      Left = 120
+      Top = 128
+      Width = 89
+      Height = 21
+      DataField = 'PurchaseInvNo'
+      DataSource = DataForm2.GlobalSource
+      TabOrder = 8
+    end
+    object DBEdit2: TDBEdit
+      Left = 72
+      Top = 150
+      Width = 89
+      Height = 21
+      DataField = 'InvNo'
+      DataSource = DataForm2.GlobalSource
+      TabOrder = 9
+    end
+  end
+  object GroupBox5: TGroupBox
+    Left = 512
+    Top = 184
+    Width = 265
+    Height = 73
+    Caption = 'Branch Settings'
+    TabOrder = 12
+    object Label13: TLabel
+      Left = 8
+      Top = 22
+      Width = 60
+      Height = 13
+      Caption = 'HQ Address:'
+    end
+    object Label14: TLabel
+      Left = 8
+      Top = 46
+      Width = 119
+      Height = 13
+      Caption = 'HQ Assigned Branch No:'
+    end
+    object JvSpeedButton13: TJvSpeedButton
+      Left = 232
+      Top = 16
+      Width = 25
+      Height = 25
+      Hint = 'Test Connection'
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        1800000000000003000000000000000000000000000000000000FFFFFF000000
+        404040FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000
+        00404040FFFFFFFFFFFFFFFFFF000000404040FFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFF000000606060FFFFFFFFFFFFFFFFFF000000
+        404040FFFFFF202020404040404040202020FFFFFFFFFFFFFFFFFF4040403030
+        30404040404040202020FFFFFF00000040404020202020202000000000000060
+        6060202020FFFFFF303030404040404040404040404040606060FFFFFF000000
+        404040000000404040FFFFFFFFFFFF000000404040FFFFFF7F7F7FC0C0C0C0C0
+        C0C0C0C0A0A0A0404040FFFFFF000000404040000000404040FFFFFFFFFFFF00
+        00006060602020207F7F7FC0C0C0C0C0C0C0C0C0A0A0A0404040FFFFFF000000
+        404040000000404040FFFFFF000000BFBFBF4040404040407F7F7FC0C0C0C0C0
+        C0C0C0C0A0A0A0404040FFFFFF000000606060000000606060FFFFFF000000DF
+        DFDF4040404040407F7F7FDFDFDFDFDFDFDFDFDFBFBFBF202020000000303030
+        202020303030202020606060000000DFDFDF4040404040400000003030302020
+        20303030202020FFFFFF6F6F6FA0A0A0A0A0A0A0A0A0909090404040000000DF
+        DFDF404040404040FFFFFF000000202020000000202020FFFFFF7F7F7FC0C0C0
+        C0C0C0C0C0C0A0A0A0404040000000EFEFEF5F5F5F202020FFFFFF0000004040
+        40000000404040FFFFFF7F7F7FC0C0C0C0C0C0C0C0C0A0A0A0404040FFFFFF00
+        0000202020FFFFFFFFFFFF000000404040000000404040FFFFFF7F7F7FC0C0C0
+        C0C0C0C0C0C0A0A0A0404040FFFFFF000000606060FFFFFFFFFFFF0000004040
+        40000000404040FFFFFF3F3F3F7F7F7F7F7F7F7F7F7F6F6F6F000000FFFFFFFF
+        FFFF202020404040404040404040FFFFFF000000404040FFFFFFFFFFFFFFFFFF
+        303030202020FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FF000000404040FFFFFFFFFFFFFFFFFF000000404040FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000202020FFFFFF}
+      HotTrackFont.Charset = DEFAULT_CHARSET
+      HotTrackFont.Color = clWindowText
+      HotTrackFont.Height = -11
+      HotTrackFont.Name = 'MS Sans Serif'
+      HotTrackFont.Style = []
+      OnClick = JvSpeedButton13Click
+    end
+    object JvEdit1: TJvEdit
+      Left = 80
+      Top = 16
+      Width = 153
+      Height = 21
+      Modified = False
+      TabOrder = 0
+      Text = 'JvEdit1'
+      OnChange = JvEdit1Change
+    end
+    object JvEdit2: TJvEdit
+      Left = 136
+      Top = 40
+      Width = 49
+      Height = 21
+      Modified = False
+      TabOrder = 1
+      Text = 'JvEdit2'
+      OnChange = JvEdit2Change
+    end
+  end
+  object JvBitBtn3: TJvBitBtn
+    Left = 336
+    Top = 144
+    Width = 137
+    Height = 25
+    Caption = 'Import Users from Hq'
+    TabOrder = 13
+    OnClick = JvBitBtn3Click
+    Glyph.Data = {
+      76010000424D7601000000000000760000002800000020000000100000000100
+      04000000000000010000130B0000130B00001000000000000000000000000000
+      800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+      33333333333FFFFFFFFF333333000000000033333377777777773333330FFFFF
+      FFF03333337F333333373333330FFFFFFFF03333337F3FF3FFF73333330F00F0
+      00F03333F37F773777373330330FFFFFFFF03337FF7F3F3FF3F73339030F0800
+      F0F033377F7F737737373339900FFFFFFFF03FF7777F3FF3FFF70999990F00F0
+      00007777777F7737777709999990FFF0FF0377777777FF37F3730999999908F0
+      F033777777777337F73309999990FFF0033377777777FFF77333099999000000
+      3333777777777777333333399033333333333337773333333333333903333333
+      3333333773333333333333303333333333333337333333333333}
+    NumGlyphs = 2
+    HotTrackFont.Charset = DEFAULT_CHARSET
+    HotTrackFont.Color = clWindowText
+    HotTrackFont.Height = -11
+    HotTrackFont.Name = 'MS Sans Serif'
+    HotTrackFont.Style = []
+  end
+  object GroupBox6: TGroupBox
+    Left = 512
+    Top = 256
+    Width = 257
+    Height = 81
+    Caption = 'Lay Buy Settings'
+    TabOrder = 14
+    object Label22: TLabel
+      Left = 8
+      Top = 38
+      Width = 50
+      Height = 13
+      Caption = 'Deposit %:'
+    end
+    object Label23: TLabel
+      Left = 8
+      Top = 62
+      Width = 112
+      Height = 13
+      Caption = 'Lay Buy Term (Months):'
+    end
+    object Edit12: TEdit
+      Left = 88
+      Top = 32
+      Width = 121
+      Height = 21
+      TabOrder = 1
+      Text = 'Edit12'
+      OnChange = Edit12Change
+    end
+    object Edit13: TEdit
+      Left = 128
+      Top = 56
+      Width = 121
+      Height = 21
+      TabOrder = 2
+      Text = 'Edit13'
+      OnChange = Edit13Change
+    end
+    object JvCheckBox1: TJvCheckBox
+      Left = 8
+      Top = 15
+      Width = 95
+      Height = 17
+      Caption = 'Enable Lay Buy'
+      TabOrder = 0
+      OnClick = JvCheckBox1Click
+      LinkedControls = <>
+      HotTrackFont.Charset = DEFAULT_CHARSET
+      HotTrackFont.Color = clWindowText
+      HotTrackFont.Height = -11
+      HotTrackFont.Name = 'MS Sans Serif'
+      HotTrackFont.Style = []
+    end
+  end
+  object JvBitBtn4: TJvBitBtn
+    Left = 512
+    Top = 440
+    Width = 105
+    Height = 25
+    Caption = 'Turbocash Setup'
+    TabOrder = 15
+    OnClick = JvBitBtn4Click
+    HotTrackFont.Charset = DEFAULT_CHARSET
+    HotTrackFont.Color = clWindowText
+    HotTrackFont.Height = -11
+    HotTrackFont.Name = 'MS Sans Serif'
+    HotTrackFont.Style = []
+  end
+  object MailMessage: TIdMessage
+    AttachmentEncoding = 'UUE'
+    BccList = <>
+    CCList = <>
+    Encoding = meDefault
+    FromList = <
+      item
+      end>
+    Recipients = <>
+    ReplyTo = <>
+    ConvertPreamble = True
+    Left = 704
+    Top = 408
+  end
+  object SMTP: TIdSMTP
+    SASLMechanisms = <>
+    Left = 632
+    Top = 408
+  end
+  object SelectPath: TJvSelectDirectory
+    InitialDir = 'c:\TCash3'
+    Left = 668
+    Top = 408
+  end
+  object ICMP: TIdIcmpClient
+    Port = 3306
+    Protocol = 1
+    ProtocolIPv6 = 58
+    IPVersion = Id_IPv4
+    PacketSize = 1024
+    OnReply = ICMPReply
+    Left = 600
+    Top = 408
+  end
+end

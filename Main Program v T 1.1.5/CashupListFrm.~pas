@@ -1,0 +1,287 @@
+unit CashupListFrm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, JvExComCtrls, JvDateTimePicker, DBCtrls,
+  QRCtrls, QuickRpt, ExtCtrls, db, Buttons, JvExButtons, JvBitBtn, UtilsUnit;
+
+type
+  TCashupListForm = class(TForm)
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    DBLookupComboBox1: TDBLookupComboBox;
+    DateListEdit: TJvDateTimePicker;
+    Button1: TButton;
+    GroupBox2: TGroupBox;
+    Label3: TLabel;
+    Label4: TLabel;
+    Fromdate: TJvDateTimePicker;
+    ToDate: TJvDateTimePicker;
+    Button2: TButton;
+    DailyList: TQuickRep;
+    QRBand1: TQRBand;
+    QRLabel1: TQRLabel;
+    QRLabel5: TQRLabel;
+    QRLabel6: TQRLabel;
+    QRLabel7: TQRLabel;
+    QRBand2: TQRBand;
+    QRDBText1: TQRDBText;
+    QRDBText2: TQRDBText;
+    QRBand3: TQRBand;
+    RealChequesTotal: TQRLabel;
+    QRLabel14: TQRLabel;
+    RealCreditCardTotal: TQRLabel;
+    RealCashTotal: TQRLabel;
+    QRLabel2: TQRLabel;
+    QRDBText3: TQRDBText;
+    QRLabel3: TQRLabel;
+    QRDBText4: TQRDBText;
+    QRLabel8: TQRLabel;
+    QRDBText5: TQRDBText;
+    QRLabel9: TQRLabel;
+    QRDBText6: TQRDBText;
+    QRLabel10: TQRLabel;
+    QRDBText7: TQRDBText;
+    QRLabel12: TQRLabel;
+    QRDBText8: TQRDBText;
+    QRLabel16: TQRLabel;
+    QRDBText9: TQRDBText;
+    QRLabel17: TQRLabel;
+    QRDBText10: TQRDBText;
+    QRLabel18: TQRLabel;
+    QRDBText11: TQRDBText;
+    QRDBText12: TQRDBText;
+    CountCashTotal: TQRLabel;
+    CountCreditCardTotal: TQRLabel;
+    CountChequesTotal: TQRLabel;
+    CashDiff: TQRLabel;
+    CreditCardDiff: TQRLabel;
+    ChequesDiff: TQRLabel;
+    BitBtn1: TBitBtn;
+    Button3: TButton;
+    QRLabel4: TQRLabel;
+    QRDBText13: TQRDBText;
+    RealOtherTotal: TQRLabel;
+    QRLabel13: TQRLabel;
+    QRDBText14: TQRDBText;
+    CountOtherTotal: TQRLabel;
+    QRLabel19: TQRLabel;
+    QRDBText15: TQRDBText;
+    OtherDiff: TQRLabel;
+    QRLabel11: TQRLabel;
+    QRDBText16: TQRDBText;
+    JvBitBtn1: TJvBitBtn;
+    procedure FormShow(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure QRBand2BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure DailyListBeforePrint(Sender: TCustomQuickRep;
+      var PrintReport: Boolean);
+    procedure QRBand3BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure Button3Click(Sender: TObject);
+    procedure JvBitBtn1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  CashupListForm: TCashupListForm;
+  RealCashTot, RealCreditCardTot, RealChequesTot, RealOtherTot, CountCashTot, CountCreditCardTot, CountChequesTot, CountOtherTot, CashDiffTot, CreditCardDiffTot, ChequesDiffTot, OtherDiffTot: Extended;
+
+implementation
+      uses Datafrm2, ExtractFrm, GridExportFrm;
+
+{$R *.dfm}
+
+procedure TCashupListForm.FormShow(Sender: TObject);
+begin
+        DateListEdit.Date := date;
+        Fromdate.Date := date;
+        ToDate.Date := date;
+end;
+
+procedure TCashupListForm.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+      DataForm2.CashUpTable.Filtered := False;
+      DataForm2.User_db.Locate('UserName', DataForm2.UserNameStr, [loPartialKey, loCaseInsensitive]);
+      CashupListForm.FreeOnRelease;
+end;
+
+procedure TCashupListForm.Button1Click(Sender: TObject);
+begin
+//      DataForm2.Query3.Active := False;
+//      s := 'WHERE (User = "' + DataForm2.user_db.fieldbyname('UserName').asString + '") and';
+//      with DataForm2.Query3.SQL do begin
+//        Clear;
+//        Add('SELECT * FROM cashup_db');
+//        Add(s);
+//        Add('(Date = ' + InttoStr(DatetoIntDate(DateListEdit.Date)) + ')');
+//      end;
+//      DataForm2.Query3.Active := True;
+      Dataform2.CashUpTable.Open;
+      DataForm2.CashUpTable.Filtered := False;
+      DataForm2.CashUpTable.Filter := 'User = ''' + DataForm2.user_db.fieldbyname('UserName').asString + ''' and Date = ' + InttoStr(DatetoIntDate(DateListEdit.Date));
+      DataForm2.CashUpTable.Filtered := True;
+      QRLabel1.Caption := 'Daily Cash up for: ' + DataForm2.user_db.fieldbyname('UserName').asString + ' and for Date: ' + DatetoStr(DateListEdit.Date);
+      DailyList.Preview;
+      Dataform2.CashUpTable.Close;
+end;
+
+procedure TCashupListForm.Button2Click(Sender: TObject);
+begin
+//      DataForm2.Query3.Active := False;
+//      with DataForm2.Query3.SQL do begin
+//        Clear;
+//        Add('SELECT * FROM invoice_db');
+//        Add('WHERE (Date >= ' + InttoStr(DatetoIntDate(FromDate.Date)) + ') and');
+//        Add('(Date <= ' + InttoStr(DatetoIntDate(ToDate.Date)) + ')');
+//      end;
+//      DataForm2.Query3.Active := True;
+      Dataform2.CashUpTable.Open;
+      DataForm2.CashUpTable.Filtered := False;
+      DataForm2.CashUpTable.Filter := 'Date >= ' + InttoStr(DatetoIntDate(FromDate.Date)) + ' and Date <= ' + InttoStr(DatetoIntDate(ToDate.Date));
+      DataForm2.CashUpTable.Filtered := True;
+      QRLabel1.Caption := 'Monthly Cash up from: ' + datetostr(FromDate.Date) + ' to: ' + DatetoStr(ToDate.Date);
+      DailyList.Preview;
+      Dataform2.CashUpTable.Close;
+end;
+
+procedure TCashupListForm.QRBand2BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      RealCashTot := RealCashTot + DataForm2.CashUpTable.Fieldbyname('RealCashTotal').asFloat;
+      RealCreditCardTot := RealCreditCardTot + DataForm2.CashUpTable.Fieldbyname('RealCreditCardTotal').asFloat;
+      RealChequesTot := RealChequesTot + DataForm2.CashUpTable.Fieldbyname('RealChequesTotal').asFloat;
+      RealOtherTot := RealOtherTot + DataForm2.CashUpTable.Fieldbyname('RealOtherTotal').asFloat;
+      CountCashTot := CountCashTot + DataForm2.CashUpTable.Fieldbyname('CountCashTotal').asFloat;
+      CountCreditCardTot := CountCreditCardTot + DataForm2.CashUpTable.Fieldbyname('CountCreditCardTotal').asFloat;
+      CountChequesTot := CountChequesTot + DataForm2.CashUpTable.Fieldbyname('CountChequesTotal').asFloat;
+      CountOtherTot := CountOtherTot + DataForm2.CashUpTable.Fieldbyname('CountOtherTotal').asFloat;
+      CashDiffTot := CashDiffTot + DataForm2.CashUpTable.Fieldbyname('CashDiff').asFloat;
+      CreditCardDiffTot := CreditCardDiffTot + DataForm2.CashUpTable.Fieldbyname('CreditCardDiff').asFloat;
+      ChequesDiffTot := ChequesDiffTot + DataForm2.CashUpTable.Fieldbyname('ChequesDiff').asFloat;
+      OtherDiffTot := OtherDiffTot + DataForm2.CashUpTable.Fieldbyname('OtherDiff').asFloat;
+end;
+
+procedure TCashupListForm.DailyListBeforePrint(Sender: TCustomQuickRep;
+  var PrintReport: Boolean);
+begin
+      RealCashTot := 0;
+      RealCreditCardTot := 0;
+      RealChequesTot := 0;
+      RealOtherTot := 0;
+      CountCashTot := 0;
+      CountCreditCardTot := 0;
+      CountChequesTot := 0;
+      CountOtherTot := 0;
+      CashDiffTot := 0;
+      CreditCardDiffTot := 0;
+      ChequesDiffTot := 0;
+      OtherDiffTot := 0;
+end;
+
+procedure TCashupListForm.QRBand3BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+      RealCashTotal.Caption := Floattostrf(RealCashTot,ffFixed,17,2);
+      RealCreditCardTotal.Caption := Floattostrf(RealCreditCardTot,ffFixed,17,2);
+      RealChequesTotal.Caption := Floattostrf(RealChequesTot,ffFixed,17,2);
+      RealOtherTotal.Caption := Floattostrf(RealOtherTot,ffFixed,17,2);
+      CountCashTotal.Caption := Floattostrf(CountCashTot,ffFixed,17,2);
+      CountCreditCardTotal.Caption := Floattostrf(CountCreditCardTot,ffFixed,17,2);
+      CountChequesTotal.Caption := Floattostrf(CountChequesTot,ffFixed,17,2);
+      CountOtherTotal.Caption := Floattostrf(CountOtherTot,ffFixed,17,2);
+      CashDiff.Caption := Floattostrf(CashDiffTot,ffFixed,17,2);
+      CreditCardDiff.Caption := Floattostrf(CreditCardDiffTot,ffFixed,17,2);
+      ChequesDiff.Caption := Floattostrf(ChequesDiffTot,ffFixed,17,2);
+      OtherDiff.Caption := Floattostrf(OtherDiffTot,ffFixed,17,2);
+end;
+
+procedure TCashupListForm.Button3Click(Sender: TObject);
+var
+    GivenTotal, CountTotal, CountCashTotal, CountCreditCardTotal, CountChequesTotal, CountOtherTotal, RealItemTotal, CountItemTotal, DiffTotal: Extended;
+    OldUser: String;
+begin
+      ExtractForm.Memo1.Clear;
+      ExtractForm.Memo1.Lines.Add('"Shorts and Overs",,,"' + datetoStr(date) + '"');
+      ExtractForm.Memo1.Lines.Add('');
+      ExtractForm.Memo1.Lines.Add('"User","Shift Date","Total System Sales","Cash Count","Credit Card Count","Cheques Count","Other Count","Total Counted","Cash (Short) / Over"');
+      GivenTotal := 0;
+      CountTotal := 0;
+      CountCashTotal := 0;
+      CountCreditCardTotal := 0;
+      CountChequesTotal := 0;
+      CountOtherTotal := 0;
+      DiffTotal := 0;
+      DataForm2.Query3.Active := False;
+      with DataForm2.Query3.SQL do begin
+        Clear;
+        Add('SELECT * FROM cashup_db');
+        Add('WHERE (Date >= ' + InttoStr(DatetoIntDate(FromDate.Date)) + ') and');
+        Add('(Date <= ' + InttoStr(DatetoIntDate(ToDate.Date)) + ')');
+        Add('Order by User, Date');
+      end;
+      DataForm2.Query3.Active := True;
+      Dataform2.Query3.DisableControls;
+      DataForm2.Query3.First;
+      OldUser := Dataform2.Query3.FieldByName('User').asString;
+      while not DataForm2.Query3.EOF do
+      begin
+        If (OldUser <> Dataform2.Query3.FieldByName('User').asString) then
+        begin
+          ExtractForm.Memo1.Lines.Add('"Total",,' + FloattoStr(GivenTotal) + ',' + FloattoStr(CountCashTotal) + ',' + FloattoStr(CountCreditCardTotal) + ',' + FloattoStr(CountChequesTotal) + ',' + FloattoStr(CountOtherTotal) + ','+ Floattostr(CountTotal) + ',' + Floattostr(DiffTotal));
+          ExtractForm.Memo1.Lines.Add('');
+          GivenTotal := 0;
+          CountTotal := 0;
+          CountCashTotal := 0;
+          CountCreditCardTotal := 0;
+          CountChequesTotal := 0;
+          CountOtherTotal := 0;
+          DiffTotal := 0;
+          OldUser := Dataform2.Query3.FieldByName('User').asString;
+        end;
+        RealItemTotal := DataForm2.Query3.Fieldbyname('RealCashTotal').asFloat + DataForm2.Query3.Fieldbyname('RealChequesTotal').asFloat + DataForm2.Query3.Fieldbyname('RealCreditCardTotal').asFloat + DataForm2.Query3.Fieldbyname('RealOtherTotal').asFloat;
+        GivenTotal := GivenTotal + RealItemTotal;
+        CountItemTotal := DataForm2.Query3.Fieldbyname('CountCashTotal').asFloat + DataForm2.Query3.Fieldbyname('CountChequesTotal').asFloat + DataForm2.Query3.Fieldbyname('CountCreditCardTotal').asFloat + DataForm2.Query3.Fieldbyname('CountOtherTotal').asFloat;
+        CountTotal := CountTotal + CountItemTotal;
+        CountCashTotal := CountCashTotal + DataForm2.Query3.Fieldbyname('CountCashTotal').asFloat;
+        CountCreditCardTotal := CountCreditCardTotal + DataForm2.Query3.Fieldbyname('CountCreditCardTotal').asFloat;
+        CountChequesTotal := CountChequesTotal + DataForm2.Query3.Fieldbyname('CountChequesTotal').asFloat;
+        CountOtherTotal := CountOtherTotal + DataForm2.Query3.Fieldbyname('CountOtherTotal').asFloat;
+        DiffTotal := DiffTotal + (RealItemTotal - CountItemTotal);
+        ExtractForm.Memo1.Lines.Add('"' + DataForm2.Query3.Fieldbyname('User').asString + '","' + IntDatetoString(DataForm2.Query3.Fieldbyname('Date').asInteger) + '",' + FloattoStr(RealItemTotal) + ',' + FloattoStr(DataForm2.Query3.Fieldbyname('CountCashTotal').asFloat) + ',' + FloattoStr(DataForm2.Query3.Fieldbyname('CountCreditCardTotal').asFloat) + ',' + FloattoStr(DataForm2.Query3.Fieldbyname('CountChequesTotal').asFloat)  + ',' + FloattoStr(DataForm2.Query3.Fieldbyname('CountOtherTotal').asFloat)
+                                    + ','+ Floattostr(CountItemTotal) + ',' + Floattostr(RealItemTotal - CountItemTotal));
+        DataForm2.Query3.Next;
+      end;
+      Dataform2.Query3.EnableControls;
+      ExtractForm.Memo1.Lines.Add('"Total",,' + FloattoStr(GivenTotal) + ',' + FloattoStr(CountCashTotal) + ',' + FloattoStr(CountCreditCardTotal) + ',' + FloattoStr(CountChequesTotal) + ',' + FloattoStr(CountOtherTotal) + ','+ Floattostr(CountTotal) + ',' + Floattostr(DiffTotal));
+      ExtractForm.SaveDialog.FileName := 'Cashup User Report';
+      If Extractform.SaveDialog.Execute then
+      begin
+        ExtractForm.Memo1.Lines.SaveToFile(ExtractForm.SaveDialog.FileName);
+      end;
+      DataForm2.Query3.Close;
+      showmessage('Finished with Cashup Report!');
+end;
+
+procedure TCashupListForm.JvBitBtn1Click(Sender: TObject);
+begin
+      Dataform2.InvoiceExportQuery.Parameters.ParamByName('BeginDate').Value := DatetoIntDate(FromDate);
+      Dataform2.InvoiceExportQuery.Parameters.ParamByName('EndDate').Value := DatetoIntDate(ToDate);
+      Dataform2.InvoiceExportQuery.Parameters.ParamByName('InvClose').Value := 'Close';
+      Dataform2.InvoiceExportQuery.Parameters.ParamByName('order').Value := 'CUSet, InvoiceType';
+      DataForm2.InvoiceExportQuery.Open;
+      Application.CreateForm(TGridExportForm, GridExportForm);
+      GridExportForm.showmodal;
+end;
+
+end.

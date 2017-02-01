@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2007/10/27 21:17:48.937.pas,U:\bron\NielUniversalUtils\UtilsUnit.pas=</Transaction>
+    <Transaction>2008/07/09 20:32:46.031.pas,U:\bron\ncomp POS\Main Program v T 1.0.5\Unit1.pas=U:\bron\ncomp POS\Main Program v T 1.0.5\AccountsFrm.pas</Transaction>
+    <Transaction>2008/07/09 20:32:46.031.dfm,U:\bron\ncomp POS\Main Program v T 1.0.5\Unit1.dfm=U:\bron\ncomp POS\Main Program v T 1.0.5\AccountsFrm.dfm</Transaction>
+    <Transaction>2008/07/13 19:42:46.765.pas,U:\bron\ncomp POS\Main Program v T 1.0.5\Unit1.pas=U:\bron\ncomp POS\Main Program v T 1.0.5\AddTransactionFrm.pas</Transaction>
+    <Transaction>2008/07/13 19:42:46.765.dfm,U:\bron\ncomp POS\Main Program v T 1.0.5\Unit1.dfm=U:\bron\ncomp POS\Main Program v T 1.0.5\AddTransactionFrm.dfm</Transaction>
+    <Transaction>2009/09/18 14:27:21.453.pas,U:\bron\ncomp POS\Main Program v T 1.1.1\Unit1.pas=U:\bron\ncomp POS\Main Program v T 1.1.1\TempGrid.pas</Transaction>
+    <Transaction>2009/09/18 14:27:21.453.dfm,U:\bron\ncomp POS\Main Program v T 1.1.1\Unit1.dfm=U:\bron\ncomp POS\Main Program v T 1.1.1\TempGrid.dfm</Transaction>
+    <Transaction>2010/03/27 09:38:57.531.pas,U:\bron\ncomp POS\Main Program v T 1.1.2\Unit1.pas=U:\bron\ncomp POS\Main Program v T 1.1.2\InfAdvFindFrm.pas</Transaction>
+    <Transaction>2010/03/27 09:38:57.531.dfm,U:\bron\ncomp POS\Main Program v T 1.1.2\Unit1.dfm=U:\bron\ncomp POS\Main Program v T 1.1.2\InfAdvFindFrm.dfm</Transaction>
+    <Transaction>2010/07/29 19:36:03.156.pas,U:\bron\ncomp POS\Main Program v T 1.1.2\Unit1.pas=U:\bron\ncomp POS\Main Program v T 1.1.2\YearMonthChooseFrm.pas</Transaction>
+    <Transaction>2010/07/29 19:36:03.156.dfm,U:\bron\ncomp POS\Main Program v T 1.1.2\Unit1.dfm=U:\bron\ncomp POS\Main Program v T 1.1.2\YearMonthChooseFrm.dfm</Transaction>
+    <Transaction>2012/05/14 20:59:42.986.pas,U:\bron\ncomp POS\Main Program v T 1.1.3\Unit1.pas=U:\bron\ncomp POS\Main Program v T 1.1.3\StockEditFrm.pas</Transaction>
+    <Transaction>2012/05/14 20:59:42.986.dfm,U:\bron\ncomp POS\Main Program v T 1.1.3\Unit1.dfm=U:\bron\ncomp POS\Main Program v T 1.1.3\StockEditFrm.dfm</Transaction>
+    <Transaction>2012/10/04 14:41:34.584.pas,U:\bron\ncomp POS\Main Program v T 1.1.3\AccountSearchFrm.pas=</Transaction>
+    <Transaction>2012/10/04 14:41:34.584.dfm,U:\bron\ncomp POS\Main Program v T 1.1.3\AccountSearchFrm.dfm=</Transaction>
+    <Transaction>2013/02/02 16:05:10.852.pas,U:\bron\ncomp POS\Main Program v T 1.1.3 - D2009\Unit1.pas=U:\bron\ncomp POS\Main Program v T 1.1.3 - D2009\StockTakeFrm.pas</Transaction>
+    <Transaction>2013/02/02 16:05:10.852.dfm,U:\bron\ncomp POS\Main Program v T 1.1.3 - D2009\Unit1.dfm=U:\bron\ncomp POS\Main Program v T 1.1.3 - D2009\StockTakeFrm.dfm</Transaction>
+    <Transaction>2013/02/02 16:22:25.334.pas,U:\bron\ncomp POS\Main Program v T 1.1.3 - D2009\Unit1.pas=U:\bron\ncomp POS\Main Program v T 1.1.3 - D2009\StockTakeDetailFrm.pas</Transaction>
+    <Transaction>2013/02/02 16:22:25.334.dfm,U:\bron\ncomp POS\Main Program v T 1.1.3 - D2009\Unit1.dfm=U:\bron\ncomp POS\Main Program v T 1.1.3 - D2009\StockTakeDetailFrm.dfm</Transaction>
+    <Transaction>2013/02/16 21:11:38.642.pas,U:\bron\ncomp POS\Main Program v T 1.1.3 - D2009\Unit1.pas=U:\bron\ncomp POS\Main Program v T 1.1.3 - D2009\StockUtils.pas</Transaction>
+    <Transaction>2014/02/11 20:25:03.244.pas,u:\bron\ncomp POS\Main Program v T 1.1.5\StockListFrm.pas=</Transaction>
+    <Transaction>2014/02/11 20:25:03.252.dfm,u:\bron\ncomp POS\Main Program v T 1.1.5\StockListFrm.dfm=</Transaction>
+    <Transaction>2014/02/12 13:49:54.900.pas,u:\bron\ncomp POS\Main Program v T 1.1.5\TCDataMod.pas=</Transaction>
+    <Transaction>2014/02/12 13:49:54.900.dfm,u:\bron\ncomp POS\Main Program v T 1.1.5\TCDataMod.dfm=</Transaction>
+    <Transaction>2014/02/12 13:50:05.703.pas,u:\bron\ncomp POS\Main Program v T 1.1.5\TCsettingsFrm.pas=</Transaction>
+    <Transaction>2014/02/12 13:50:05.703.dfm,u:\bron\ncomp POS\Main Program v T 1.1.5\TCsettingsFrm.dfm=</Transaction>
+    <Transaction>2014/02/12 13:58:26.895.pas,u:\bron\ncomp POS\Main Program v T 1.1.5\TCUtilsFrm.pas=</Transaction>
+    <Transaction>2014/02/12 14:00:39.257.pas,u:\bron\ncomp POS\Main Program v T 1.1.5\BatchTypeFrm.pas=</Transaction>
+    <Transaction>2014/02/12 14:00:39.257.dfm,u:\bron\ncomp POS\Main Program v T 1.1.5\BatchTypeFrm.dfm=</Transaction>
+    <Transaction>2017/02/01 14:48:55.094.pas,u:\bron\ncomp POS\Main Program v T 1.1.5\UsageReportFrm.pas=</Transaction>
+    <Transaction>2017/02/01 14:48:55.104.dfm,u:\bron\ncomp POS\Main Program v T 1.1.5\UsageReportFrm.dfm=</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -1,0 +1,730 @@
+unit MainFrm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Buttons, StdCtrls, Registry, IniFiles, Menus, db, ExtCtrls,
+  JvExExtCtrls, JvImage, ComCtrls, JvExComCtrls, JvComCtrls, reggen4, DateUtils,
+  JvExButtons, JvBitBtn, JvDialogs, JvExStdCtrls, JvEdit, ShellAPI, UtilsUnit,
+  JvScrollPanel, JvExControls, JvLookOut, ToolWin, JvExForms, ImgList,
+  JvStatusBar, JvExtComponent;
+
+type
+  TMainForm = class(TForm)
+    Login: TGroupBox;
+    Label1: TLabel;
+    LoginEdit: TEdit;
+    Label2: TLabel;
+    PasswordEdit: TEdit;
+    Label3: TLabel;
+    IpEdit: TEdit;
+    Button8: TButton;
+    MainMenu1: TMainMenu;
+    Edit1: TMenuItem;
+    UserSetup1: TMenuItem;
+    UserLogin: TGroupBox;
+    Label4: TLabel;
+    ULoginEdit: TEdit;
+    Label5: TLabel;
+    UPasswordEdit: TEdit;
+    Button10: TButton;
+    CheckBox1: TCheckBox;
+    Help1: TMenuItem;
+    About1: TMenuItem;
+    Label6: TLabel;
+    Backup1: TMenuItem;
+    JvOpenDialog1: TJvOpenDialog;
+    JvSaveDialog1: TJvSaveDialog;
+    restore1: TMenuItem;
+    ClearProgram1: TMenuItem;
+    Panel2: TPanel;
+    JvBitBtn8: TJvBitBtn;
+    JvBitBtn9: TJvBitBtn;
+    RebuildTables1: TMenuItem;
+    JvScrollingWindow1: TJvScrollingWindow;
+    JvExpressButton1: TJvExpressButton;
+    ImageList1: TImageList;
+    JvExpressButton2: TJvExpressButton;
+    JvExpressButton3: TJvExpressButton;
+    JvExpressButton4: TJvExpressButton;
+    JvExpressButton5: TJvExpressButton;
+    JvExpressButton6: TJvExpressButton;
+    JvExpressButton7: TJvExpressButton;
+    JvExpressButton8: TJvExpressButton;
+    JvStatusBar1: TJvStatusBar;
+    JvExpressButton9: TJvExpressButton;
+    procedure FormCreate(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormPaint(Sender: TObject);
+    procedure UserSetup1Click(Sender: TObject);
+    procedure Button10Click(Sender: TObject);
+    procedure About1Click(Sender: TObject);
+    procedure UPasswordEditKeyPress(Sender: TObject; var Key: Char);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Backup1Click(Sender: TObject);
+    procedure restore1Click(Sender: TObject);
+    procedure ClearProgram1Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure JvBitBtn8Click(Sender: TObject);
+    procedure JvBitBtn9Click(Sender: TObject);
+    procedure RebuildTables1Click(Sender: TObject);
+    procedure JvExpressButton1Click(Sender: TObject);
+    procedure JvExpressButton2Click(Sender: TObject);
+    procedure JvExpressButton3Click(Sender: TObject);
+    procedure JvExpressButton4Click(Sender: TObject);
+    procedure JvExpressButton5Click(Sender: TObject);
+    procedure JvExpressButton6Click(Sender: TObject);
+    procedure JvExpressButton7Click(Sender: TObject);
+    procedure JvExpressButton8Click(Sender: TObject);
+    procedure JvExpressButton9Click(Sender: TObject);
+    procedure Housing1Click(Sender: TObject);
+  private
+    procedure BackupMySql(s:String);
+    procedure RestoreMySql(s: string);
+    procedure TestRegistration;
+    { Private declarations }
+  public
+    VisibleStore, UVisibleStore: String;
+    { Public declarations }
+  end;
+
+var
+  MainForm: TMainForm;
+  DataBaseStr: String;
+
+implementation
+        uses DataFrm2, Listsmnu, UserFrm, AboutFrm, StockFrm, InvoiceFrm, StockSearchFrm,
+  BranchFrm, PurchaseFrm, LayBuyFrm, ExtractFrm;
+
+{$R *.DFM}
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+        DataForm2.IniFile := TIniFile.Create (ChangeFileExt (Application.ExeName, '.ini'));
+
+        Dataform2.accessstr := 0;
+        ShortDateFormat := 'yyyy/MM/dd';
+        DateSeparator := '/';
+        LongTimeFormat := 'HH:mm:ss';
+        Dataform2.ProgramPath := GetCurrentDir;
+
+        VisibleStore := 'No';
+        UVisibleStore := 'No';
+
+        If DataForm2.IniFile.ReadInteger('Invoice', 'Agent', 0) = 1 then
+        begin
+          Mainform.Caption := 'Turbo POS, http://www.turbopos.co.za';
+        end;
+end;
+
+procedure TMainForm.Button8Click(Sender: TObject);
+begin
+        DataForm2.IniFile.WriteString ('Login', 'Username', LoginEdit.Text);
+        DataForm2.IniFile.WriteString ('Login', 'Password', Encrypt(PasswordEdit.Text));
+        DataForm2.IniFile.WriteString ('Login', 'Ip', IpEdit.Text);
+        If DataForm2.IniFile.ReadString('Login', 'DataBase', '') = '' then
+        begin
+          DataForm2.IniFile.WriteString('Login', 'DataBase', 'ncomp');
+          DataBaseStr := DataForm2.IniFile.ReadString('Login', 'DataBase', '');
+        end
+        else
+          DataBaseStr := DataForm2.IniFile.ReadString('Login', 'DataBase', '');
+
+        DataForm2.Connection.ConnectionString := 'Driver={mySQL ODBC 3.51 Driver};Server=' + IpEdit.Text + ';""Port=3306;Option=4;Database=' + DataBaseStr + ';Uid=' + LoginEdit.Text + ';Pwd=' + PasswordEdit.Text + ';"';
+        try
+          DataForm2.Connection.Open;
+        except
+          ShowMessage('Unable to connect to MySQL, make sure the Database exists');
+        raise;
+        end;
+
+        if Checkbox1.Checked = True then
+        begin
+          DataForm2.User_db.Open;
+          DataForm2.User_db.Locate('UserName', LoginEdit.Text, [loPartialKey, loCaseInsensitive]);
+          if DataForm2.User_db.FieldByName('UserName').asString <> LoginEdit.Text then
+          begin
+            Dataform2.User_db.Insert;
+            Dataform2.User_db.FieldByName('UserName').asString := LoginEdit.Text;
+            Dataform2.User_db.FieldByName('Password').asString := encrypt(PasswordEdit.Text);
+            DataForm2.User_db.FieldByName('Rights').asInteger := 5;
+            DataForm2.User_db.Post;
+          end;
+        end;
+
+        Dataform2.GlobalTable.Open;
+        VisibleStore := 'No';
+        UVisibleStore := 'Yes';
+        MainFrm.MainForm.Repaint;
+end;
+
+procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+        Dataform2.GlobalTable.Close;
+        Dataform2.User_db.Close;
+        SetRegistryData(HKEY_LOCAL_MACHINE,'\Software\NcompPOS\','LoggedIn', rdString, '');
+        DataForm2.IniFile.Free;
+end;
+
+
+procedure TMainForm.FormPaint(Sender: TObject);
+begin
+        If VisibleStore = 'Yes' then
+        begin
+          Login.Visible := True;
+          Login.BringToFront;
+          LoginEdit.SetFocus;
+        end
+        else
+        begin
+          Login.SendToBack;
+          Login.Visible := False;
+        end;
+        If UVisibleStore = 'Yes' then
+        begin
+          UserLogin.Visible := True;
+          UserLogin.BringToFront;
+          ULoginEdit.SetFocus;
+        end
+        else
+        begin
+          UserLogin.SendToBack;
+          UserLogin.Visible := False;
+        end;
+        TestRegistration;
+end;
+
+
+procedure TMainForm.UserSetup1Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 4) and (DataForm2.accessstr <> 0) then
+      begin
+        Dataform2.User_db.Open;
+        UserForm.showmodal;
+      end
+      else
+        showmessage('You don''t have permission to go in here!');
+end;
+
+procedure TMainForm.Button10Click(Sender: TObject);
+begin
+        DataForm2.User_db.Locate('UserName', ULoginEdit.Text, [loPartialKey, loCaseInsensitive]);
+        if DataForm2.User_db.FieldByName('UserName').asString <> ULoginEdit.Text then
+          showmessage('User Name not correct!')
+        else
+        begin
+          If decrypt(DataForm2.User_db.FieldByName('Password').asString) <> UPasswordEdit.Text then
+          begin
+            showmessage('Password not Correct!');
+            UPasswordEdit.SetFocus;
+            UPasswordEdit.SelectAll;
+          end
+          else
+          begin
+            Dataform2.accessstr := DataForm2.User_db.FieldByName('Rights').asInteger;
+            UVisibleStore := 'No';
+            SetRegistryData(HKEY_LOCAL_MACHINE,'\Software\NcompPOS\','LastLogin', rdString, ULoginEdit.Text);
+            SetRegistryData(HKEY_LOCAL_MACHINE,'\Software\NcompPOS\','LoggedIn', rdString, ULoginEdit.Text);
+            DataForm2.IniFile.WriteString('Login', 'ULogin', ULoginEdit.Text);
+            DataForm2.UserNameStr := ULoginEdit.Text;
+            JvStatusBar1.Panels[0].Text := ULoginEdit.Text + ' Logged In';
+            MainFrm.MainForm.Repaint;
+          end;
+        end;
+end;
+
+procedure TMainForm.About1Click(Sender: TObject);
+begin
+      MainForm.Hide;
+      AboutForm.showmodal;
+end;
+
+procedure TMainForm.UPasswordEditKeyPress(Sender: TObject; var Key: Char);
+begin
+      if Key = #13 then
+        Button10.Click;
+end;
+
+procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+      if MessageDlg('Close the Application?', mtConfirmation,
+        [mbOk, mbCancel], 0) = mrCancel then
+        CanClose := False;
+end;
+
+procedure TMainForm.Backup1Click(Sender: TObject);
+var
+    s: String;
+begin
+      if MessageDlg('Are you sure you want to do a backup? (REMEMBER THIS BACKUP MUST BE DONE ON THE SERVER)',
+      mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+      begin
+        if (DataForm2.User_db.FieldByName('Rights').asInteger > 2) and (DataForm2.accessstr <> 0) then
+        begin
+          s := '';
+          if FileExists('C:\Program Files\MySQL\MySQL Server 4.1\bin\mysqldump.exe') then
+          begin
+            s := 'C:\Program Files\MySQL\MySQL Server 4.1\bin\mysqldump.exe';
+          end
+          else
+          begin
+            if FileExists('C:\Program Files\MySQL\MySQL Server 5.0\bin\mysqldump.exe') then
+            begin
+              s := 'C:\Program Files\MySQL\MySQL Server 5.0\bin\mysqldump.exe';
+            end;
+          end;
+          If s = '' then
+          begin
+            JvOpenDialog1.Title := 'Select File "Mysqldump.exe" in Mysql bin directory';
+            If JvOpenDialog1.Execute then
+            begin
+              s := JvOpenDialog1.FileName;
+              BackupMySql(s);
+            end;
+          end
+          else
+          begin
+            BackupMySql(s);
+          end;
+        end
+        else
+          showMessage('You don''t have permision to go in here!');
+      end;
+end;
+
+procedure TMainForm.BackupMySql(s: string);
+var
+  s2 : String;
+begin
+     if JvSavedialog1.Execute then
+     begin
+       s2 := '--opt ' + DataForm2.IniFile.ReadString('Login', 'DataBase', 'ncomp') + ' --user=' + DataForm2.IniFile.ReadString('Login', 'UserName', '') + ' --password=' + Decrypt(DataForm2.IniFile.ReadString('Login', 'Password', '')) + ' > "' + JvSaveDialog1.FileName + '"';
+       s := '"' + s + '"';
+       ExtractForm.Memo1.Clear;
+       ExtractForm.Memo1.Lines.Add(s + ' ' + s2);
+       ExtractForm.Memo1.Lines.SaveToFile('c:\tempbat.bat');
+       if WinExecAndWait32( 'c:\tempbat.bat', '', SW_HIDE) = -1 then
+//       if ShellExecute (0, 'open', PChar('c:\tempbat.bat'), nil, nil, SW_SHOWNORMAL) <= 32 then
+         showmessage('Backup Failed, Only run on Mysql server!');
+       DeleteFile('c:\tempbat.bat');
+       showmessage('Backup Complete!');
+     end;
+end;
+
+procedure TMainForm.restore1Click(Sender: TObject);
+var
+    s: String;
+begin
+      if MessageDlg('Are you sure you want to do a restore? (REMEMBER THIS RESTORE MUST BE DONE ON THE SERVER)',
+      mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+      begin
+        if (DataForm2.User_db.FieldByName('Rights').asInteger > 4) and (DataForm2.accessstr <> 0) then
+        begin
+          s := '';
+          if FileExists('C:\Program Files\MySQL\MySQL Server 4.1\bin\mysql.exe') then
+          begin
+            s := 'C:\Program Files\MySQL\MySQL Server 4.1\bin\mysql.exe';
+          end
+          else
+          begin
+            if FileExists('C:\Program Files\MySQL\MySQL Server 5.0\bin\mysql.exe') then
+            begin
+              s := 'C:\Program Files\MySQL\MySQL Server 5.0\bin\mysql.exe';
+            end;
+          end;
+          If s = '' then
+          begin
+            If JvOpenDialog1.Execute then
+            begin
+              JvOpenDialog1.Title := 'Select File "Mysql.exe" in Mysql bin directory';
+              s := JvOpenDialog1.FileName;
+              RestoreMySql(s);
+            end;
+          end
+          else
+          begin
+            RestoreMySql(s);
+          end;
+        end
+        else
+          showMessage('You don''t have permision to go in here!');
+      end;
+end;
+
+procedure TMainForm.RestoreMySql(s: string);
+var
+  s2 : String;
+begin
+     JvOpendialog1.Title := 'Select Restore File';
+     JvOpenDialog1.DefaultExt := 'sql';
+     JvOpenDialog1.FilterIndex := 2;
+     if JvOpendialog1.Execute then
+     begin
+       s2 := '--user=' + DataForm2.IniFile.ReadString('Login', 'UserName', '') + ' --password=' + Decrypt(DataForm2.IniFile.ReadString('Login', 'Password', '')) + ' < "' + JvOpenDialog1.FileName + '"';
+       s := '"' + s + '"';
+       ExtractForm.Memo1.Clear;
+       Extractform.Memo1.Lines.LoadFromFile(JvOpendialog1.FileName);
+       If copy(ExtractForm.Memo1.Lines[2],1,3) <> 'USE' then
+       begin
+         ExtractForm.Memo1.Lines[1] := 'CREATE DATABASE /*!32312 IF NOT EXISTS*/ ' + DataForm2.IniFile.ReadString('Login', 'DataBase', 'ncomp') + ';';
+         ExtractForm.Memo1.Lines[2] := 'USE ' + DataForm2.IniFile.ReadString('Login', 'DataBase', 'ncomp') + ';';
+         ExtractForm.Memo1.Lines.SaveToFile(JvOpenDialog1.FileName);
+       end;
+       ExtractForm.Memo1.Clear;
+       ExtractForm.Memo1.Lines.Add(s + ' ' + s2);
+       ExtractForm.Memo1.Lines.SaveToFile('c:\tempbat.bat');
+       if WinExecAndWait32( 'c:\tempbat.bat', '', SW_HIDE) = -1 then
+//       if ShellExecute (0, 'open', PChar('c:\tempbat.bat'), nil, nil, SW_SHOWNORMAL) <= 32 then
+         showmessage('Backup Failed, Only run on Mysql server!');
+       DeleteFile('c:\tempbat.bat');
+       Showmessage('Restore Finished program will exit!');
+       Application.Terminate;
+     end;
+end;
+
+procedure TMainForm.ClearProgram1Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 4) and (DataForm2.accessstr <> 0) then
+      begin
+        if MessageDlg('Are you sure you want to CLEAR PROGRAM, EVERYTHING WILL BE GONE!',
+        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+        begin
+          DataForm2.Query2.Active := False;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('Delete FROM invoiceitem_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('Delete FROM invoice_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('Delete FROM cashup_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('Delete FROM notes_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('Delete FROM stock_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('Delete FROM stocktrnsfer_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('Delete FROM stocktrnsferitem_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('Delete FROM trans_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+        end;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+begin
+        LoginEdit.Text := DataForm2.IniFile.ReadString('Login', 'UserName', '');
+        PasswordEdit.Text := Decrypt(DataForm2.IniFile.ReadString('Login', 'Password', ''));
+        IpEdit.Text := DataForm2.IniFile.ReadString('Login', 'Ip', '');
+        try
+          ULoginEdit.Text := GetRegistryData(HKEY_LOCAL_MACHINE,'\Software\NcompPOS', 'LastLogin');
+        except
+          ULoginEdit.Text := '';
+        end;
+        UPasswordEdit.Text := '';
+        DataBaseStr := DataForm2.IniFile.ReadString('Login', 'DataBase', 'ncomp');
+
+        if LoginEdit.Text = '' then
+        begin
+          VisibleStore := 'Yes';
+        end
+        else
+        begin
+          DataForm2.Connection.ConnectionString := 'Driver={mySQL ODBC 3.51 Driver};Server=' + IpEdit.Text + ';""Port=3306;Option=4;Database=' + DataBaseStr + ';Uid=' + LoginEdit.Text + ';Pwd=' + PasswordEdit.Text + ';"';
+          try
+            DataForm2.Connection.Open;
+          except
+          begin
+            ShowMessage('Unable to connect to MySQL Server, make sure the Database exist');
+            Application.Terminate;
+          end;
+          raise;
+          end;
+          UVisibleStore := 'Yes';
+          DataForm2.User_db.Open;
+          Dataform2.GlobalTable.Open;
+        end;
+  
+        if DataForm2.IniFile.ReadString('BranchSetup', 'BranchNo', '0') <> '0' then
+        begin
+          JvExpressButton3.Hint := 'Stock Requisitions';
+          JvBitBtn8.Caption := 'Stock Recq.';
+          JvBitBtn9.Caption := 'GRN';
+        end;
+        if StrtoBool(DataForm2.IniFile.ReadString ('LayBuySetup', 'Enable', '0')) = False then
+          JvExpressButton4.Enabled := False;
+        If FileExists(Dataform2.ProgramPath + '.\Housing.exe') then
+        begin
+          JvExpressButton9.Visible := True;
+        end;
+        JvStatusBar1.Panels[1].Text := DataForm2.IniFile.ReadString('Login', 'Ip', '');
+        MainForm.Caption := Mainform.Caption + ': Version ' + GetFileInfo(Application.ExeName, 'FileVersion');
+end;
+
+procedure TMainForm.JvBitBtn8Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 3) and (DataForm2.accessstr <> 0) then
+      begin
+        Application.CreateForm(TPurchaseForm, PurchaseForm);
+        Purchaseform.FromWhere := '';
+        PurchaseForm.ShowModal;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TMainForm.JvBitBtn9Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 3) and (DataForm2.accessstr <> 0) then
+      begin
+        Application.CreateForm(TPurchaseForm, PurchaseForm);
+        if DataForm2.IniFile.ReadString('BranchSetup', 'BranchNo', '0') = '0' then
+          Purchaseform.FromWhere := 'hqrecq'
+        else
+          Purchaseform.FromWhere := 'GRN';
+        PurchaseForm.ShowModal;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TMainForm.TestRegistration();
+var
+  i: Integer;
+begin
+        if not DataForm2.Regware41.Registered then
+        begin
+          if MessageDlg('Program is not registered, Yes to Enter a new code - No to exit', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+          begin
+            MainForm.Hide;
+            AboutForm.Showmodal;
+          end
+          else
+            Application.Terminate;
+        end
+        else
+        begin
+          if date > CheckCodeExpiration(DataForm2.Regware41.RegCode) then
+          begin
+            if MessageDlg('Program has expired, Yes to Enter a new code - No to exit', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+            begin
+              MainForm.Hide;
+              AboutForm.Showmodal;
+            end
+            else
+              Application.Terminate;
+          end
+          else
+          begin
+            i := DaysBetween(Date,CheckCodeExpiration(DataForm2.Regware41.RegCode));
+            if i < 10 then
+              Label6.Caption := 'Program will expire in ' + inttostr(i) + ' Days. go to http://www.ncomp.co.za for new Key'
+            else
+              Label6.Caption := '';
+          end;
+        end;
+end;
+
+procedure TMainForm.RebuildTables1Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 4) and (DataForm2.accessstr <> 0) then
+      begin
+        if MessageDlg('Are you sure you want to Rebuild the tables!',
+        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+        begin
+          DataForm2.Query2.Active := False;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('REPAIR TABLE invoiceitem_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('REPAIR TABLE invoice_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('REPAIR TABLE cashup_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('REPAIR TABLE notes_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('REPAIR TABLE stock_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('REPAIR TABLE stocktrnsfer_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('REPAIR TABLE stocktrnsferitem_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('REPAIR TABLE trans_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('REPAIR TABLE user_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          with DataForm2.Query2.SQL do begin
+            Clear;
+            Add('REPAIR TABLE global_db');
+          end;
+          DataForm2.Query2.ExecSQL;
+          showmessage('Finished!');
+        end;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TMainForm.JvExpressButton1Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 2) and (DataForm2.accessstr <> 0) then
+      begin
+        Application.CreateForm(TInvoiceForm, InvoiceForm);
+        Application.CreateForm(TStockSearchForm, StockSearchForm);
+        InvoiceForm.ShowModal;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TMainForm.JvExpressButton2Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 3) and (DataForm2.accessstr <> 0) then
+      begin
+        Application.CreateForm(TStockForm, StockForm);
+        StockForm.Showmodal;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TMainForm.JvExpressButton3Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 3) and (DataForm2.accessstr <> 0) then
+      begin
+        If Panel2.Visible = False then
+          Panel2.Visible := True
+        else
+          Panel2.Visible := False;
+      end
+      else
+        showmessage('You don''t have permission to go in here!');
+end;
+
+procedure TMainForm.JvExpressButton4Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 2) and (DataForm2.accessstr <> 0) then
+      begin
+          Application.CreateForm(TLayBuyForm, LayBuyForm);
+          LayBuyform.FromWhere := 'MAIN';
+          LayBuyform.showmodal;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TMainForm.JvExpressButton5Click(Sender: TObject);
+begin
+        if (DataForm2.User_db.FieldByName('Rights').asInteger > 2) and (DataForm2.accessstr <> 0) then
+        begin
+          Application.CreateForm(TListsMenu, ListsMenu);
+          ListsMenu.showmodal;
+        end
+        else
+          showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TMainForm.JvExpressButton6Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 3) and (DataForm2.accessstr <> 0) then
+      begin
+        Application.CreateForm(TBranchForm, BranchForm);
+        BranchForm.ShowModal;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TMainForm.JvExpressButton7Click(Sender: TObject);
+begin
+      Close;
+end;
+
+procedure TMainForm.JvExpressButton8Click(Sender: TObject);
+begin
+        try
+          ULoginEdit.Text := GetRegistryData(HKEY_LOCAL_MACHINE,'\Software\NcompPOS', 'LastLogin');
+        except
+          ULoginEdit.Text := '';
+        end;
+        SetRegistryData(HKEY_LOCAL_MACHINE,'\Software\NcompPOS\','LoggedIn', rdString, '');
+        UPasswordEdit.Text := '';
+        UVisibleStore := 'Yes';
+        Dataform2.accessstr := 0;
+//        JvScheduledEvents1.PauseAll;
+        JvStatusBar1.Panels[0].Text := 'Logged Out';
+        MainForm.Repaint;
+end;
+
+procedure TMainForm.JvExpressButton9Click(Sender: TObject);
+begin
+      if (DataForm2.User_db.FieldByName('Rights').asInteger > 3) and (DataForm2.accessstr <> 0) then
+      begin
+        If FileExists(Dataform2.ProgramPath + '\Housing.exe') then
+        begin
+          ShellExecute (0, 'open', PChar(Dataform2.ProgramPath + '\Housing.exe'), nil, nil, SW_SHOWNORMAL);
+        end;
+      end
+      else
+        showMessage('You don''t have permision to go in here!');
+end;
+
+procedure TMainForm.Housing1Click(Sender: TObject);
+begin
+      JvExpressButton9.Click;
+end;
+
+end.
+

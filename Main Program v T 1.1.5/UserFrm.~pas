@@ -1,0 +1,512 @@
+unit UserFrm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Grids, DBGrids, JvExDBGrids, JvDBGrid, ExtCtrls, DBCtrls,
+  StdCtrls, Buttons, IdComponent, IdTCPConnection, IdTCPClient,
+  IdExplicitTLSClientServerBase, IdMessageClient, IdSMTPBase, IdSMTP,
+  IdBaseComponent, IdMessage, IdAttachmentFile, JvBaseDlg,
+  JvSelectDirectory, JvExButtons, JvBitBtn, JvExStdCtrls, JvEdit, Mask,
+  JvExMask, JvToolEdit, JvExControls, JvComponent, JvSpeedButton,
+  JvCheckBox, JvValidateEdit, JvSpin, UtilsUnit, IdRawBase, IdRawClient,
+  IdIcmpClient;
+
+type
+  TUserForm = class(TForm)
+    JvDBGrid1: TJvDBGrid;
+    Memo1: TMemo;
+    Button1: TButton;
+    Password1: TEdit;
+    Password2: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    BitBtn1: TBitBtn;
+    Button2: TButton;
+    Button3: TButton;
+    Button5: TButton;
+    GroupBox1: TGroupBox;
+    Memo2: TMemo;
+    ComportSelect: TComboBox;
+    PrinterSelect: TComboBox;
+    Label3: TLabel;
+    Label4: TLabel;
+    GroupBox2: TGroupBox;
+    Label5: TLabel;
+    Label6: TLabel;
+    SmtpEdit: TEdit;
+    FromEdit: TEdit;
+    StatusMemo: TMemo;
+    MailMessage: TIdMessage;
+    SMTP: TIdSMTP;
+    SelectPath: TJvSelectDirectory;
+    Memo3: TMemo;
+    ComboBox1: TComboBox;
+    Label12: TLabel;
+    Button8: TButton;
+    GroupBox4: TGroupBox;
+    CheckBox3: TCheckBox;
+    GroupBox5: TGroupBox;
+    JvBitBtn1: TJvBitBtn;
+    JvBitBtn2: TJvBitBtn;
+    JvEdit1: TJvEdit;
+    Label13: TLabel;
+    Label14: TLabel;
+    JvEdit2: TJvEdit;
+    Label15: TLabel;
+    JvBitBtn3: TJvBitBtn;
+    CheckBox4: TCheckBox;
+    CheckBox5: TCheckBox;
+    Label16: TLabel;
+    Edit6: TEdit;
+    Label21: TLabel;
+    GroupBox6: TGroupBox;
+    Label22: TLabel;
+    Edit12: TEdit;
+    Label23: TLabel;
+    Edit13: TEdit;
+    JvCheckBox1: TJvCheckBox;
+    Label28: TLabel;
+    Edit18: TJvValidateEdit;
+    JvSpinEdit1: TJvSpinEdit;
+    Label30: TLabel;
+    JvSpinEdit2: TJvSpinEdit;
+    Label31: TLabel;
+    Label32: TLabel;
+    JvSpinEdit3: TJvSpinEdit;
+    CheckBox6: TCheckBox;
+    Label33: TLabel;
+    Edit20: TEdit;
+    JvSpeedButton13: TJvSpeedButton;
+    ICMP: TIdIcmpClient;
+    CheckBox7: TCheckBox;
+    JvBitBtn4: TJvBitBtn;
+    DBEdit1: TDBEdit;
+    DBEdit2: TDBEdit;
+    procedure Button1Click(Sender: TObject);
+    procedure JvDBGrid1CellClick(Column: TColumn);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure ComportSelectClick(Sender: TObject);
+    procedure PrinterSelectClick(Sender: TObject);
+    procedure SmtpEditChange(Sender: TObject);
+    procedure FromEditChange(Sender: TObject);
+    procedure ComboBox1Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
+    procedure CheckBox3Click(Sender: TObject);
+    procedure JvBitBtn1Click(Sender: TObject);
+    procedure JvBitBtn2Click(Sender: TObject);
+    procedure JvEdit1Change(Sender: TObject);
+    procedure JvEdit2Change(Sender: TObject);
+    procedure JvBitBtn3Click(Sender: TObject);
+    procedure CheckBox4Click(Sender: TObject);
+    procedure CheckBox5Click(Sender: TObject);
+    procedure Edit6Change(Sender: TObject);
+    procedure Edit12Change(Sender: TObject);
+    procedure Edit13Change(Sender: TObject);
+    procedure JvCheckBox1Click(Sender: TObject);
+    procedure Edit18Change(Sender: TObject);
+    procedure JvSpinEdit1Change(Sender: TObject);
+    procedure JvSpinEdit2Change(Sender: TObject);
+    procedure JvSpinEdit3Change(Sender: TObject);
+    procedure CheckBox6Click(Sender: TObject);
+    procedure Edit20Change(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure JvSpeedButton13Click(Sender: TObject);
+    procedure ICMPReply(ASender: TComponent;
+      const AReplyStatus: TReplyStatus);
+    procedure CheckBox7Click(Sender: TObject);
+    procedure JvBitBtn4Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    AccFromWhere: String;
+    AccTypeID, AccNo, PingReturn: Integer;
+    procedure AccountShow;
+  end;
+
+var
+  UserForm: TUserForm;
+  UserStr: String;
+
+implementation
+  uses DataFrm2, InvoiceFrm, DataFrm, AccountSearchFrm, BatchTypeFrm,
+  TCDataMod, TCsettingsFrm;
+
+{$R *.dfm}
+
+procedure TUserForm.Button1Click(Sender: TObject);
+var
+    beforepass: String;
+begin
+        If Password1.Text = Password2.Text then
+        begin
+          if (DataForm2.user_dbstrState <> 'Edit') and (DataForm2.user_dbstrState <> 'Insert') then
+            Dataform2.User_db.Edit;
+          beforepass := decrypt(Dataform2.User_db.FieldByName('Password').asString);
+          Dataform2.User_db.FieldByName('Password').asString := encrypt(Password1.Text);
+          if decrypt(Dataform2.User_db.FieldByName('Password').asString) <> beforepass then
+            Dataform2.User_db.Post
+          else
+            DataForm2.User_db.Cancel;
+          showmessage('Password set!');
+        end
+        else
+        begin
+          showmessage('Passwords don''t match');
+          Password1.SetFocus;
+        end;
+end;
+
+procedure TUserForm.JvDBGrid1CellClick(Column: TColumn);
+begin
+        Password1.Text := Decrypt(DataForm2.User_db.FieldbyName('Password').AsString);
+        Password2.Text := Decrypt(Dataform2.User_db.FieldbyName('Password').AsString);
+end;
+
+procedure TUserForm.Button2Click(Sender: TObject);
+begin
+        if (DataForm2.User_dbstrState = 'Edit') or (DataForm2.User_dbstrState = 'Insert') then
+        begin
+          Dataform2.User_db.Post;
+          Dataform2.User_db.Refresh;
+          showmessage('Set the password!');
+        end;
+end;
+
+procedure TUserForm.Button3Click(Sender: TObject);
+begin
+        Dataform2.User_db.Insert;
+        Dataform2.User_db.FieldByName('Rights').AsInteger := 1;
+        JVDBGrid1.SetFocus;
+end;
+
+procedure TUserForm.FormShow(Sender: TObject);
+begin
+        SmtpEdit.Text := DataForm2.IniFile.ReadString('EMailSetup', 'smtpserver', SmtpEdit.text);
+        FromEdit.Text := DataForm2.IniFile.ReadString('EMailSetup', 'fromemail', FromEdit.text);
+        CheckBox3.Checked := StrtoBool(DataForm2.IniFile.ReadString ('Settings', 'ShowAdditions', '0'));
+        JvEdit1.Text := DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '');
+        JvEdit2.Text := DataForm2.IniFile.ReadString('BranchSetup', 'BranchNo', '0');
+        CheckBox4.Checked := StrtoBool(DataForm2.IniFile.ReadString ('Settings', 'Barcodetype', '-1'));
+        CheckBox5.Checked := StrtoBool(DataForm2.IniFile.ReadString ('Settings', 'Barcodeprice', '0'));
+        CheckBox6.Checked := StrtoBool(DataForm2.IniFile.ReadString ('Settings', 'NegQty', '0'));
+        Edit6.Text := DataForm2.IniFile.ReadString ('Settings', 'OtherDescr', 'Other');
+        Edit18.Value := DataForm2.IniFile.ReadInteger ('Settings', 'MinimumMarkup', 0);
+        Edit12.Text := FloattoStr(DataForm2.IniFile.ReadFloat('LayBuySetup', 'Deposit', 0));
+        Edit13.Text := InttoStr(DataForm2.IniFile.ReadInteger ('LayBuySetup', 'Term', 0));
+        JvCheckBox1.Checked := StrtoBool(DataForm2.IniFile.ReadString ('LayBuySetup', 'Enable', '0'));
+        JvSpinEdit1.Value := DataForm2.IniFile.ReadInteger ('Settings', 'FooterFontSize', 10);
+        JvSpinEdit2.Value := DataForm2.IniFile.ReadInteger ('Settings', 'A4InvLineCount', 27);
+        JvSpinEdit3.Value := DataForm2.IniFile.ReadFloat ('Settings', 'A4InvBottomStart', 8.5);
+        CheckBox7.Checked := StrtoBool(DataForm2.IniFile.ReadString ('Settings', 'CurrentUser', '0'));
+        UserStr := Dataform2.User_dbUserName.Value;
+        Memo2.Lines.LoadFromFile(Dataform2.ProgramPath + '\client.txt');
+        Memo3.Lines.LoadFromFile(Dataform2.ProgramPath + '\footer.txt');
+        if DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0') <> '0' then
+          ComportSelect.Text := DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0');
+        if DataForm2.IniFile.ReadString ('ComportSection', 'Printer', '0') <> '0' then
+          PrinterSelect.Text := DataForm2.IniFile.ReadString ('ComportSection', 'Printer', '0');
+        if DataForm2.IniFile.ReadString ('ComportSection', 'SerialCom', '0') <> '0' then
+          ComboBox1.Text := DataForm2.IniFile.ReadString ('ComportSection', 'SerialCom', '0');
+//        Edit5.Text := InttoStr(DataForm2.IniFile.ReadInteger('Invoice', 'InvNo', 0));
+//        Edit11.Text := InttoStr(DataForm2.IniFile.ReadInteger('Invoice', 'PurchaseInvNo', 0));
+        Edit20.Text := DataForm2.IniFile.ReadString('Settings', 'CommentDescr', 'Comment');
+        if DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '') = '' then
+        begin
+          JvBitBtn3.Enabled := False;
+        end;
+end;
+
+procedure TUserForm.Button5Click(Sender: TObject);
+begin
+      if MessageDlg('Are you sure you want to Delete User ' + Dataform2.User_db.FieldByName('UserName').AsString + '?',
+      mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+      begin
+        Dataform2.User_db.Delete;
+      end;
+end;
+
+procedure TUserForm.ComportSelectClick(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('ComportSection', 'Comport', ComportSelect.Items[ComportSelect.ItemIndex]);
+end;
+
+procedure TUserForm.PrinterSelectClick(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('ComportSection', 'Printer', PrinterSelect.Items[PrinterSelect.ItemIndex]);
+end;
+
+procedure TUserForm.SmtpEditChange(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('EMailSetup', 'smtpserver', SmtpEdit.text);
+end;
+
+procedure TUserForm.FromEditChange(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('EMailSetup', 'fromemail', FromEdit.text);
+end;
+
+procedure TUserForm.ComboBox1Click(Sender: TObject);
+begin                                      
+      DataForm2.IniFile.WriteString ('ComportSection', 'SerialCom', Combobox1.Items[Combobox1.ItemIndex]);
+end;
+
+procedure TUserForm.Button8Click(Sender: TObject);
+begin
+        Application.CreateForm(TInvoiceForm, InvoiceForm);
+        InvoiceForm.KickDrawer();
+        InvoiceForm.FreeOnRelease;
+end;
+
+procedure TUserForm.CheckBox3Click(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('Settings', 'ShowAdditions', BooltoStr(CheckBox3.Checked));
+end;
+
+procedure TUserForm.JvBitBtn1Click(Sender: TObject);
+begin
+        Memo3.Lines.SaveToFile(Dataform2.ProgramPath + '\footer.txt');
+end;
+
+procedure TUserForm.JvBitBtn2Click(Sender: TObject);
+begin
+        Memo2.Lines.SaveToFile(Dataform2.ProgramPath + '\client.txt');
+end;
+
+procedure TUserForm.JvEdit1Change(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('BranchSetup', 'HQAddress', JvEdit1.text);
+      if DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '') <> '' then
+      begin
+        JvBitBtn3.Enabled := True;
+      end;
+end;
+
+procedure TUserForm.JvEdit2Change(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('BranchSetup', 'BranchNo', JvEdit2.text);
+end;
+
+procedure TUserForm.JvBitBtn3Click(Sender: TObject);
+begin
+      if (DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '') <> '') then
+      begin
+        if DataForm2.IniFile.ReadString('BranchSetup', 'BranchNo', '0') <> '0' then
+        begin
+          DataForm.Connection.ConnectionString := 'Driver={mySQL ODBC 3.51 Driver};Server=' + DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '') + ';""Port=3306;Option=4;Database=' + DataForm2.IniFile.ReadString('Login', 'DataBase', '') + ';Uid=' + DataForm2.IniFile.ReadString('Login', 'UserName', '') + ';Pwd=' + Decrypt(DataForm2.IniFile.ReadString('Login', 'Password', '')) + ';"';
+          try
+            DataForm.Connection.Open;
+          except
+          begin
+            ShowMessage('Unable to connect to HQ, make sure Address is correct');
+            DataForm.Connection.Close;
+          end;
+          raise;
+          end;
+          Dataform.Connection.BeginTrans;
+          try
+            DataForm.User_db.Open;
+            DataForm.BranchTable.Open;
+            Dataform.User_db.DisableControls;
+            DataForm.User_db.First;
+            while not DataForm.User_db.EOF do
+            begin
+              If DataForm.User_dbUserName.Value <> 'root' then
+              begin
+                if not dataform2.User_db.Locate('UserName', DataForm.User_dbUserName.Value,[]) then
+                begin
+                  Dataform2.User_db.Insert;
+                  Dataform2.User_dbUserName.Assign(DataForm.User_dbUserName);
+                  DataForm2.User_dbPassword.Assign(Dataform.User_dbPassword);
+                  Dataform2.User_dbRights.Assign(Dataform.User_dbRights);
+                  DataForm2.User_db.Post;
+                end
+                else
+                begin
+                  If Dataform2.User_dbRights.Value <> DataForm.User_dbRights.Value then
+                  begin
+                    Dataform2.User_db.Edit;
+                    Dataform2.User_dbRights.Assign(Dataform.User_dbRights);
+                    Dataform2.User_db.Post;
+                  end;
+                end;
+              end;
+              DataForm.User_db.Next;
+            end;
+            Dataform.User_db.EnableControls;
+            DataForm.User_db.Close;
+            if not dataform.BranchTable.Locate('Nr', DataForm2.IniFile.ReadString('BranchSetup', 'BranchNo', '0'),[]) then
+            begin
+              showmessage('Branch not found!');
+            end
+            else
+            begin
+              If DataForm.BranchTableStartInvNo.Value > DataForm2.IniFile.ReadInteger('Invoice', 'InvNo', 0) then
+                DataForm2.IniFile.WriteInteger ('Invoice', 'InvNo', DataForm.BranchTableStartInvNo.Value);
+            end;
+            Dataform.Connection.CommitTrans;
+          finally
+            if DataForm.Connection.InTransaction then
+            begin
+              Dataform.Connection.RollbackTrans;
+              showmessage('Receiving failed please try again later or call support');
+            end;
+          end;
+          DataForm.BranchTable.Close;
+          DataForm.Connection.Close;
+          DataForm2.User_db.Locate('UserName', DataForm2.UserNameStr, []);
+        end
+        else
+          showmessage('No Branch No in setup!');
+      end
+      else
+        showmessage('No HQ Address in setup!');
+end;
+
+procedure TUserForm.CheckBox4Click(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('Settings', 'Barcodetype', BooltoStr(CheckBox4.Checked));
+end;
+
+procedure TUserForm.CheckBox5Click(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('Settings', 'Barcodeprice', BooltoStr(CheckBox5.Checked));
+end;
+
+procedure TUserForm.Edit6Change(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('Settings', 'OtherDescr', Edit6.Text);
+end;
+
+procedure TUserForm.Edit12Change(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteFloat ('LayBuySetup', 'Deposit', StrtoFloat(Edit12.text));
+end;
+
+procedure TUserForm.Edit13Change(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteInteger('LayBuySetup', 'Term', StrtoInt(Edit13.text));
+end;
+
+procedure TUserForm.JvCheckBox1Click(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('LayBuySetup', 'Enable', BooltoStr(JvCheckBox1.Checked));
+end;
+
+procedure TUserForm.AccountShow();
+begin
+      Application.CreateForm(TAccountSearchForm, AccountSearchForm);
+      with TCData.TurbocashDb.Params do
+      begin
+        clear;
+        Add('path=' + DataForm2.IniFile.ReadString('TCSetup', 'TCPath', ''));
+      end;
+      TCData.TurbocashDb.Connected := True;
+      TCData.tblAccount.Open;
+      TCData.tblAccount.Filtered := False;
+      If AccFromWhere = 'LBCredAcc' then
+        TCData.tblAccount.Filter := 'WAccountTypeID = 1 or WAccountTypeID = 2'
+      else
+        TCData.tblAccount.Filter := 'WAccountTypeID=' + InttoStr(AccTypeID);
+      TCData.tblAccount.Filtered := True;
+      If (AccNo <> 0) and (AccFromWhere <> 'CashDebAcc') then
+      begin
+        TCData.tblAccount.Locate('WAccountID',InttoStr(AccNo),[]);
+      end;
+      If (AccFromWhere = 'CashDebAcc') then
+      begin
+        TCData.tblAccount.Locate('SAccountCode',TCSettingsForm.Edit1.Text,[]);
+      end;
+      AccountSearchForm.FromWhere := AccFromWhere;
+      AccountSearchForm.showModal;
+      TCData.tblAccount.Filtered := False;
+      TCData.tblAccount.Close;
+      TCData.TurbocashDb.Connected := False;
+end;
+
+procedure TUserForm.Edit18Change(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteInteger ('Settings', 'MinimumMarkup', Edit18.Value);
+end;
+
+procedure TUserForm.JvSpinEdit1Change(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteFloat('Settings', 'FooterFontSize', JvSpinEdit1.Value);
+end;
+
+procedure TUserForm.JvSpinEdit2Change(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteFloat('Settings', 'A4InvLineCount', JvSpinEdit2.Value);
+end;
+
+procedure TUserForm.JvSpinEdit3Change(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteFloat('Settings', 'A4InvBottomStart', JvSpinEdit3.Value);
+end;
+
+procedure TUserForm.CheckBox6Click(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('Settings', 'NegQty', BooltoStr(CheckBox6.Checked));
+end;
+
+procedure TUserForm.Edit20Change(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('Settings', 'CommentDescr', Edit20.Text);
+end;
+
+procedure TUserForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+      if (DataForm2.GlobalTablestrState = 'Edit') or (DataForm2.GlobalTablestrState = 'Insert') then
+      begin
+        try
+          Dataform2.GlobalTable.Post;
+        except
+          on E : Exception do
+            showmessage(E.Message);
+        end;
+      end;
+      DataForm2.User_db.Locate('UserName', UserStr, []);
+end;
+
+procedure TUserForm.JvSpeedButton13Click(Sender: TObject);
+var
+    i: Integer;
+begin
+  ICMP.ReceiveTimeout := 3000;
+  PingReturn := 0;
+  JvSpeedButton13.Enabled := False;
+  try
+    ICMP.Host := DataForm2.IniFile.ReadString('BranchSetup', 'HQAddress', '');
+    for i := 1 to 5 do begin
+      ICMP.Ping;
+      Application.ProcessMessages;
+    end;
+  finally JvSpeedButton13.Enabled := True; end;
+  showmessage('Hq Ping returned ' + InttoStr(PingReturn) + ' / 5 Packets, each packet of 1044 bytes was waited for 3000 Milliseconds');
+end;
+
+procedure TUserForm.ICMPReply(ASender: TComponent;
+  const AReplyStatus: TReplyStatus);
+begin
+      If AReplyStatus.BytesReceived <> 0 then
+        Inc(PingReturn);
+end;
+
+procedure TUserForm.CheckBox7Click(Sender: TObject);
+begin
+      DataForm2.IniFile.WriteString ('Settings', 'CurrentUser', BooltoStr(CheckBox7.Checked));
+end;
+
+procedure TUserForm.JvBitBtn4Click(Sender: TObject);
+begin
+      Application.CreateForm(TTCSettingsForm, TCSettingsForm);
+      TCSettingsForm.showmodal;
+      TCSettingsForm.FreeonRelease;
+end;
+
+end.

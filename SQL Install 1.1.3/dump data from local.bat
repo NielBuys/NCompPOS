@@ -1,0 +1,1 @@
+"C:\Program Files\MySQL\MySQL Server 4.1\bin\mysqldump" --opt riskfin --user=root --password=djb115 > structure.sql

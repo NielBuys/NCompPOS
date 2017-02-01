@@ -1,0 +1,1 @@
+ALTER TABLE `ncomp`.`invoiceitem_db` MODIFY COLUMN `Qty` DECIMAL(8,2) DEFAULT NULL;

@@ -1,0 +1,117 @@
+unit DataFrm;
+
+interface
+
+uses
+  SysUtils, Classes, DB, ADODB;
+
+type
+  TDataForm = class(TDataModule)
+    UserSource: TDataSource;
+    User_db: TADOTable;
+    User_dbNr: TAutoIncField;
+    User_dbUserName: TStringField;
+    User_dbPassword: TStringField;
+    User_dbRights: TIntegerField;
+    StockSource: TDataSource;
+    CashUpSource: TDataSource;
+    CashUpTable: TADOTable;
+    CashUpTableNr: TAutoIncField;
+    CashUpTableDate: TIntegerField;
+    CashUpTableUser: TStringField;
+    CashUpTableRealCashTotal: TBCDField;
+    CashUpTableRealChequesTotal: TBCDField;
+    CashUpTableRealCreditCardTotal: TBCDField;
+    CashUpTableCountCashTotal: TBCDField;
+    CashUpTableCountChequesTotal: TBCDField;
+    CashUpTableCountCreditCardTotal: TBCDField;
+    CashUpTableTotalInvoices: TIntegerField;
+    CashUpTableCUClosed: TStringField;
+    StockTrnsferSource: TDataSource;
+    StocktrnsferItemSource: TDataSource;
+    BranchSource: TDataSource;
+    BranchTable: TADOTable;
+    BranchTableNr: TAutoIncField;
+    BranchTableName: TStringField;
+    BranchTableTel: TStringField;
+    BranchTableAdr1: TStringField;
+    BranchTableAdr2: TStringField;
+    BranchTableAdr3: TStringField;
+    BranchTablePCode: TStringField;
+    BranchTableContact: TStringField;
+    BranchTableLastSync: TIntegerField;
+    BranchTableCreated: TIntegerField;
+    Connection: TADOConnection;
+    BranchTableStartInvNo: TIntegerField;
+    Query3: TADOQuery;
+    CashUpTableSyncHQ: TIntegerField;
+    CashUpTableRealOtherTotal: TBCDField;
+    CashUpTableCountOtherTotal: TBCDField;
+    CashUpTableRealLayBuys: TBCDField;
+    CashUpTableCountLayBuys: TBCDField;
+    CashUpTableTotalLayBuys: TIntegerField;
+    TransSource: TDataSource;
+    TransTable: TADOTable;
+    TransTableNr: TAutoIncField;
+    TransTableDescription: TStringField;
+    TransTableAmmount: TBCDField;
+    TransTableDate: TIntegerField;
+    TransTableLinkID: TIntegerField;
+    TransTableShiftSet: TIntegerField;
+    TransTableSyncHQ: TIntegerField;
+    TransTablePaymentType: TStringField;
+    TransTableCUSet: TIntegerField;
+    TransTablePaymentBy: TStringField;
+    Query1: TADOQuery;
+    Query2: TADOQuery;
+    CashUpTableTimeStamp: TStringField;
+    StocktrnsferItemTable: TADOQuery;
+    StocktrnsferItemTableNr: TAutoIncField;
+    StocktrnsferItemTableStockNo: TIntegerField;
+    StocktrnsferItemTableQty: TBCDField;
+    StocktrnsferItemTableBeforeQty: TBCDField;
+    StocktrnsferItemTableDescription: TStringField;
+    StocktrnsferItemTableLinkID: TIntegerField;
+    StocktrnsferItemTableTCStockNo: TStringField;
+    StocktrnsferItemTableTransfered: TIntegerField;
+    StockTrnsferTable: TADOQuery;
+    StockTrnsferTableNr: TAutoIncField;
+    StockTrnsferTableBranch_no: TIntegerField;
+    StockTrnsferTableDate: TIntegerField;
+    StockTrnsferTableSync: TIntegerField;
+    StockTrnsferTableClosed: TStringField;
+    StockTable: TADOQuery;
+    StockTableNr: TAutoIncField;
+    StockTableDescription: TStringField;
+    StockTableDateCreated: TIntegerField;
+    StockTableDateChanged: TIntegerField;
+    StockTableCostPrice: TBCDField;
+    StockTableSalesPrice: TBCDField;
+    StockTableSalesPrice2: TBCDField;
+    StockTableBarcode: TStringField;
+    StockTableQty: TBCDField;
+    StockTableAlertQty: TBCDField;
+    StockTableNonStockItem: TStringField;
+    StockTableStartingQty: TBCDField;
+    StockTableTCStockNo: TStringField;
+    StockTableChanged: TStringField;
+    StockTableBranchNo: TIntegerField;
+    StockTableSyncHQ: TIntegerField;
+    StockTableBranchMainStockNo: TIntegerField;
+    StockTableGroup: TStringField;
+    StockTableExtraDescr: TStringField;
+    StockTableModelNo: TStringField;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataForm: TDataForm;
+
+implementation
+
+{$R *.dfm}
+
+end.

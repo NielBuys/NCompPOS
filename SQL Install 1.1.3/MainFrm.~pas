@@ -1,0 +1,347 @@
+unit MainFrm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, JvDialogs, JvBaseDlg, JvSelectDirectory, ShellAPI,
+  Buttons, JvExButtons, JvBitBtn, DB, ADODB, IniFiles, UtilsUnit;
+
+type
+  TMainForm = class(TForm)
+    login: TEdit;
+    Label1: TLabel;
+    Password: TEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    Schema: TEdit;
+    Label4: TLabel;
+    Ip: TEdit;
+    JvBitBtn1: TJvBitBtn;
+    JvBitBtn2: TJvBitBtn;
+    Connection: TADOConnection;
+    Query: TADOQuery;
+    Query2: TADOQuery;
+    procedure JvBitBtn2Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    IniFile: TIniFile;
+  end;
+
+var
+  MainForm: TMainForm;
+
+implementation
+
+{$R *.dfm}
+
+procedure TMainForm.JvBitBtn2Click(Sender: TObject);
+begin
+          Connection.ConnectionString := 'Driver={mySQL ODBC 3.51 Driver};Server=' + Ip.Text + ';""Port=3306;Option=4;Database=information_schema;Uid=' + Login.Text + ';Pwd=' + Password.Text + ';"';
+          try
+            Connection.Open;
+          except
+            ShowMessage('Unable to connect to MySQL, make sure the detail is correct!');
+          raise;
+          end;
+          with Query.SQL do begin
+            Clear;
+            Add('select * from information_schema.SCHEMATA');
+            Add('where SCHEMA_NAME='''+ Schema.Text +'''');
+          end;
+          Query.Open;
+          If Query.RecordCount = 0 then
+          begin
+            Query.Close;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE DATABASE ' + Schema.Text + ';');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE TABLE `' + Schema.Text + '`.`user_db` (');
+              Add('`Nr` int(10) unsigned NOT NULL auto_increment,');
+              Add('`UserName` varchar(45) NOT NULL default '''',');
+              Add('`Password` varchar(45) default NULL,');
+              Add('`Rights` int(10) unsigned default NULL,');
+              Add('PRIMARY KEY  (`Nr`)');
+              Add(') ENGINE=InnoDB;');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE TABLE `' + Schema.Text + '`.`notes_db` (');
+              Add('`Nr` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,');
+              Add('`Date` INTEGER(10) UNSIGNED,');
+              Add('`LinkID` INTEGER UNSIGNED NOT NULL DEFAULT 0,');
+              Add('`FromWhere` CHAR NOT NULL DEFAULT '''',');
+              Add('`Description` VARCHAR(150),');
+              Add('`AttentionDate` INTEGER(10) UNSIGNED,');
+              Add('`NoteBy` VARCHAR(45),');
+              Add('`Completed` VARCHAR(5) NOT NULL DEFAULT ''False'',');
+              Add('`AttentionTime` VARCHAR(10),');
+              Add('PRIMARY KEY(`Nr`),');
+              Add('UNIQUE `LinkInd`(`LinkID`, `FromWhere`, `Nr`)');
+              Add(') ENGINE=InnoDB;');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE TABLE `' + Schema.Text + '`.`stock_db` (');
+              Add('`Nr` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,');
+              Add('`Description` VARCHAR(45),');
+              Add('`DateCreated` INTEGER UNSIGNED,');
+              Add('`DateChanged` INTEGER UNSIGNED,');
+              Add('`CostPrice` DECIMAL(10,2),');
+              Add('`SalesPrice` DECIMAL(10,2),');
+              Add('`SalesPrice2` DECIMAL(10,2),');
+              Add('`Barcode` VARCHAR(30),');
+              Add('`Qty` DECIMAL(8,2),');
+              Add('`AlertQty` DECIMAL(8,2),');
+              Add('`NonStockItem` VARCHAR(5),');
+              Add('`StartingQty` DECIMAL(8,2),');
+              Add('`TCStockNo` VARCHAR(20),');
+              Add('`Changed` CHAR,');
+              Add('`BranchNo` INTEGER,');
+              Add('`SyncHQ` INTEGER,');
+              Add('`BranchMainStockNo` INTEGER UNSIGNED,');
+              Add('`Group` VARCHAR(20),');
+              Add('`ExtraDescr` VARCHAR(255),');
+              Add('`ModelNo` VARCHAR(20),');
+              Add('PRIMARY KEY(`Nr`),');
+              Add('INDEX `BarcodeInd`(`Barcode`),');
+              Add('INDEX `DescriptionInd`(`Description`)');
+              Add(') ENGINE = InnoDB;');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE TABLE `' + Schema.Text + '`.`invoice_db` (');
+              Add('`Nr` INTEGER UNSIGNED NOT NULL,');
+              Add('`ClientName` varchar(30) default NULL,');
+              Add('`ClientTelW` varchar(20) default NULL,');
+              Add('`ClientTelC` varchar(20) default NULL,');
+              Add('`ClientAdr1` varchar(30) default NULL,');
+              Add('`ClientAdr2` varchar(30) default NULL,');
+              Add('`ClientAdr3` varchar(30) default NULL,');
+              Add('`ClientPCode` varchar(4) default NULL,');
+              Add('`ClientVatNo` varchar(30) default NULL,');
+              Add('`InvDate` int(10) unsigned default NULL,');
+              Add('`InvBy` varchar(45) default NULL,');
+              Add('`MemLink` int(10) unsigned default NULL,');
+              Add('`InvClose` varchar(5) default NULL,');
+              Add('`AmmTendered` decimal(10,2) default NULL,');
+              Add('`InvoiceType` varchar(15) default NULL,');
+              Add('`GLDebNo` varchar(20) default NULL,');
+              Add('`CUSet` int(11) default NULL,');
+              Add('`InvTotal` decimal(10,2) default NULL,');
+              Add('`ShiftSet` varchar(20) default NULL,');
+              Add('`InvNo` int(10) unsigned NOT NULL default ''0'',');
+              Add('`ClientEMail` VARCHAR(30) default NULL,');
+              Add('`BranchNo` INTEGER default NULL,');
+              Add('`SyncHQ` INTEGER default NULL,');
+              Add('`Days30` decimal(10,2) default NULL,');
+              Add('`Days60` decimal(10,2) default NULL,');
+              Add('`Days90` decimal(10,2) default NULL,');
+              Add('`Days120` decimal(10,2) default NULL,');
+              Add('`TermMonths` INTEGER UNSIGNED,');
+              Add('`Premium` decimal(10,2) default NULL,');
+              Add('PRIMARY KEY  (`Nr`),');
+              Add('INDEX InvNoInd (`InvNo`, `BranchNo`)');
+              Add(') ENGINE = InnoDB;');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE TABLE `' + Schema.Text + '`.`invoiceitem_db` (');
+              Add('`Nr` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,');
+              Add('`Description` VARCHAR(45),');
+              Add('`Price` DECIMAL(10,2),');
+              Add('`Qty` DECIMAL(5,2),');
+              Add('`StockNo` INTEGER UNSIGNED,');
+              Add('`LinkId` INTEGER UNSIGNED NOT NULL,');
+              Add('`Discount` DECIMAL(10,2),');
+              Add('`CostPrice` DECIMAL(10,2),');
+              Add('`Price2` DECIMAL(10,2),');
+              Add('`Barcode` VARCHAR(30),');
+              Add('`TCStockNo` VARCHAR(20),');
+              Add('`ExtraDescr` VARCHAR(255),');
+              Add('`ModelNo` VARCHAR(20),');
+              Add('`Comment` VARCHAR(10),');
+              Add('PRIMARY KEY(`Nr`),');
+              Add('KEY `LinkInd` (`LinkID`)');
+              Add(') ENGINE = InnoDB;');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE TABLE `' + Schema.Text + '`.`cashup_db` (');
+              Add('`Nr` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,');
+              Add('`Date` INTEGER UNSIGNED,');
+              Add('`User` VARCHAR(30),');
+              Add('`RealCashTotal` DECIMAL(10,2),');
+              Add('`RealChequesTotal` DECIMAL(10,2),');
+              Add('`RealCreditCardTotal` DECIMAL(10,2),');
+              Add('`RealOtherTotal` Decimal(10,2),');
+              Add('`CountCashTotal` DECIMAL(10,2),');
+              Add('`CountChequesTotal` DECIMAL(10,2),');
+              Add('`CountCreditCardTotal` DECIMAL(10,2),');
+              Add('`CountOtherTotal` Decimal(10,2),');
+              Add('`TotalInvoices` INTEGER UNSIGNED,');
+              Add('`CUClosed` VARCHAR(5),');
+              Add('`SyncHQ` INTEGER UNSIGNED,');
+              Add('`RealLayBuys` DECIMAL(10,2),');
+              Add('`CountLayBuys` DECIMAL(10,2),');
+              Add('`TotalLayBuys` INTEGER UNSIGNED,');
+              Add('`TimeStamp` VARCHAR(20),');
+              Add('PRIMARY KEY(`Nr`)');
+              Add(') ENGINE=InnoDB;');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE TABLE `' + Schema.Text + '`.`branch_db` (');
+              Add('`Nr` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,');
+              Add('`Name` VARCHAR(30),');
+              Add('`Tel` VARCHAR(20),');
+              Add('`Adr1` VARCHAR(30),');
+              Add('`Adr2` VARCHAR(30),');
+              Add('`Adr3` VARCHAR(30),');
+              Add('`PCode` VARCHAR(5),');
+              Add('`Contact` VARCHAR(30),');
+              Add('`LastSync` INTEGER UNSIGNED,');
+              Add('`Created` INTEGER UNSIGNED,');
+              Add('`StartInvNo` INTEGER UNSIGNED,');
+              Add('PRIMARY KEY(`Nr`)');
+              Add(') ENGINE=InnoDB;');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE TABLE `' + Schema.Text + '`.`stocktrnsfer_db` (');
+              Add('`Nr` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,');
+              Add('`Branch_no` INTEGER UNSIGNED,');
+              Add('`Date` INTEGER UNSIGNED,');
+              Add('`Sync` INTEGER UNSIGNED,');
+              Add('`Closed` VARCHAR(5) NOT NULL DEFAULT ''False'',');
+              Add('PRIMARY KEY(`Nr`)');
+              Add(') ENGINE=InnoDB;');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE TABLE `' + Schema.Text + '`.`stocktrnsferitem_db` (');
+              Add('`Nr` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,');
+              Add('`StockNo` INTEGER UNSIGNED,');
+              Add('`Qty` DECIMAL(10,2),');
+              Add('`BeforeQty` DECIMAL(10,2),');
+              Add('`Description` VARCHAR(30),');
+              Add('`LinkID` INTEGER UNSIGNED,');
+              Add('`TCStockNo` VARCHAR(20),');
+              Add('`Transfered` INTEGER UNSIGNED,');
+              Add('PRIMARY KEY(`Nr`),');
+              Add('INDEX `LinkIDInd`(`LinkID`),');
+              Add('INDEX `StockNoInd`(`StockNo`)');
+              Add(') ENGINE=InnoDB;');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE TABLE `' + Schema.Text + '`.`trans_db` (');
+              Add('`Nr` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,');
+              Add('`Description` VARCHAR(30),');
+              Add('`Ammount` DECIMAL(10,2),');
+              Add('`Date` INTEGER UNSIGNED,');
+              Add('`LinkID` INTEGER UNSIGNED NOT NULL,');
+              Add('`ShiftSet` INTEGER UNSIGNED,');
+              Add('`SyncHQ` INTEGER UNSIGNED,');
+              Add('`PaymentType` VARCHAR(15),');
+              Add('`CUSet` INTEGER UNSIGNED,');
+              Add('`PaymentBy` VARCHAR(45),');
+              Add('PRIMARY KEY(`Nr`),');
+              Add('INDEX `LinkIDInd`(`LinkID`)');
+              Add(') ENGINE=InnoDB;');
+            end;
+            Query.ExecSQL;
+            IniFile.WriteString ('Login', 'Username', Login.Text);
+            IniFile.WriteString ('Login', 'Password', Encrypt(Password.Text));
+            Inifile.WriteString('Login','Database', Schema.Text);
+            IniFile.WriteString ('Login', 'Ip', Ip.Text);
+            with Query.SQL do begin
+              Clear;
+              Add('Insert into `' + Schema.Text + '`.`user_db` (UserName, Password, Rights)');
+              Add('Values ("' + Login.Text + '","' + Encrypt(Password.Text) + '",5)');
+            end;
+            Query.ExecSQL;
+          end;
+          with Query.SQL do begin
+            Clear;
+            Add('select * from information_schema.COLUMNS');
+            Add('where TABLE_SCHEMA='''+ Schema.Text +'''');
+            Add('and TABLE_NAME=''invoice_db''');
+            Add('and COLUMN_NAME=''RefNo''');
+          end;
+          Query.Open;
+          If Query.RecordCount = 0 then
+          begin
+            Query.Close;
+            with Query.SQL do begin
+              Clear;
+              Add('ALTER TABLE `' + Schema.Text + '`.`invoice_db` ADD COLUMN `RefNo` VARCHAR(15) AFTER `Premium`;');
+            end;
+            Query.ExecSQL;
+          end;
+
+          with Query.SQL do begin
+            Clear;
+            Add('select * from information_schema.COLUMNS');
+            Add('where TABLE_SCHEMA='''+ Schema.Text +'''');
+            Add('and TABLE_NAME=''global_db''');
+            Add('and COLUMN_NAME=''InvNo''');
+          end;
+          Query.Open;
+          If Query.RecordCount = 0 then
+          begin
+            Query.Close;
+            with Query.SQL do begin
+              Clear;
+              Add('CREATE TABLE `' + Schema.Text + '`.`global_db` (');
+              Add('`Nr` INTEGER UNSIGNED NOT NULL,');
+              Add('`InvNo` INTEGER UNSIGNED NOT NULL,');
+              Add('`PurchaseInvNo` INTEGER UNSIGNED NOT NULL,');
+              Add('PRIMARY KEY(`Nr`)');
+              Add(') ENGINE = InnoDB;');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('Insert into `' + Schema.Text + '`.`global_db` (Nr, InvNo, PurchaseInvNo)');
+              Add('Values (1,' + InttoStr(IniFile.ReadInteger('Invoice', 'InvNo', 0)) + ',' + InttoStr(IniFile.ReadInteger('Invoice', 'PurchaseInvNo', 0)) + ')');
+            end;
+            Query.ExecSQL;
+            with Query.SQL do begin
+              Clear;
+              Add('ALTER TABLE `' + Schema.Text + '`.`trans_db` ADD COLUMN `BranchNo` INTEGER UNSIGNED AFTER `PaymentBy`;');
+            end;
+            Query.ExecSQL;
+          end;               
+
+          Close;
+end;
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+          IniFile := TIniFile.Create (GetCurrentDir + '\ncompPOS.ini');
+end;
+
+procedure TMainForm.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+          IniFile.Free;
+end;
+
+end.

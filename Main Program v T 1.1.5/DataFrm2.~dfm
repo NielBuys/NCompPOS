@@ -1,0 +1,1097 @@
+object DataForm2: TDataForm2
+  OldCreateOrder = False
+  Left = 229
+  Top = 123
+  Height = 463
+  Width = 703
+  object UserSource: TDataSource
+    DataSet = User_db
+    OnStateChange = UserSourceStateChange
+    Left = 48
+    Top = 8
+  end
+  object Query1Source: TDataSource
+    DataSet = Query1
+    Left = 584
+    Top = 56
+  end
+  object Connection: TADOConnection
+    ConnectionString = 
+      'Driver={mySQL ODBC 3.51 Driver};Server=localhost;""Port=3306;Opt' +
+      'ion=4;Database=ncomp;Uid=niel;Pwd=djb115;"'
+    LoginPrompt = False
+    Left = 584
+    Top = 256
+  end
+  object User_db: TADOTable
+    Connection = Connection
+    CursorType = ctStatic
+    IndexFieldNames = 'Nr'
+    TableName = 'user_db'
+    Left = 128
+    Top = 8
+    object User_dbNr: TAutoIncField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object User_dbUserName: TStringField
+      FieldName = 'UserName'
+      Size = 45
+    end
+    object User_dbPassword: TStringField
+      FieldName = 'Password'
+      Size = 45
+    end
+    object User_dbRights: TIntegerField
+      FieldName = 'Rights'
+    end
+  end
+  object Query1: TADOQuery
+    Connection = Connection
+    CursorType = ctStatic
+    Parameters = <>
+    Left = 584
+    Top = 8
+  end
+  object Query2: TADOQuery
+    Connection = Connection
+    CursorType = ctStatic
+    Parameters = <>
+    Left = 584
+    Top = 112
+  end
+  object Regware41: TRegware4
+    ProgGUID = '{69F7D5B9-C94F-417B-8953-AB6578DE44E4}'
+    Seed1 = 236302743
+    Seed2 = 88179001
+    Seed3 = 129383583
+    LicenseOptions.LicenseSource = lsUserDefined
+    LicenseOptions.LicenseType = ltSingleUserLicense
+    Left = 432
+    Top = 368
+  end
+  object Query3: TADOQuery
+    Connection = Connection
+    CursorType = ctStatic
+    Parameters = <>
+    Left = 584
+    Top = 168
+  end
+  object NotesQuery: TADOQuery
+    Connection = Connection
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select * from notes_db')
+    Left = 320
+    Top = 8
+  end
+  object NoteSource: TDataSource
+    DataSet = NotesQuery
+    Left = 232
+    Top = 8
+  end
+  object StockSource: TDataSource
+    DataSet = StockTable
+    OnStateChange = StockSourceStateChange
+    Left = 48
+    Top = 56
+  end
+  object StockQuerySource: TDataSource
+    Left = 232
+    Top = 56
+  end
+  object StockQuery: TADOQuery
+    Connection = Connection
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select * from stock_db')
+    Left = 320
+    Top = 56
+    object StockQueryNr: TAutoIncField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object StockQueryDescription: TStringField
+      FieldName = 'Description'
+      Size = 45
+    end
+    object StockQueryDateCreated: TIntegerField
+      FieldName = 'DateCreated'
+    end
+    object StockQueryDateChanged: TIntegerField
+      FieldName = 'DateChanged'
+    end
+    object StockQueryCostPrice: TBCDField
+      FieldName = 'CostPrice'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object StockQuerySalesPrice: TBCDField
+      FieldName = 'SalesPrice'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object StockQueryBarcode: TStringField
+      FieldName = 'Barcode'
+      Size = 30
+    end
+    object StockQueryNonStockItem: TStringField
+      FieldName = 'NonStockItem'
+      Size = 5
+    end
+    object StockQueryTCStockNo: TStringField
+      FieldName = 'TCStockNo'
+    end
+    object StockQueryChanged: TStringField
+      FieldName = 'Changed'
+      FixedChar = True
+      Size = 1
+    end
+    object StockQueryBranchNo: TIntegerField
+      FieldName = 'BranchNo'
+    end
+    object StockQuerySyncHQ: TIntegerField
+      FieldName = 'SyncHQ'
+    end
+    object StockQueryBranchMainStockNo: TIntegerField
+      FieldName = 'BranchMainStockNo'
+    end
+    object StockQueryQty: TBCDField
+      FieldName = 'Qty'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 8
+      Size = 2
+    end
+    object StockQueryAlertQty: TBCDField
+      FieldName = 'AlertQty'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 8
+      Size = 2
+    end
+    object StockQueryStartingQty: TBCDField
+      FieldName = 'StartingQty'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 8
+      Size = 2
+    end
+    object StockQueryGroup: TStringField
+      FieldName = 'Group'
+    end
+    object StockQuerySalesPrice2: TBCDField
+      FieldName = 'SalesPrice2'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object StockQueryExtraDescr: TStringField
+      FieldName = 'ExtraDescr'
+      Size = 255
+    end
+    object StockQueryModelNo: TStringField
+      FieldName = 'ModelNo'
+    end
+  end
+  object InvoiceItemTable: TADOTable
+    Connection = Connection
+    CursorType = ctStatic
+    OnCalcFields = InvoiceItemTableCalcFields
+    IndexFieldNames = 'LinkId'
+    MasterFields = 'Nr'
+    MasterSource = InvoiceSource
+    TableName = 'invoiceitem_db'
+    Left = 496
+    Top = 104
+    object InvoiceItemTableNr: TAutoIncField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object InvoiceItemTableDescription: TStringField
+      FieldName = 'Description'
+      Size = 45
+    end
+    object InvoiceItemTablePrice: TBCDField
+      FieldName = 'Price'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object InvoiceItemTableQty: TBCDField
+      FieldName = 'Qty'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 5
+      Size = 2
+    end
+    object InvoiceItemTableStockNo: TIntegerField
+      FieldName = 'StockNo'
+    end
+    object InvoiceItemTableLinkId: TIntegerField
+      FieldName = 'LinkId'
+    end
+    object InvoiceItemTableSellingPrice: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'SellingPrice'
+      ReadOnly = True
+      currency = True
+      Calculated = True
+    end
+    object InvoiceItemTableDBGLineNo: TIntegerField
+      FieldKind = fkCalculated
+      FieldName = 'DBGLineNo'
+      Calculated = True
+    end
+    object InvoiceItemTableDiscount: TBCDField
+      FieldName = 'Discount'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 10
+      Size = 2
+    end
+    object InvoiceItemTableCostPrice: TBCDField
+      FieldName = 'CostPrice'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object InvoiceItemTableTCStockNo: TStringField
+      FieldName = 'TCStockNo'
+    end
+    object InvoiceItemTableComment: TStringField
+      FieldName = 'Comment'
+      Size = 10
+    end
+  end
+  object InvoiceSource: TDataSource
+    DataSet = InvoiceTable
+    OnStateChange = InvoiceSourceStateChange
+    Left = 408
+    Top = 56
+  end
+  object InvoiceItemSource: TDataSource
+    DataSet = InvoiceItemTable
+    OnStateChange = InvoiceItemSourceStateChange
+    Left = 408
+    Top = 104
+  end
+  object RvRenderRTF1: TRvRenderRTF
+    DisplayName = 'Rich Text Format (RTF)'
+    FileExtension = '*.rtf'
+    Left = 508
+    Top = 368
+  end
+  object RvRenderPDF1: TRvRenderPDF
+    DisplayName = 'Adobe Acrobat (PDF)'
+    FileExtension = '*.pdf'
+    EmbedFonts = False
+    ImageQuality = 90
+    MetafileDPI = 300
+    FontEncoding = feWinAnsiEncoding
+    DocInfo.Creator = 'Rave (http://www.nevrona.com/rave)'
+    DocInfo.Producer = 'Nevrona Designs'
+    Left = 588
+    Top = 368
+  end
+  object CashUpSource: TDataSource
+    DataSet = CashUpTable
+    OnStateChange = CashUpSourceStateChange
+    Left = 48
+    Top = 104
+  end
+  object CashUpTable: TADOTable
+    Connection = Connection
+    CursorType = ctStatic
+    OnCalcFields = CashUpTableCalcFields
+    TableName = 'cashup_db'
+    Left = 128
+    Top = 104
+    object CashUpTableNr: TAutoIncField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object CashUpTableDate: TIntegerField
+      FieldName = 'Date'
+      DisplayFormat = '0000/00/00'
+    end
+    object CashUpTableUser: TStringField
+      FieldName = 'User'
+      Size = 30
+    end
+    object CashUpTableRealCashTotal: TBCDField
+      FieldName = 'RealCashTotal'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object CashUpTableRealChequesTotal: TBCDField
+      FieldName = 'RealChequesTotal'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object CashUpTableRealCreditCardTotal: TBCDField
+      FieldName = 'RealCreditCardTotal'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object CashUpTableCountCashTotal: TBCDField
+      FieldName = 'CountCashTotal'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object CashUpTableCountChequesTotal: TBCDField
+      FieldName = 'CountChequesTotal'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object CashUpTableCountCreditCardTotal: TBCDField
+      FieldName = 'CountCreditCardTotal'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object CashUpTableTotalInvoices: TIntegerField
+      FieldName = 'TotalInvoices'
+    end
+    object CashUpTableCUClosed: TStringField
+      FieldName = 'CUClosed'
+      Size = 5
+    end
+    object CashUpTableCashDiff: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'CashDiff'
+      currency = True
+      Calculated = True
+    end
+    object CashUpTableChequesDiff: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'ChequesDiff'
+      currency = True
+      Calculated = True
+    end
+    object CashUpTableCreditCardDiff: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'CreditCardDiff'
+      currency = True
+      Calculated = True
+    end
+    object CashUpTableSyncHQ: TIntegerField
+      FieldName = 'SyncHQ'
+    end
+    object CashUpTableRealOtherTotal: TBCDField
+      FieldName = 'RealOtherTotal'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object CashUpTableCountOtherTotal: TBCDField
+      FieldName = 'CountOtherTotal'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object CashUpTableOtherDiff: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'OtherDiff'
+      currency = True
+      Calculated = True
+    end
+    object CashUpTableRealLayBuys: TBCDField
+      FieldName = 'RealLayBuys'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object CashUpTableCountLayBuys: TBCDField
+      FieldName = 'CountLayBuys'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object CashUpTableTotalLayBuys: TIntegerField
+      FieldName = 'TotalLayBuys'
+    end
+    object CashUpTableTimeStamp: TStringField
+      FieldName = 'TimeStamp'
+    end
+  end
+  object BranchSource: TDataSource
+    DataSet = BranchTable
+    OnStateChange = BranchSourceStateChange
+    Left = 408
+    Top = 8
+  end
+  object BranchTable: TADOTable
+    Connection = Connection
+    CursorType = ctStatic
+    TableName = 'branch_db'
+    Left = 496
+    Top = 8
+    object BranchTableNr: TAutoIncField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object BranchTableName: TStringField
+      FieldName = 'Name'
+      Size = 30
+    end
+    object BranchTableTel: TStringField
+      FieldName = 'Tel'
+    end
+    object BranchTableAdr1: TStringField
+      FieldName = 'Adr1'
+      Size = 30
+    end
+    object BranchTableAdr2: TStringField
+      FieldName = 'Adr2'
+      Size = 30
+    end
+    object BranchTableAdr3: TStringField
+      FieldName = 'Adr3'
+      Size = 30
+    end
+    object BranchTablePCode: TStringField
+      FieldName = 'PCode'
+      Size = 5
+    end
+    object BranchTableContact: TStringField
+      FieldName = 'Contact'
+      Size = 30
+    end
+    object BranchTableLastSync: TIntegerField
+      FieldName = 'LastSync'
+    end
+    object BranchTableCreated: TIntegerField
+      FieldName = 'Created'
+    end
+    object BranchTableStartInvNo: TIntegerField
+      FieldName = 'StartInvNo'
+    end
+  end
+  object StocktrnsferItemTable: TADOTable
+    Connection = Connection
+    CursorType = ctStatic
+    IndexFieldNames = 'LinkID'
+    MasterFields = 'Nr'
+    MasterSource = StockTrnsferSource
+    TableName = 'stocktrnsferitem_db'
+    Left = 128
+    Top = 216
+    object StocktrnsferItemTableNr: TAutoIncField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object StocktrnsferItemTableStockNo: TIntegerField
+      FieldName = 'StockNo'
+    end
+    object StocktrnsferItemTableQty: TBCDField
+      FieldName = 'Qty'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 10
+      Size = 2
+    end
+    object StocktrnsferItemTableBeforeQty: TBCDField
+      FieldName = 'BeforeQty'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 10
+      Size = 2
+    end
+    object StocktrnsferItemTableDescription: TStringField
+      FieldName = 'Description'
+      Size = 30
+    end
+    object StocktrnsferItemTableLinkID: TIntegerField
+      FieldName = 'LinkID'
+    end
+    object StocktrnsferItemTableTCStockNo: TStringField
+      FieldName = 'TCStockNo'
+    end
+    object StocktrnsferItemTableTransfered: TIntegerField
+      FieldName = 'Transfered'
+      DisplayFormat = '0000/00/00'
+    end
+  end
+  object StockTrnsferSource: TDataSource
+    DataSet = StockTrnsferTable
+    OnStateChange = StockTrnsferSourceStateChange
+    Left = 48
+    Top = 152
+  end
+  object StocktrnsferItemSource: TDataSource
+    DataSet = StocktrnsferItemTable
+    OnStateChange = StocktrnsferItemSourceStateChange
+    Left = 48
+    Top = 200
+  end
+  object PurchaseItemTable: TADOTable
+    Connection = Connection
+    CursorType = ctStatic
+    AfterInsert = PurchaseItemTableAfterInsert
+    OnCalcFields = PurchaseItemTableCalcFields
+    IndexFieldNames = 'LinkId'
+    MasterFields = 'Nr'
+    MasterSource = InvoiceSource
+    TableName = 'invoiceitem_db'
+    Left = 496
+    Top = 168
+    object PurchaseItemTableNr: TAutoIncField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object PurchaseItemTableDescription: TStringField
+      FieldName = 'Description'
+      Size = 45
+    end
+    object PurchaseItemTableCostPrice: TBCDField
+      FieldName = 'CostPrice'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object PurchaseItemTablePrice: TBCDField
+      FieldName = 'Price'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object PurchaseItemTablePrice2: TBCDField
+      FieldName = 'Price2'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object PurchaseItemTableQty: TBCDField
+      DefaultExpression = '1'
+      DisplayWidth = 9
+      FieldName = 'Qty'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 8
+      Size = 2
+    end
+    object PurchaseItemTableExtraDescr: TStringField
+      DisplayWidth = 255
+      FieldName = 'ExtraDescr'
+      Size = 255
+    end
+    object PurchaseItemTableStockNo: TIntegerField
+      DefaultExpression = '0'
+      FieldName = 'StockNo'
+    end
+    object PurchaseItemTableTCStockNo: TStringField
+      FieldName = 'TCStockNo'
+    end
+    object PurchaseItemTableBarcode: TStringField
+      FieldName = 'Barcode'
+      Size = 30
+    end
+    object PurchaseItemTableModelNo: TStringField
+      FieldName = 'ModelNo'
+    end
+    object PurchaseItemTableLinkId: TIntegerField
+      FieldName = 'LinkId'
+    end
+    object PurchaseItemTableDiscount: TBCDField
+      FieldName = 'Discount'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 10
+      Size = 2
+    end
+    object PurchaseItemTableCostIncl: TCurrencyField
+      FieldKind = fkCalculated
+      FieldName = 'CostIncl'
+      Calculated = True
+    end
+    object PurchaseItemTableTotalCost: TCurrencyField
+      FieldKind = fkCalculated
+      FieldName = 'TotalCost'
+      Calculated = True
+    end
+  end
+  object PurchaseItemSource: TDataSource
+    DataSet = PurchaseItemTable
+    OnStateChange = PurchaseItemSourceStateChange
+    Left = 408
+    Top = 152
+  end
+  object TransQuery: TADOQuery
+    Connection = Connection
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select * from trans_db')
+    Left = 320
+    Top = 104
+    object TransQueryNr: TAutoIncField
+      AutoGenerateValue = arAutoInc
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object TransQueryDescription: TStringField
+      FieldName = 'Description'
+      Size = 30
+    end
+    object TransQueryAmmount: TBCDField
+      FieldName = 'Ammount'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object TransQueryDate: TIntegerField
+      FieldName = 'Date'
+      DisplayFormat = '0000/00/00'
+    end
+    object TransQueryLinkID: TIntegerField
+      FieldName = 'LinkID'
+    end
+    object TransQueryPaymentType: TStringField
+      FieldName = 'PaymentType'
+      Size = 15
+    end
+    object TransQueryPaymentBy: TStringField
+      FieldName = 'PaymentBy'
+      Size = 45
+    end
+    object TransQueryShiftSet: TIntegerField
+      FieldName = 'ShiftSet'
+    end
+    object TransQueryBranchNo: TIntegerField
+      FieldName = 'BranchNo'
+    end
+  end
+  object TransQuerySource: TDataSource
+    DataSet = TransQuery
+    Left = 232
+    Top = 104
+  end
+  object InvoiceExportQuery: TADOQuery
+    Connection = Connection
+    CursorType = ctStatic
+    Parameters = <
+      item
+        Name = 'BeginDate'
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'EndDate'
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'InvClose'
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'order'
+        Size = -1
+        Value = Null
+      end>
+    SQL.Strings = (
+      
+        'SELECT InvNo, CUSet, InvDate, InvClose, InvTotal, InvoiceType, I' +
+        'nvBy, ShiftSet FROM invoice_db'
+      'where InvDate >= :BeginDate and InvDate <= :EndDate'
+      'and InvClose = :InvClose'
+      'order by :order')
+    Left = 320
+    Top = 168
+    object InvoiceExportQueryInvNo: TIntegerField
+      FieldName = 'InvNo'
+    end
+    object InvoiceExportQueryCUSet: TIntegerField
+      FieldName = 'CUSet'
+    end
+    object InvoiceExportQueryInvDate: TIntegerField
+      FieldName = 'InvDate'
+      DisplayFormat = '0000/00/00'
+    end
+    object InvoiceExportQueryInvclose: TStringField
+      FieldName = 'Invclose'
+      Size = 5
+    end
+    object InvoiceExportQueryInvTotal: TBCDField
+      FieldName = 'InvTotal'
+      Precision = 10
+      Size = 2
+    end
+    object InvoiceExportQueryInvoiceType: TStringField
+      FieldName = 'InvoiceType'
+      Size = 15
+    end
+    object InvoiceExportQueryInvBy: TStringField
+      FieldName = 'InvBy'
+      Size = 45
+    end
+    object InvoiceExportQueryShiftSet: TStringField
+      FieldName = 'ShiftSet'
+    end
+  end
+  object InvoiceExportSource: TDataSource
+    DataSet = InvoiceExportQuery
+    Left = 232
+    Top = 152
+  end
+  object Query4: TADOQuery
+    Connection = Connection
+    Parameters = <>
+    Left = 632
+    Top = 112
+  end
+  object InvoiceTable: TADOQuery
+    Connection = Connection
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select * from invoice_db')
+    Left = 496
+    Top = 56
+    object InvoiceTableNr: TAutoIncField
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object InvoiceTableClientName: TStringField
+      FieldName = 'ClientName'
+      Size = 30
+    end
+    object InvoiceTableClientTelW: TStringField
+      FieldName = 'ClientTelW'
+    end
+    object InvoiceTableClientTelC: TStringField
+      FieldName = 'ClientTelC'
+    end
+    object InvoiceTableClientAdr1: TStringField
+      FieldName = 'ClientAdr1'
+      Size = 30
+    end
+    object InvoiceTableClientAdr2: TStringField
+      FieldName = 'ClientAdr2'
+      Size = 30
+    end
+    object InvoiceTableClientAdr3: TStringField
+      FieldName = 'ClientAdr3'
+      Size = 30
+    end
+    object InvoiceTableClientPCode: TStringField
+      FieldName = 'ClientPCode'
+      Size = 4
+    end
+    object InvoiceTableClientVatNo: TStringField
+      FieldName = 'ClientVatNo'
+      Size = 30
+    end
+    object InvoiceTableInvDate: TIntegerField
+      FieldName = 'InvDate'
+      DisplayFormat = '0000/00/00'
+    end
+    object InvoiceTableInvBy: TStringField
+      FieldName = 'InvBy'
+      Size = 45
+    end
+    object InvoiceTableInvClose: TStringField
+      FieldName = 'InvClose'
+      Size = 5
+    end
+    object InvoiceTableAmmTendered: TBCDField
+      FieldName = 'AmmTendered'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object InvoiceTableInvoiceType: TStringField
+      FieldName = 'InvoiceType'
+      Size = 15
+    end
+    object InvoiceTableGLDebNo: TStringField
+      FieldName = 'GLDebNo'
+    end
+    object InvoiceTableCUSet: TIntegerField
+      FieldName = 'CUSet'
+    end
+    object InvoiceTableInvTotal: TBCDField
+      FieldName = 'InvTotal'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object InvoiceTableShiftSet: TStringField
+      FieldName = 'ShiftSet'
+    end
+    object InvoiceTableInvNo: TIntegerField
+      FieldName = 'InvNo'
+    end
+    object InvoiceTableClientEMail: TStringField
+      FieldName = 'ClientEMail'
+      Size = 30
+    end
+    object InvoiceTableBranchNo: TIntegerField
+      FieldName = 'BranchNo'
+    end
+    object InvoiceTableSyncHQ: TIntegerField
+      FieldName = 'SyncHQ'
+    end
+    object InvoiceTableDays30: TBCDField
+      FieldName = 'Days30'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object InvoiceTableDays60: TBCDField
+      FieldName = 'Days60'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object InvoiceTableDays90: TBCDField
+      FieldName = 'Days90'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object InvoiceTableDays120: TBCDField
+      FieldName = 'Days120'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object InvoiceTableTermMonths: TIntegerField
+      FieldName = 'TermMonths'
+    end
+    object InvoiceTablePremium: TBCDField
+      FieldName = 'Premium'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object InvoiceTableRefNo: TStringField
+      FieldName = 'RefNo'
+      Size = 15
+    end
+  end
+  object StockTable: TADOQuery
+    Connection = Connection
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select * from stock_db')
+    Left = 128
+    Top = 56
+    object StockTableNr: TAutoIncField
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object StockTableDescription: TStringField
+      FieldName = 'Description'
+      Size = 45
+    end
+    object StockTableDateCreated: TIntegerField
+      FieldName = 'DateCreated'
+      DisplayFormat = '0000/00/00'
+    end
+    object StockTableDateChanged: TIntegerField
+      FieldName = 'DateChanged'
+      DisplayFormat = '0000/00/00'
+    end
+    object StockTableCostPrice: TBCDField
+      FieldName = 'CostPrice'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object StockTableSalesPrice: TBCDField
+      FieldName = 'SalesPrice'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object StockTableSalesPrice2: TBCDField
+      FieldName = 'SalesPrice2'
+      currency = True
+      Precision = 10
+      Size = 2
+    end
+    object StockTableBarcode: TStringField
+      FieldName = 'Barcode'
+      Size = 30
+    end
+    object StockTableQty: TBCDField
+      FieldName = 'Qty'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 8
+      Size = 2
+    end
+    object StockTableAlertQty: TBCDField
+      FieldName = 'AlertQty'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 8
+      Size = 2
+    end
+    object StockTableNonStockItem: TStringField
+      FieldName = 'NonStockItem'
+      Size = 5
+    end
+    object StockTableStartingQty: TBCDField
+      FieldName = 'StartingQty'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 8
+      Size = 2
+    end
+    object StockTableTCStockNo: TStringField
+      FieldName = 'TCStockNo'
+    end
+    object StockTableChanged: TStringField
+      FieldName = 'Changed'
+      FixedChar = True
+      Size = 1
+    end
+    object StockTableBranchNo: TIntegerField
+      FieldName = 'BranchNo'
+    end
+    object StockTableSyncHQ: TIntegerField
+      FieldName = 'SyncHQ'
+    end
+    object StockTableBranchMainStockNo: TIntegerField
+      FieldName = 'BranchMainStockNo'
+    end
+    object StockTableGroup: TStringField
+      FieldName = 'Group'
+    end
+    object StockTableExtraDescr: TStringField
+      FieldName = 'ExtraDescr'
+      Size = 255
+    end
+    object StockTableModelNo: TStringField
+      FieldName = 'ModelNo'
+    end
+  end
+  object GlobalTable: TADOTable
+    Connection = Connection
+    CursorType = ctStatic
+    TableName = 'global_db'
+    Left = 128
+    Top = 288
+    object GlobalTableNr: TIntegerField
+      FieldName = 'Nr'
+    end
+    object GlobalTableInvNo: TIntegerField
+      FieldName = 'InvNo'
+    end
+    object GlobalTablePurchaseInvNo: TIntegerField
+      FieldName = 'PurchaseInvNo'
+    end
+  end
+  object GlobalSource: TDataSource
+    DataSet = GlobalTable
+    OnStateChange = GlobalSourceStateChange
+    Left = 72
+    Top = 272
+  end
+  object GRNTable: TADOQuery
+    Connection = Connection
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      
+        'select Nr, TCStockNo, Description, Qty, Price2, CostPrice from i' +
+        'nvoiceitem_db')
+    Left = 496
+    Top = 248
+    object GRNTableNr: TAutoIncField
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object GRNTableTCStockNo: TStringField
+      DisplayLabel = 'Stock No'
+      FieldName = 'TCStockNo'
+    end
+    object GRNTableDescription: TStringField
+      FieldName = 'Description'
+      Size = 45
+    end
+    object GRNTableQty: TBCDField
+      DisplayLabel = 'Qty Ordered'
+      FieldName = 'Qty'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 8
+      Size = 2
+    end
+    object GRNTablePrice2: TBCDField
+      DisplayLabel = 'Qty Received'
+      FieldName = 'Price2'
+      DisplayFormat = '0.00'
+      EditFormat = '0.00'
+      Precision = 10
+      Size = 2
+    end
+    object GRNTableCostPrice: TBCDField
+      DisplayLabel = 'Cost Price (Excl)'
+      FieldName = 'CostPrice'
+      Precision = 10
+      Size = 2
+    end
+  end
+  object GRNSource: TDataSource
+    DataSet = GRNTable
+    OnStateChange = GRNSourceStateChange
+    Left = 424
+    Top = 248
+  end
+  object QRPDFFilter1: TQRPDFFilter
+    CompressionOn = False
+    Left = 360
+    Top = 368
+  end
+  object StockTrnsferTable: TADOQuery
+    Connection = Connection
+    CursorType = ctStatic
+    Parameters = <>
+    SQL.Strings = (
+      'select * from stocktrnsfer_db')
+    Left = 128
+    Top = 168
+    object StockTrnsferTableNr: TAutoIncField
+      FieldName = 'Nr'
+      ReadOnly = True
+    end
+    object StockTrnsferTableBranch_no: TIntegerField
+      FieldName = 'Branch_no'
+    end
+    object StockTrnsferTableDate: TIntegerField
+      FieldName = 'Date'
+      DisplayFormat = '0000/00/00'
+    end
+    object StockTrnsferTableSync: TIntegerField
+      FieldName = 'Sync'
+      DisplayFormat = '0000/00/00'
+    end
+    object StockTrnsferTableClosed: TStringField
+      DefaultExpression = 'False'
+      FieldName = 'Closed'
+      Size = 5
+    end
+  end
+end

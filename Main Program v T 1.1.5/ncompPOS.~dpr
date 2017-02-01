@@ -1,0 +1,53 @@
+program ncompPOS;
+
+uses
+  Forms,
+  MainFrm in 'MainFrm.pas' {MainForm},
+  ExtractFrm in 'ExtractFrm.pas' {ExtractForm},
+  Listsmnu in 'Listsmnu.pas' {ListsMenu},
+  DataFrm2 in 'DataFrm2.pas' {DataForm2: TDataModule},
+  UserFrm in 'UserFrm.pas' {UserForm},
+  AboutFrm in 'AboutFrm.pas' {AboutForm},
+  NotesFrm in 'NotesFrm.pas' {NotesForm},
+  StockFrm in 'StockFrm.pas' {StockForm},
+  StockSearchFrm in 'StockSearchFrm.pas' {StockSearchForm},
+  InvoiceFrm in 'InvoiceFrm.pas' {InvoiceForm},
+  InvoiceListsFrm in 'InvoiceListsFrm.pas' {InvoiceListsForm},
+  StockListFrm in 'StockListFrm.pas' {StockListForm},
+  CashUpFrm in 'CashUpFrm.pas' {CashUpForm},
+  CashupListFrm in 'CashupListFrm.pas' {CashupListForm},
+  BranchFrm in 'BranchFrm.pas' {BranchForm},
+  StockTransferFrm in 'StockTransferFrm.pas' {StockTransferForm},
+  DataFrm in 'DataFrm.pas' {DataForm: TDataModule},
+  BarcodePrintingFrm in 'BarcodePrintingFrm.pas' {BarcodePrintingForm},
+  StockReportsFrm in 'StockReportsFrm.pas' {StockReportsForm},
+  PurchaseFrm in 'PurchaseFrm.pas' {PurchaseForm},
+  AccountSearchFrm in 'AccountSearchFrm.pas' {AccountSearchForm},
+  LayBuyFrm in 'LayBuyFrm.pas' {LayBuyForm},
+  BatchTypeFrm in 'BatchTypeFrm.pas' {BatchTypeForm},
+  ImpData in 'ImpData.pas' {ImportData: TDataModule},
+  UtilsUnit in '..\..\NielUniversalUtils\UtilsUnit.pas',
+  GridExportFrm in 'GridExportFrm.pas' {GridExportForm},
+  PriceChooseFrm in 'PriceChooseFrm.pas' {PriceChooseForm},
+  PeriodFrm in 'PeriodFrm.pas' {PeriodForm},
+  TCUtilsFrm in 'TCUtilsFrm.pas',
+  TCDataMod in 'TCDataMod.pas' {TCData: TDataModule},
+  TCsettingsFrm in 'TCsettingsFrm.pas' {TCSettingsForm},
+  grnfrm in 'grnfrm.pas' {GrnForm};
+
+{$R *.RES}
+
+begin
+  Application.Initialize;
+  Application.Title := 'NCompPOS';
+  Application.HelpFile := '';
+  Application.CreateForm(TDataForm2, DataForm2);
+  Application.CreateForm(TMainForm, MainForm);
+  Application.CreateForm(TAboutForm, AboutForm);
+  Application.CreateForm(TExtractForm, ExtractForm);
+  Application.CreateForm(TUserForm, UserForm);
+  Application.CreateForm(TDataForm, DataForm);
+  Application.CreateForm(TImportData, ImportData);
+  Application.CreateForm(TTCData, TCData);
+  Application.Run;
+end.

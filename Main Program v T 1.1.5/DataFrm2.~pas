@@ -1,0 +1,441 @@
+unit DataFrm2;
+
+interface
+
+uses
+  SysUtils, Classes, DB, DBTables, IniFiles, ADODB, regware4, RpRenderPDF,
+  RpDefine, RpRender, RpRenderRTF, JvDataSource, UtilsUnit, QRPDFFilt;
+    
+type
+  TDataForm2 = class(TDataModule)
+    UserSource: TDataSource;
+    Query1Source: TDataSource;
+    Connection: TADOConnection;
+    User_db: TADOTable;
+    User_dbNr: TAutoIncField;
+    User_dbUserName: TStringField;
+    User_dbPassword: TStringField;
+    User_dbRights: TIntegerField;
+    Query1: TADOQuery;
+    Query2: TADOQuery;
+    Regware41: TRegware4;
+    Query3: TADOQuery;
+    NotesQuery: TADOQuery;
+    NoteSource: TDataSource;
+    StockSource: TDataSource;
+    StockQuerySource: TDataSource;
+    StockQuery: TADOQuery;
+    StockQueryNr: TAutoIncField;
+    StockQueryDescription: TStringField;
+    StockQueryDateCreated: TIntegerField;
+    StockQueryDateChanged: TIntegerField;
+    StockQueryCostPrice: TBCDField;
+    StockQuerySalesPrice: TBCDField;
+    StockQueryBarcode: TStringField;
+    InvoiceItemTable: TADOTable;
+    InvoiceSource: TDataSource;
+    InvoiceItemSource: TDataSource;
+    InvoiceItemTableNr: TAutoIncField;
+    InvoiceItemTableDescription: TStringField;
+    InvoiceItemTablePrice: TBCDField;
+    InvoiceItemTableQty: TBCDField;
+    InvoiceItemTableStockNo: TIntegerField;
+    InvoiceItemTableLinkId: TIntegerField;
+    RvRenderRTF1: TRvRenderRTF;
+    RvRenderPDF1: TRvRenderPDF;
+    StockQueryNonStockItem: TStringField;
+    InvoiceItemTableSellingPrice: TFloatField;
+    InvoiceItemTableDBGLineNo: TIntegerField;
+    CashUpSource: TDataSource;
+    CashUpTable: TADOTable;
+    CashUpTableNr: TAutoIncField;
+    CashUpTableDate: TIntegerField;
+    CashUpTableUser: TStringField;
+    CashUpTableRealCashTotal: TBCDField;
+    CashUpTableRealChequesTotal: TBCDField;
+    CashUpTableRealCreditCardTotal: TBCDField;
+    CashUpTableCountCashTotal: TBCDField;
+    CashUpTableCountChequesTotal: TBCDField;
+    CashUpTableCountCreditCardTotal: TBCDField;
+    CashUpTableTotalInvoices: TIntegerField;
+    CashUpTableCUClosed: TStringField;
+    CashUpTableCashDiff: TFloatField;
+    CashUpTableChequesDiff: TFloatField;
+    CashUpTableCreditCardDiff: TFloatField;
+    InvoiceItemTableDiscount: TBCDField;
+    BranchSource: TDataSource;
+    BranchTable: TADOTable;
+    BranchTableNr: TAutoIncField;
+    BranchTableName: TStringField;
+    BranchTableTel: TStringField;
+    BranchTableAdr1: TStringField;
+    BranchTableAdr2: TStringField;
+    BranchTableAdr3: TStringField;
+    BranchTablePCode: TStringField;
+    BranchTableContact: TStringField;
+    BranchTableLastSync: TIntegerField;
+    BranchTableCreated: TIntegerField;
+    StockQueryTCStockNo: TStringField;
+    StockQueryChanged: TStringField;
+    StockQueryBranchNo: TIntegerField;
+    StockQuerySyncHQ: TIntegerField;
+    StocktrnsferItemTable: TADOTable;
+    StockTrnsferSource: TDataSource;
+    StocktrnsferItemTableNr: TAutoIncField;
+    StocktrnsferItemTableStockNo: TIntegerField;
+    StocktrnsferItemTableQty: TBCDField;
+    StocktrnsferItemTableBeforeQty: TBCDField;
+    StocktrnsferItemTableDescription: TStringField;
+    StocktrnsferItemTableLinkID: TIntegerField;
+    StocktrnsferItemSource: TDataSource;
+    StockQueryBranchMainStockNo: TIntegerField;
+    BranchTableStartInvNo: TIntegerField;
+    CashUpTableSyncHQ: TIntegerField;
+    StockQueryQty: TBCDField;
+    StockQueryAlertQty: TBCDField;
+    StockQueryStartingQty: TBCDField;
+    CashUpTableRealOtherTotal: TBCDField;
+    CashUpTableCountOtherTotal: TBCDField;
+    CashUpTableOtherDiff: TFloatField;
+    StocktrnsferItemTableTCStockNo: TStringField;
+    StocktrnsferItemTableTransfered: TIntegerField;
+    StockQueryGroup: TStringField;
+    CashUpTableRealLayBuys: TBCDField;
+    CashUpTableCountLayBuys: TBCDField;
+    CashUpTableTotalLayBuys: TIntegerField;
+    PurchaseItemTable: TADOTable;
+    PurchaseItemSource: TDataSource;
+    PurchaseItemTableNr: TAutoIncField;
+    PurchaseItemTableDescription: TStringField;
+    PurchaseItemTablePrice: TBCDField;
+    PurchaseItemTableQty: TBCDField;
+    PurchaseItemTableStockNo: TIntegerField;
+    PurchaseItemTableLinkId: TIntegerField;
+    PurchaseItemTableCostPrice: TBCDField;
+    PurchaseItemTablePrice2: TBCDField;
+    PurchaseItemTableBarcode: TStringField;
+    PurchaseItemTableTCStockNo: TStringField;
+    PurchaseItemTableExtraDescr: TStringField;
+    PurchaseItemTableModelNo: TStringField;
+    PurchaseItemTableDiscount: TBCDField;
+    TransQuery: TADOQuery;
+    TransQuerySource: TDataSource;
+    TransQueryNr: TAutoIncField;
+    TransQueryDescription: TStringField;
+    TransQueryAmmount: TBCDField;
+    TransQueryDate: TIntegerField;
+    TransQueryLinkID: TIntegerField;
+    TransQueryPaymentType: TStringField;
+    TransQueryPaymentBy: TStringField;
+    InvoiceItemTableCostPrice: TBCDField;
+    StockQuerySalesPrice2: TBCDField;
+    StockQueryExtraDescr: TStringField;
+    StockQueryModelNo: TStringField;
+    InvoiceItemTableTCStockNo: TStringField;
+    InvoiceExportQuery: TADOQuery;
+    InvoiceExportSource: TDataSource;
+    InvoiceExportQueryInvNo: TIntegerField;
+    InvoiceExportQueryCUSet: TIntegerField;
+    InvoiceExportQueryInvDate: TIntegerField;
+    InvoiceExportQueryInvclose: TStringField;
+    InvoiceExportQueryInvTotal: TBCDField;
+    InvoiceExportQueryInvoiceType: TStringField;
+    InvoiceExportQueryInvBy: TStringField;
+    InvoiceItemTableComment: TStringField;
+    CashUpTableTimeStamp: TStringField;
+    TransQueryShiftSet: TIntegerField;
+    Query4: TADOQuery;
+    InvoiceExportQueryShiftSet: TStringField;
+    InvoiceTable: TADOQuery;
+    InvoiceTableNr: TAutoIncField;
+    InvoiceTableClientName: TStringField;
+    InvoiceTableClientTelW: TStringField;
+    InvoiceTableClientTelC: TStringField;
+    InvoiceTableClientAdr1: TStringField;
+    InvoiceTableClientAdr2: TStringField;
+    InvoiceTableClientAdr3: TStringField;
+    InvoiceTableClientPCode: TStringField;
+    InvoiceTableClientVatNo: TStringField;
+    InvoiceTableInvDate: TIntegerField;
+    InvoiceTableInvBy: TStringField;
+    InvoiceTableInvClose: TStringField;
+    InvoiceTableAmmTendered: TBCDField;
+    InvoiceTableInvoiceType: TStringField;
+    InvoiceTableGLDebNo: TStringField;
+    InvoiceTableCUSet: TIntegerField;
+    InvoiceTableInvTotal: TBCDField;
+    InvoiceTableShiftSet: TStringField;
+    InvoiceTableInvNo: TIntegerField;
+    InvoiceTableClientEMail: TStringField;
+    InvoiceTableBranchNo: TIntegerField;
+    InvoiceTableSyncHQ: TIntegerField;
+    InvoiceTableDays30: TBCDField;
+    InvoiceTableDays60: TBCDField;
+    InvoiceTableDays90: TBCDField;
+    InvoiceTableDays120: TBCDField;
+    InvoiceTableTermMonths: TIntegerField;
+    InvoiceTablePremium: TBCDField;
+    InvoiceTableRefNo: TStringField;
+    PurchaseItemTableCostIncl: TCurrencyField;
+    PurchaseItemTableTotalCost: TCurrencyField;
+    StockTable: TADOQuery;
+    StockTableNr: TAutoIncField;
+    StockTableDescription: TStringField;
+    StockTableDateCreated: TIntegerField;
+    StockTableDateChanged: TIntegerField;
+    StockTableCostPrice: TBCDField;
+    StockTableSalesPrice: TBCDField;
+    StockTableSalesPrice2: TBCDField;
+    StockTableBarcode: TStringField;
+    StockTableQty: TBCDField;
+    StockTableAlertQty: TBCDField;
+    StockTableNonStockItem: TStringField;
+    StockTableStartingQty: TBCDField;
+    StockTableTCStockNo: TStringField;
+    StockTableChanged: TStringField;
+    StockTableBranchNo: TIntegerField;
+    StockTableSyncHQ: TIntegerField;
+    StockTableBranchMainStockNo: TIntegerField;
+    StockTableGroup: TStringField;
+    StockTableExtraDescr: TStringField;
+    StockTableModelNo: TStringField;
+    GlobalTable: TADOTable;
+    GlobalTableNr: TIntegerField;
+    GlobalTableInvNo: TIntegerField;
+    GlobalTablePurchaseInvNo: TIntegerField;
+    GlobalSource: TDataSource;
+    GRNTable: TADOQuery;
+    GRNSource: TDataSource;
+    GRNTableTCStockNo: TStringField;
+    GRNTableDescription: TStringField;
+    GRNTableQty: TBCDField;
+    GRNTablePrice2: TBCDField;
+    TransQueryBranchNo: TIntegerField;
+    GRNTableNr: TAutoIncField;
+    QRPDFFilter1: TQRPDFFilter;
+    GRNTableCostPrice: TBCDField;
+    StockTrnsferTable: TADOQuery;
+    StockTrnsferTableNr: TAutoIncField;
+    StockTrnsferTableBranch_no: TIntegerField;
+    StockTrnsferTableDate: TIntegerField;
+    StockTrnsferTableSync: TIntegerField;
+    StockTrnsferTableClosed: TStringField;
+    procedure UserSourceStateChange(Sender: TObject);
+    procedure StockSourceStateChange(Sender: TObject);
+    procedure InvoiceSourceStateChange(Sender: TObject);
+    procedure InvoiceItemSourceStateChange(Sender: TObject);
+    procedure InvoiceItemTableCalcFields(DataSet: TDataSet);
+    procedure CashUpSourceStateChange(Sender: TObject);
+    procedure CashUpTableCalcFields(DataSet: TDataSet);
+    procedure BranchSourceStateChange(Sender: TObject);
+    procedure StockTrnsferSourceStateChange(Sender: TObject);
+    procedure StocktrnsferItemSourceStateChange(Sender: TObject);
+    procedure PurchaseItemSourceStateChange(Sender: TObject);
+    procedure PurchaseItemTableAfterInsert(DataSet: TDataSet);
+    procedure PurchaseItemTableCalcFields(DataSet: TDataSet);
+    procedure GlobalSourceStateChange(Sender: TObject);
+    procedure GRNSourceStateChange(Sender: TObject);
+
+  private
+    { Private declarations}
+    FExcOldValue: Double;
+    procedure SetExcOldValue(const Value: Double);
+    function GetExcOldValue: Double;
+
+  public
+    { Public declarations }
+    StockTablestrState: String;
+    InvoiceTablestrState: String;
+    InvoiceItemTablestrState: String;
+    User_dbstrState: String;
+    CashUpTablestrState: String;
+    BranchTablestrState: String;
+    StockTrnsferTablestrState: String;
+    StocktrnsferItemTablestrState: String;
+    PurchaseItemTablestrState: String;
+    GlobalTablestrState: String;
+    GRNTablestrState: String;
+    accessstr: Integer;
+    UserNameStr: String;
+    IniFile: TIniFile;
+    ProgramPath: String;
+    property ExcOldValue : Double  read GetExcOldValue write SetExcOldValue;
+  end;
+
+var
+  DataForm2: TDataForm2;
+
+implementation
+
+{$R *.dfm}
+
+procedure TDataForm2.UserSourceStateChange(Sender: TObject);
+begin
+        case User_db.State of
+           dsBrowse: User_dbstrState := 'Browse';
+           dsEdit: User_dbstrState := 'Edit';
+           dsInsert: User_dbstrState := 'Insert';
+        else
+        User_dbstrState := 'Other state';
+        end;
+end;
+
+procedure TDataForm2.StockSourceStateChange(Sender: TObject);
+begin
+        case StockTable.State of
+           dsBrowse: StockTablestrState := 'Browse';
+           dsEdit: StockTablestrState := 'Edit';
+           dsInsert: StockTablestrState := 'Insert';
+        else
+        StockTablestrState := 'Other state';
+        end;
+end;
+
+procedure TDataForm2.InvoiceSourceStateChange(Sender: TObject);
+begin
+        case InvoiceTable.State of
+           dsBrowse: InvoiceTablestrState := 'Browse';
+           dsEdit: InvoiceTablestrState := 'Edit';
+           dsInsert: InvoiceTablestrState := 'Insert';
+        else
+        InvoiceTablestrState := 'Other state';
+        end;
+end;
+
+procedure TDataForm2.InvoiceItemSourceStateChange(Sender: TObject);
+begin
+        case InvoiceItemTable.State of
+           dsBrowse: InvoiceItemTablestrState := 'Browse';
+           dsEdit: InvoiceItemTablestrState := 'Edit';
+           dsInsert: InvoiceItemTablestrState := 'Insert';
+        else
+        InvoiceItemTablestrState := 'Other state';
+        end;
+end;
+
+procedure TDataForm2.InvoiceItemTableCalcFields(DataSet: TDataSet);
+begin
+        Dataset['SellingPrice'] := MyRoundTo((DataSet.FieldByName('Price').asfloat)
+                                 * (DataSet.FieldByName('Qty').asfloat), -2);
+//        Dataset['SellingPrice'] := (DataSet.FieldByName('Price').asfloat)
+//                                 * (DataSet.FieldByName('Qty').asfloat);
+        Dataset['DBGLineno'] := Dataset.RecNo;
+        If Dataset['DBGLineno'] < 0 then
+          Dataset['DBGLineno'] := Dataset['DBGLineno'] * -1;
+end;
+
+procedure TDataForm2.CashUpSourceStateChange(Sender: TObject);
+begin
+        case CashUpTable.State of
+           dsBrowse: CashUpTablestrState := 'Browse';
+           dsEdit: CashUpTablestrState := 'Edit';
+           dsInsert: CashUpTablestrState := 'Insert';
+        else
+        CashUpTablestrState := 'Other state';
+        end;
+end;
+
+procedure TDataForm2.SetExcOldValue(const Value: Double);
+begin
+  FExcOldValue := Value;
+end;
+
+function TDataForm2.GetExcOldValue: Double;
+begin
+ result := FExcOldValue;
+end;
+
+procedure TDataForm2.CashUpTableCalcFields(DataSet: TDataSet);
+begin
+        Dataset['CashDiff'] := ((DataSet.FieldByName('RealCashTotal').asfloat)
+                           - (DataSet.FieldByName('CountCashTotal').asfloat));
+        Dataset['ChequesDiff'] := ((DataSet.FieldByName('RealChequesTotal').asfloat)
+                           - (DataSet.FieldByName('CountChequesTotal').asfloat));
+        Dataset['CreditCardDiff'] := ((DataSet.FieldByName('RealCreditCardTotal').asfloat)
+                           - (DataSet.FieldByName('CountCreditCardTotal').asfloat));
+        Dataset['OtherDiff'] := ((DataSet.FieldByName('RealOtherTotal').asfloat)
+                           - (DataSet.FieldByName('CountOtherTotal').asfloat));
+end;
+
+procedure TDataForm2.BranchSourceStateChange(Sender: TObject);
+begin
+        case BranchTable.State of
+           dsBrowse: BranchTablestrState := 'Browse';
+           dsEdit: BranchTablestrState := 'Edit';
+           dsInsert: BranchTablestrState := 'Insert';
+        else
+        BranchTablestrState := 'Other state';
+        end;
+end;
+
+procedure TDataForm2.StockTrnsferSourceStateChange(Sender: TObject);
+begin
+        case StockTrnsferTable.State of
+           dsBrowse: StockTrnsferTablestrState := 'Browse';
+           dsEdit: StockTrnsferTablestrState := 'Edit';
+           dsInsert: StockTrnsferTablestrState := 'Insert';
+        else
+        StockTrnsferTablestrState := 'Other state';
+        end;
+end;
+
+procedure TDataForm2.StocktrnsferItemSourceStateChange(Sender: TObject);
+begin
+        case StocktrnsferItemTable.State of
+           dsBrowse: StocktrnsferItemTablestrState := 'Browse';
+           dsEdit: StocktrnsferItemTablestrState := 'Edit';
+           dsInsert: StocktrnsferItemTablestrState := 'Insert';
+        else
+        StocktrnsferItemTablestrState := 'Other state';
+        end;
+end;
+
+procedure TDataForm2.PurchaseItemSourceStateChange(Sender: TObject);
+begin
+        case PurchaseItemTable.State of
+           dsBrowse: PurchaseItemTablestrState := 'Browse';
+           dsEdit: PurchaseItemTablestrState := 'Edit';
+           dsInsert: PurchaseItemTablestrState := 'Insert';
+        else
+        PurchaseItemTablestrState := 'Other state';
+        end;
+end;
+
+procedure TDataForm2.PurchaseItemTableAfterInsert(DataSet: TDataSet);
+begin
+        Dataset.FieldByName('Discount').Value := 0.00;
+        Dataset.FieldByName('CostPrice').AsCurrency := 0.00;
+        Dataset.FieldByName('Price').AsCurrency := 0.00;
+        Dataset.FieldByName('Price2').AsCurrency := 0.00;
+        Dataset.FieldByName('Qty').Value := 1;
+end;
+
+procedure TDataForm2.PurchaseItemTableCalcFields(DataSet: TDataSet);
+begin
+        Dataset.FieldByName('CostIncl').Value := Dataset.FieldbyName('CostPrice').Value * 1.14;
+        Dataset.FieldByName('TotalCost').Value := Dataset.FieldByName('CostIncl').Value * Dataset.FieldByName('Qty').Value;
+end;
+
+procedure TDataForm2.GlobalSourceStateChange(Sender: TObject);
+begin
+        case GlobalTable.State of
+           dsBrowse: GlobalTablestrState := 'Browse';
+           dsEdit: GlobalTablestrState := 'Edit';
+           dsInsert: GlobalTablestrState := 'Insert';
+        else
+        GlobalTablestrState := 'Other state';
+        end;
+end;
+
+procedure TDataForm2.GRNSourceStateChange(Sender: TObject);
+begin
+        case GRNTable.State of
+           dsBrowse: GRNTablestrState := 'Browse';
+           dsEdit: GRNTablestrState := 'Edit';
+           dsInsert: GRNTablestrState := 'Insert';
+        else
+        GRNTablestrState := 'Other state';
+        end;
+end;
+
+end.

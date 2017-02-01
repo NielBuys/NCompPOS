@@ -1,0 +1,1 @@
+"C:\Program Files\MySQL\MySQL Server 4.1\bin\mysql" -u root --password=djb115 < structure.sql

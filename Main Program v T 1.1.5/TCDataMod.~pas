@@ -1,0 +1,470 @@
+unit TCDataMod;
+
+interface
+
+uses
+  SysUtils, Classes, DBTables, JvDataSource, DB;
+
+type
+  TTCData = class(TDataModule)
+    TurbocashDb: TDatabase;
+    TCStockTable: TTable;
+    TCStockTableWStockID: TIntegerField;
+    TCStockTableSStockCode: TStringField;
+    TCStockTableSBarCodeNumber: TStringField;
+    TCStockTableSDescription: TStringField;
+    TCStockTableWReportingGroup1ID: TIntegerField;
+    TCStockTableWReportingGroup2ID: TIntegerField;
+    TCStockTableWCostAccountID: TIntegerField;
+    TCStockTableWInputTaxID: TIntegerField;
+    TCStockTableWOutputTaxID: TIntegerField;
+    TCStockTableFOpeningAveCost: TFloatField;
+    TCStockTableFQtyOnHand: TFloatField;
+    TCStockTableFOpeningQty: TFloatField;
+    TCStockTableFInvQtyOnHand: TFloatField;
+    TCStockTableFReorderQty: TFloatField;
+    TCStockTableWSalesAccountID: TIntegerField;
+    TCStockTableBApplyInvoiceDiscount: TBooleanField;
+    TCStockTableWStockAccountID: TIntegerField;
+    TCStockTableFSellingPrice1: TFloatField;
+    TCStockTableFSellingPrice2: TFloatField;
+    TCStockTableFSellingPrice3: TFloatField;
+    TCStockTableFUnitAveCost: TFloatField;
+    TCStockTableFUnitCost: TFloatField;
+    TCStockTableWUnitID: TIntegerField;
+    TCStockTableDSysDate: TDateTimeField;
+    TCStockTableBApplyTax: TBooleanField;
+    TCStockTableWInputTax2ID: TIntegerField;
+    TCStockTableBTaxable: TBooleanField;
+    TCStockTableWSupplier1ID: TIntegerField;
+    TCStockTableWSupplier2ID: TIntegerField;
+    TCStockTableWStockTypeID: TIntegerField;
+    TCStockTableWOutputTax2ID: TIntegerField;
+    TCStockTableWProfileID: TIntegerField;
+    TCStockTableBDisabled: TBooleanField;
+    TCStockTableWPerentID: TIntegerField;
+    TCStockTableWLocationID: TIntegerField;
+    TCStockTableWFileNameID: TIntegerField;
+    TCStockTableSExtraDesc: TStringField;
+    TCStockSource: TDataSource;
+    TcStockInstall: TTable;
+    TcStockInstallSStockCode: TStringField;
+    TcStockInstallSBarCodeNumber: TStringField;
+    TcStockInstallSDescription: TStringField;
+    TcStockInstallFQtyOnHand: TFloatField;
+    TcStockInstallFReorderQty: TFloatField;
+    TcStockInstallFSellingPrice1: TFloatField;
+    TcStockInstallFUnitCost: TFloatField;
+    TcStockInstallSExtraDesc: TStringField;
+    TcStockInstallFSellingPrice2: TFloatField;
+    tblAccount: TTable;
+    tblAccountSAccountCode: TStringField;
+    tblAccountSDescription: TStringField;
+    tblAccountWAccountID: TIntegerField;
+    tblAccountBIncomeExpense: TBooleanField;
+    tblAccountSMainAccountCode: TStringField;
+    tblAccountSSubAccountCode: TStringField;
+    tblAccountWAccountTypeID: TIntegerField;
+    tblAccountWReportingGroup1ID: TIntegerField;
+    tblAccountWReportingGroup2ID: TIntegerField;
+    tblAccountBSubAccounts: TBooleanField;
+    tblAccountDSysDate: TDateTimeField;
+    dsAccount: TDataSource;
+    tblSysParams: TTable;
+    tblSysParamsWUserID: TIntegerField;
+    tblSysParamsSParamName: TStringField;
+    tblSysParamsSParamValue: TStringField;
+    tblSysParamsWTypeID: TIntegerField;
+    tblSysParamsWSourceID: TIntegerField;
+    tblSysParamsWSourceTypeID: TIntegerField;
+    tblSysParamsDSysDate: TDateTimeField;
+    tblSysParamsWParentID: TIntegerField;
+    tblSysParamsWParentTypeID: TIntegerField;
+    tblSysParamsBActive: TBooleanField;
+    tblSysParamsWParamID: TIntegerField;
+    creditordetail: TTable;
+    creditordetailWAccountID: TIntegerField;
+    creditordetailWContactID: TIntegerField;
+    creditordetailSPassword: TStringField;
+    creditordetailSPostal1: TStringField;
+    creditordetailSPostal2: TStringField;
+    creditordetailSPostal3: TStringField;
+    creditordetailSPostalCode: TStringField;
+    creditordetailSDelivery1: TStringField;
+    creditordetailSDelivery2: TStringField;
+    creditordetailSDelivery3: TStringField;
+    creditordetailSTelephone1: TStringField;
+    creditordetailSTelephone2: TStringField;
+    creditordetailSFax: TStringField;
+    creditordetailSEmail: TStringField;
+    creditordetailWBankName: TStringField;
+    creditordetailSBranchCode: TStringField;
+    creditordetailSBankAccountNumber: TStringField;
+    creditordetailSBankAccountName: TStringField;
+    creditordetailFCreditLimit: TFloatField;
+    creditordetailFChargeAmount: TFloatField;
+    creditordetailSCode: TStringField;
+    creditordetailBOpenItem: TBooleanField;
+    creditordetailBPostBBF: TBooleanField;
+    creditordetailDLastActivity: TDateField;
+    creditordetailWCurrencyID: TIntegerField;
+    creditordetailWForexAccountID: TIntegerField;
+    creditordetailSMessage: TStringField;
+    creditordetailSReference: TStringField;
+    creditordetailFDiscount: TFloatField;
+    creditordetailWDefaultPriceTypeID: TSmallintField;
+    creditordetailDSysDate: TDateTimeField;
+    creditordetailWDueDays: TIntegerField;
+    creditordetailWDefaultAccount: TIntegerField;
+    tblDocHeader: TTable;
+    tblDocHeaderWDocID: TIntegerField;
+    tblDocHeaderSDocNo: TStringField;
+    tblDocHeaderWTypeID: TIntegerField;
+    tblDocHeaderDDate: TDateField;
+    tblDocHeaderDAllocatedDate: TDateField;
+    tblDocHeaderWAccountID: TIntegerField;
+    tblDocHeaderWPaymentTypeID: TIntegerField;
+    tblDocHeaderWPostal1ID: TIntegerField;
+    tblDocHeaderWPostal2ID: TIntegerField;
+    tblDocHeaderWPostal3ID: TIntegerField;
+    tblDocHeaderWPostalCodeID: TIntegerField;
+    tblDocHeaderWMessage1ID: TIntegerField;
+    tblDocHeaderWMessage2ID: TIntegerField;
+    tblDocHeaderWMessage3ID: TIntegerField;
+    tblDocHeaderFInvoiceDiscount: TFloatField;
+    tblDocHeaderWSalesmanID: TIntegerField;
+    tblDocHeaderSReference: TStringField;
+    tblDocHeaderWDelAddress1ID: TIntegerField;
+    tblDocHeaderWDelAddress2ID: TIntegerField;
+    tblDocHeaderWDelAddress3ID: TIntegerField;
+    tblDocHeaderWDelCodeID: TIntegerField;
+    tblDocHeaderBPrinted: TBooleanField;
+    tblDocHeaderBPosted: TBooleanField;
+    tblDocHeaderWReportingGroup1ID: TIntegerField;
+    tblDocHeaderWReportingGroup2ID: TIntegerField;
+    tblDocHeaderWPaymentGroupID: TIntegerField;
+    tblDocHeaderBExclusive: TBooleanField;
+    tblDocHeaderWCurrencyID: TIntegerField;
+    tblDocHeaderFDocAmount: TFloatField;
+    tblDocHeaderFTaxAmount: TFloatField;
+    tblDocHeaderBRepeating: TBooleanField;
+    tblDocHeaderDSysDate: TDateTimeField;
+    tblDocHeaderWSourceTypeID: TIntegerField;
+    tblDocHeaderWProfileID: TIntegerField;
+    tblDocHeaderWTerms: TIntegerField;
+    tblDocHeaderWJobCodeID: TIntegerField;
+    tblDocHeaderDDueDate: TDateTimeField;
+    tblDocHeaderWUserID: TIntegerField;
+    tblUser: TTable;
+    tblUserWUserID: TIntegerField;
+    tblUserSUserName: TStringField;
+    TCTotal: TTable;
+    TCTotalWAccountID: TIntegerField;
+    TCTotalWPeriodID: TIntegerField;
+    TCTotalBActual: TBooleanField;
+    TCTotalFAmount: TFloatField;
+    TCTotalDSysDate: TDateTimeField;
+    TCTax: TTable;
+    TCTaxWAccountID: TIntegerField;
+    tblGlobal: TTable;
+    tblGlobalWNewAccountID: TIntegerField;
+    tblGlobalWNewBackOrderID: TIntegerField;
+    tblGlobalWNewContactID: TIntegerField;
+    tblGlobalWNewBatchTypeID: TIntegerField;
+    tblGlobalWNewBatchID: TIntegerField;
+    tblGlobalWNewGroupID: TIntegerField;
+    tblGlobalWNewCurrencyID: TIntegerField;
+    tblGlobalWNewDocID: TIntegerField;
+    tblGlobalWNewLabSpecsID: TIntegerField;
+    tblGlobalWNewReportID: TIntegerField;
+    tblGlobalWNewTransactionID: TIntegerField;
+    tblGlobalWNewStockID: TIntegerField;
+    tblGlobalWNewUnitID: TIntegerField;
+    tblGlobalWNewUserID: TIntegerField;
+    tblGlobalWNewMessageID: TIntegerField;
+    tblGlobalWNewStockTransID: TIntegerField;
+    dsGlobal: TDataSource;
+    tblDocLine: TTable;
+    tblDocLineWDocLineID: TIntegerField;
+    tblDocLineWDocID: TIntegerField;
+    tblDocLineWStockID: TIntegerField;
+    tblDocLineWLineTypeID: TIntegerField;
+    tblDocLineWDescriptionID: TIntegerField;
+    tblDocLineFQtyOrdered: TFloatField;
+    tblDocLineFQtyShipped: TFloatField;
+    tblDocLineFSellingPrice: TFloatField;
+    tblDocLineFItemDiscount: TFloatField;
+    tblDocLineWTaxID: TIntegerField;
+    tblDocLineFExclusiveAmt: TFloatField;
+    tblDocLineFInclusiveAmt: TFloatField;
+    tblDocLineFTaxAmount: TFloatField;
+    tblDocLineDSysDate: TDateTimeField;
+    tblDocLineWProfileID: TIntegerField;
+    tblDocLineWSerialNoID: TIntegerField;
+    tblDocLineSUnit: TStringField;
+    tblDocLineSSTockCode: TStringField;
+    tblGroups: TTable;
+    tblGroupsWGroupID: TIntegerField;
+    tblGroupsSDescription: TStringField;
+    TCBatCon: TTable;
+    TCBatConWBatchID: TIntegerField;
+    TCBatConWUserID: TIntegerField;
+    TCBatConWBatchTypeID: TIntegerField;
+    TCBatConSBatchNumber: TStringField;
+    TCBatConBPosted: TBooleanField;
+    TCBatConBImported: TBooleanField;
+    TCBatConBDocSource: TBooleanField;
+    TCBatConWLineCount: TIntegerField;
+    TCBatConSFilename: TStringField;
+    TCBatConWDocID: TIntegerField;
+    TCBatConDSysDate: TDateTimeField;
+    TCBatConWInitBatID: TIntegerField;
+    TCBatConSAlias: TStringField;
+    TCBatConSUniqueID: TStringField;
+    tblDebtor: TTable;
+    tblDebtorWAccountID: TIntegerField;
+    tblDebtorSCode: TStringField;
+    tblDebtorWContactID: TIntegerField;
+    tblDebtorSPostal1: TStringField;
+    tblDebtorSPostal2: TStringField;
+    tblDebtorSPostal3: TStringField;
+    tblDebtorSPostalCode: TStringField;
+    tblDebtorSDelivery1: TStringField;
+    tblDebtorSDelivery2: TStringField;
+    tblDebtorSDelivery3: TStringField;
+    tblDebtorSDeliveryCode: TStringField;
+    tblDebtorSTelephone1: TStringField;
+    tblDebtorSTelephone2: TStringField;
+    tblDebtorSFax: TStringField;
+    tblDebtorSEmail: TStringField;
+    tblDebtorSBankName: TStringField;
+    tblDebtorSBranchCode: TStringField;
+    tblDebtorSBankAccountNumber: TStringField;
+    tblDebtorSBankAccountName: TStringField;
+    tblDebtorSCreditCardNumber: TStringField;
+    tblDebtorDExpiryDate: TDateField;
+    tblDebtorSCreditCardType: TStringField;
+    tblDebtorSCreditCardHolder: TStringField;
+    tblDebtorFCreditLimit: TFloatField;
+    tblDebtorFChargeAmount: TFloatField;
+    tblDebtorFDiscount: TFloatField;
+    tblDebtorFInterest: TFloatField;
+    tblDebtorWBankID: TIntegerField;
+    tblDebtorWSalesmanID: TIntegerField;
+    tblDebtorBOpenItem: TBooleanField;
+    tblDebtorBDisabled: TBooleanField;
+    tblDebtorSMessage: TStringField;
+    tblDebtorWDefaultPriceTypeID: TIntegerField;
+    tblDebtorDLastActivity: TDateField;
+    tblDebtorWCurrencyID: TIntegerField;
+    tblDebtorWForexAccountID: TIntegerField;
+    tblDebtorSReference: TStringField;
+    tblDebtorSPassword: TStringField;
+    tblDebtorBPostBBF: TBooleanField;
+    tblDebtorDSysDate: TDateTimeField;
+    tblDebtorWDueDays: TIntegerField;
+    tblDebtorWDefaultAccount: TIntegerField;
+    TCPeriod: TTable;
+    TCPeriodWPeriodID: TIntegerField;
+    TCPeriodDStartDate: TDateField;
+    TCPeriodDEndDate: TDateField;
+    TCPeriodSource: TJvDataSource;
+    tblMessage: TTable;
+    tblMessageWMessageID: TIntegerField;
+    tblMessageSDescription: TStringField;
+    TCTransAct: TTable;
+    TCTransActWTransactionID: TIntegerField;
+    TCTransActWBatchID: TIntegerField;
+    TCTransActWBatchTypeID: TIntegerField;
+    TCTransActWLineID: TIntegerField;
+    TCTransActBCarriedForward: TBooleanField;
+    TCTransActBLastYear: TBooleanField;
+    TCTransActBLinksUsed: TBooleanField;
+    TCTransActBMultipleItems: TBooleanField;
+    TCTransActWAccountID: TIntegerField;
+    TCTransActDDate: TDateField;
+    TCTransActWPeriodID: TIntegerField;
+    TCTransActSReference: TStringField;
+    TCTransActFTaxRate: TFloatField;
+    TCTransActWTaxAccountID: TIntegerField;
+    TCTransActFAmount: TFloatField;
+    TCTransActFTaxAmount: TFloatField;
+    TCTransActFOutstandingAmount: TFloatField;
+    TCTransActBReconciled: TBooleanField;
+    TCTransActWBalancingAccountID: TIntegerField;
+    TCTransActWDescriptionID: TIntegerField;
+    TCTransActWCurrencyID: TIntegerField;
+    TCTransActFForexAmount: TFloatField;
+    TCTransActWUserID: TIntegerField;
+    TCBatTypes: TTable;
+    TCBatTypesWBatchTypeID: TIntegerField;
+    TCBatTypesSDescription: TStringField;
+    TCBatTypesSource: TDataSource;
+    TCQuery: TQuery;
+    TCQuery2: TQuery;
+    procedure tblDocHeaderAfterInsert(DataSet: TDataSet);
+    procedure tblMessageAfterInsert(DataSet: TDataSet);
+    procedure tblAccountAfterInsert(DataSet: TDataSet);
+    procedure TCStockTableAfterInsert(DataSet: TDataSet);
+    procedure TCTransActAfterInsert(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  TCData: TTCData;
+
+implementation
+
+{$R *.dfm}
+
+procedure TTCData.tblDocHeaderAfterInsert(DataSet: TDataSet);
+var
+  i : Integer ;
+  TryAgain : Boolean ;
+begin
+
+  TryAgain := true ;
+  i := 0 ;
+  While TryAgain do
+  begin
+      try
+      TryAgain := false ;
+      tblGlobal.close;
+      tblGlobal.Open;
+      tblGlobal.Edit;
+
+      except
+        inc(i);
+        if i < 5 then
+        TryAgain := true else
+        raise
+      end;
+  end;
+
+  tblDocHeaderWDocID.Value := tblGlobalWNewDocID.Value;
+  tblGlobalWNewDocID.Value := tblGlobalWNewDocID.Value + 1;
+  tblGlobal.Post;
+  tblGlobal.Close;
+end;
+
+procedure TTCData.tblMessageAfterInsert(DataSet: TDataSet);
+var
+  i : Integer ;
+  TryAgain : Boolean ;
+begin
+
+  TryAgain := true ;
+  i := 0 ;
+  While TryAgain do
+  begin
+      try
+      TryAgain := false ;
+      tblGlobal.close;
+      tblGlobal.Open;
+      tblGlobal.Edit;
+
+      except
+        inc(i);
+        if i < 5 then
+        TryAgain := true else
+        raise
+      end;
+  end;
+  tblMessageWMessageID.Value := tblGlobalWNewMessageID.Value;
+  tblGlobalWNewMessageID.Value := tblGlobalWNewMessageID.Value + 1;
+  tblGlobal.Post;
+  tblGlobal.Close;
+end;
+
+procedure TTCData.tblAccountAfterInsert(DataSet: TDataSet);
+var
+  i : Integer ;
+  TryAgain : Boolean ;
+begin
+  TryAgain := true ;
+  i := 0 ;
+  While TryAgain do
+  begin
+      try
+      TryAgain := false ;
+      tblGlobal.close;
+      tblGlobal.Open;
+      tblGlobal.Edit;
+      except
+        inc(i);
+        if i < 5 then
+        TryAgain := true else
+        raise;
+        sleep(100);
+      end;
+  end;
+  // done : Pieter Locking case (after edit = lock)
+
+  tblAccountWAccountID.Value := tblGlobalWNewAccountID.Value;
+  tblGlobalWNewAccountID.Value := tblGlobalWNewAccountID.Value + 1;
+  tblGlobal.Post;
+  tblGlobal.Close;
+end;
+
+procedure TTCData.TCStockTableAfterInsert(DataSet: TDataSet);
+var
+  i : Integer ;
+  TryAgain : Boolean ;
+begin
+
+  TryAgain := true ;
+  i := 0 ;
+  While TryAgain do
+  begin
+      try
+      TryAgain := false ;
+      tblGlobal.close;
+      tblGlobal.Open;
+      tblGlobal.Edit;
+
+      except
+        inc(i);
+        if i < 5 then
+        TryAgain := true else
+        raise
+      end;
+  end;
+   TCStockTableWStockID.Value := tblGlobalWNewStockID.Value;
+  tblGlobalWNewStockID.Value := tblGlobalWNewStockID.Value + 1;
+  tblGlobal.Post;
+  tblGlobal.Close;
+end;
+
+procedure TTCData.TCTransActAfterInsert(DataSet: TDataSet);
+var
+  i : Integer ;
+  TryAgain : Boolean ;
+begin
+
+  TryAgain := true ;
+  i := 0 ;
+  While TryAgain do
+  begin
+      try
+      TryAgain := false ;
+      tblGlobal.close;
+      tblGlobal.Open;
+      tblGlobal.Edit;
+
+      except
+        inc(i);
+        if i < 5 then
+        TryAgain := true else
+        raise
+      end;
+  end;
+  TCTransActWTransactionID.Value := tblGlobalWNewTransactionID.Value;
+  tblGlobalWNewTransactionID.Value := tblGlobalWNewTransactionID.Value + 1;
+  tblGlobal.Post;
+  tblGlobal.Close;
+end;
+
+end.

@@ -1,0 +1,85 @@
+object YearMonthChooseForm: TYearMonthChooseForm
+  Left = 0
+  Top = 0
+  BorderStyle = bsDialog
+  Caption = 'Choose Year and Month'
+  ClientHeight = 42
+  ClientWidth = 288
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 8
+    Top = 14
+    Width = 26
+    Height = 13
+    Margins.Left = 2
+    Margins.Top = 2
+    Margins.Right = 2
+    Margins.Bottom = 2
+    Caption = 'Year:'
+  end
+  object Label2: TLabel
+    Left = 124
+    Top = 13
+    Width = 34
+    Height = 13
+    Margins.Left = 2
+    Margins.Top = 2
+    Margins.Right = 2
+    Margins.Bottom = 2
+    Caption = 'Month:'
+  end
+  object YearEdit: TJvSpinEdit
+    Left = 48
+    Top = 8
+    Width = 65
+    Height = 21
+    Margins.Left = 2
+    Margins.Top = 2
+    Margins.Right = 2
+    Margins.Bottom = 2
+    Decimal = 0
+    TabOrder = 0
+  end
+  object MonthEdit: TJvSpinEdit
+    Left = 164
+    Top = 8
+    Width = 57
+    Height = 21
+    Margins.Left = 2
+    Margins.Top = 2
+    Margins.Right = 2
+    Margins.Bottom = 2
+    Decimal = 0
+    TabOrder = 1
+  end
+  object JvBitBtn1: TJvBitBtn
+    Left = 227
+    Top = 8
+    Width = 54
+    Height = 25
+    Margins.Left = 2
+    Margins.Top = 2
+    Margins.Right = 2
+    Margins.Bottom = 2
+    Caption = 'Ok'
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
+    TabOrder = 2
+    OnClick = JvBitBtn1Click
+    HotTrackFont.Charset = DEFAULT_CHARSET
+    HotTrackFont.Color = clWindowText
+    HotTrackFont.Height = -11
+    HotTrackFont.Name = 'Tahoma'
+    HotTrackFont.Style = []
+  end
+end

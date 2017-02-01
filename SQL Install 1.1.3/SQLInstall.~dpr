@@ -1,0 +1,15 @@
+program SQLInstall;
+
+uses
+  Forms,
+  MainFrm in 'MainFrm.pas' {MainForm},
+  UtilsUnit in 'S:\bron\NielUniversalUtils\UtilsUnit.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.Title := 'Sql Installer for Riskfin';
+  Application.CreateForm(TMainForm, MainForm);
+  Application.Run;
+end.
