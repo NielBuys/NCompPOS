@@ -10,7 +10,7 @@ Mysql needs to be installed and working before install.
 Run Install file.
 
 # Development environment requirements
-- Delphi 2009 (Newer versions of Delphi should work.)
+- Delphi 2009 (Newer versions of Delphi should work.) </br>
 Extra Components for Delphi
 - JEDI Visual Component Library (JVCL). http://jvcl.delphi-jedi.org/
 - Quick report for Delphi
