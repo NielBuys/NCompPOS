@@ -29,7 +29,7 @@ uses
   ImportFrm in 'ImportFrm.pas' {ImportForm},
   grnfrm in 'grnfrm.pas' {GrnForm},
   LocalAccountSearchFrm in 'LocalAccountSearchFrm.pas' {LocalAccountSearchForm},
-  UtilsUnit in '..\..\NielUniversalUtils\UtilsUnit.pas',
+  UtilsUnit in 'UtilsUnit.pas',
   AccountsFrm in 'AccountsFrm.pas' {AccountsForm},
   AddTransactionFrm in 'AddTransactionFrm.pas' {AddTransactionForm},
   TempGrid in 'TempGrid.pas' {TempGridForm},
