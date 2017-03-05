@@ -9,6 +9,15 @@ Download release from http://www.ncomp.co.za/index.php/ncomppos/overview.
 Mysql needs to be installed and working before install.
 Run Install file.
 
+# Development environment requirements
+- Delphi 2009 (Newer versions of Delphi should work.)
+Extra Components for Delphi
+- JEDI Visual Component Library (JVCL). http://jvcl.delphi-jedi.org/
+- Quick report for Delphi
+- Rave Report for Delphi
+- RemObjects AnyDAC components
+- more components in the "Components for Delphi" folder.
+
 # Contact
 For support you can create an issue on GitHub or fill in the form on our Website.
 http://www.ncomp.co.za/index.php/contact-us/contact-us.
