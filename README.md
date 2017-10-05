@@ -20,4 +20,4 @@ Extra Components for Delphi
 
 # Contact
 For support you can create an issue on GitHub or fill in the form on our Website.
-http://www.ncomp.co.za/index.php/contact-us/contact-us.
+https://www.ncomp.co.za/index.php/about-us/contact-us.
