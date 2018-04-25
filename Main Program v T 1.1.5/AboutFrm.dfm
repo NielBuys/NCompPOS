@@ -21,7 +21,7 @@ object AboutForm: TAboutForm
     Top = 37
     Width = 74
     Height = 13
-    Caption = 'Copyright: 2017'
+    Caption = 'Copyright: 2018'
   end
   object JvImage2: TJvImage
     Left = 416

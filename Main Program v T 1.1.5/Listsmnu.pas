@@ -1975,6 +1975,7 @@ begin
               Clear;
               Add('select Nr from invoice_db');
               Add('where SyncHQ is null');
+              Add('and BranchNo = ' + InttoStr(Dataform2.GlobalTableBranchNo.Value));
               Add('and ((Invclose = "Close") or (Invclose = "LaybC") or (Invclose = "LaybO") or (InvClose = "RecqC") or (InvClose = "GRNC"))');
               Add('Order by InvNo');
             end;
@@ -2271,6 +2272,7 @@ begin
                   Clear;
                   Add('select * from trans_db');
                   Add('where SyncHQ is null');
+                  Add('and BranchNo = ' + InttoStr(Dataform2.GlobalTableBranchNo.Value));
                 end;
                 Dataform2.TransQuery.Prepared := True;
                 DataForm2.TransQuery.Open;

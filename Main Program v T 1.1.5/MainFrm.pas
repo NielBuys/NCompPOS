@@ -59,6 +59,8 @@ type
     InvPopupMenu: TJvPopupMenu;
     PointofSaleInvoice1: TMenuItem;
     FindInvoice1: TMenuItem;
+    Label6: TLabel;
+    DBEdit: TEdit;
     procedure FormCreate(Sender: TObject);
     procedure Button8Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -116,20 +118,13 @@ begin
         Dataform2.ProgramPath := GetCurrentDir;
         Dataform2.AllUsersDataPath := GetSpecialFolder(CSIDL_COMMON_APPDATA);
 //        DataForm2.IniFile := TIniFile.Create (ChangeFileExt (Application.ExeName, '.ini'));
-        if Fileexists(Dataform2.AllUsersDataPath + '\NCompPOS\' + ExtractFileName(ChangeFileExt(Application.ExeName, '.ini'))) then
+        if Fileexists(Dataform2.UserDataPath + '\NCompPOS\' + ExtractFileName(ChangeFileExt(Application.ExeName, '.ini'))) then
         begin
-          DataForm2.IniFile := TIniFile.Create (Dataform2.AllUsersDataPath + '\NCompPOS\' + ExtractFileName(ChangeFileExt (Application.ExeName, '.ini')))
+          DataForm2.IniFile := TIniFile.Create (Dataform2.UserDataPath + '\NCompPOS\' + ExtractFileName(ChangeFileExt (Application.ExeName, '.ini')))
         end
         else
         begin
-          if Fileexists(Dataform2.UserDataPath + '\NCompPOS\' + ExtractFileName(ChangeFileExt(Application.ExeName, '.ini'))) then
-          begin
-            DataForm2.IniFile := TIniFile.Create (Dataform2.UserDataPath + '\NCompPOS\' + ExtractFileName(ChangeFileExt (Application.ExeName, '.ini')))
-          end
-          else
-          begin
-            DataForm2.IniFile := TIniFile.Create (ChangeFileExt (Application.ExeName, '.ini'));
-          end;
+          DataForm2.IniFile := TIniFile.Create (ChangeFileExt (Application.ExeName, '.ini'));
         end;
 
         Dataform2.accessstr := 0;
@@ -144,13 +139,13 @@ begin
         PasswordEdit.Text := Decrypt(DataForm2.IniFile.ReadString('Login', 'Password', ''));
         IpEdit.Text := DataForm2.IniFile.ReadString('Login', 'Ip', '');
         PortEdit.Text := DataForm2.IniFile.ReadString('Login', 'Port', '3306');
+        DBEdit.Text := DataForm2.IniFile.ReadString('Login', 'DataBase', 'ncomp');
         try
           ULoginEdit.Text := GetRegistryData(HKEY_CURRENT_USER,'\Software\NcompPOS', 'LastLogin');
         except
           ULoginEdit.Text := '';
         end;
         UPasswordEdit.Text := '';
-        DataBaseStr := DataForm2.IniFile.ReadString('Login', 'DataBase', 'ncomp');
 
         if LoginEdit.Text = '' then
         begin
@@ -169,6 +164,15 @@ procedure TMainForm.ConnecttoMySQL();
 var
           UsesReportBool:Boolean;
 begin
+          if IpEdit.Text <> DataForm2.IniFile.ReadString('Login', 'Ip', '') then
+          begin
+            DataForm2.IniFile.WriteString ('Login', 'Username', LoginEdit.Text);
+            DataForm2.IniFile.WriteString ('Login', 'Password', Encrypt(PasswordEdit.Text));
+            DataForm2.IniFile.WriteString ('Login', 'Ip', IpEdit.Text);
+            DataForm2.IniFile.WriteString ('Login', 'Port', PortEdit.Text);
+            DataForm2.IniFile.WriteString ('Login', 'DataBase', DBEdit.Text);
+          end;
+          DataBaseStr := DataForm2.IniFile.ReadString('Login', 'DataBase', 'ncomp');
           try
             Dataform2.ADConnection.Params.Clear;
             Dataform2.ADConnection.Params.Add('DriverID=MySQL');
@@ -185,13 +189,7 @@ begin
           end;
           raise;
           end;
-          if IpEdit.Text <> DataForm2.IniFile.ReadString('Login', 'Ip', '') then
-          begin
-            DataForm2.IniFile.WriteString ('Login', 'Username', LoginEdit.Text);
-            DataForm2.IniFile.WriteString ('Login', 'Password', Encrypt(PasswordEdit.Text));
-            DataForm2.IniFile.WriteString ('Login', 'Ip', IpEdit.Text);
-            DataForm2.IniFile.WriteString ('Login', 'Port', PortEdit.Text);
-          end;
+
           DataForm2.User_db.Open;
 
    //********* used count added to globaltable*********//
@@ -545,8 +543,6 @@ end;
 
 procedure TMainForm.Button8Click(Sender: TObject);
 begin
-        DataBaseStr := DataForm2.IniFile.ReadString('Login', 'DataBase', 'ncomp');
-
         ConnecttoMySQL();
         if Checkbox1.Checked = True then
         begin
@@ -915,7 +911,6 @@ end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 begin
-
         JvStatusBar1.Panels[1].Text := DataForm2.IniFile.ReadString('Login', 'Ip', '');
 
         If VisibleStore = 'Yes' then

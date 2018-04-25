@@ -926,21 +926,14 @@ begin
         begin
           FileNameStr := 'Turbopos.ini';
         end;
-//        DataForm2.IniFile := TIniFile.Create (ChangeFileExt (Application.ExeName, '.ini'));
-        if Fileexists(AllUsersDataPath + '\NCompPOS\' + FileNameStr) then
+
+        if Fileexists(UserDataPath + '\NCompPOS\' + FileNameStr) then
         begin
-          IniFile := TIniFile.Create (AllUsersDataPath + '\NCompPOS\' + FileNameStr)
+          IniFile := TIniFile.Create (UserDataPath + '\NCompPOS\' + FileNameStr)
         end
         else
         begin
-          if Fileexists(UserDataPath + '\NCompPOS\' + FileNameStr) then
-          begin
-            IniFile := TIniFile.Create (UserDataPath + '\NCompPOS\' + FileNameStr)
-          end
-          else
-          begin
-            IniFile := TIniFile.Create (FileNameStr);
-          end;
+          IniFile := TIniFile.Create (FileNameStr);
         end;
 end;
 

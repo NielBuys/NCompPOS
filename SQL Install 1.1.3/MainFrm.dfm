@@ -92,6 +92,8 @@ object MainForm: TMainForm
     Height = 25
     Hint = 'Press here to setup a link to the MySQL Database'
     Caption = 'Install, Update or Link Database'
+    DoubleBuffered = True
+    ParentDoubleBuffered = False
     ParentShowHint = False
     ShowHint = True
     TabOrder = 4

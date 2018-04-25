@@ -21,9 +21,9 @@ object MainForm: TMainForm
   PixelsPerInch = 96
   TextHeight = 13
   object Login: TGroupBox
-    Left = 208
-    Top = 288
-    Width = 193
+    Left = 211
+    Top = 295
+    Width = 225
     Height = 169
     Caption = 'Database Login:'
     TabOrder = 0
@@ -37,39 +37,46 @@ object MainForm: TMainForm
     end
     object Label2: TLabel
       Left = 16
-      Top = 56
+      Top = 43
       Width = 49
       Height = 13
       Caption = 'Password:'
     end
     object Label3: TLabel
       Left = 16
-      Top = 96
+      Top = 72
       Width = 12
       Height = 13
       Caption = 'Ip:'
     end
+    object Label6: TLabel
+      Left = 16
+      Top = 98
+      Width = 18
+      Height = 13
+      Caption = 'DB:'
+    end
     object LoginEdit: TEdit
-      Left = 8
-      Top = 32
-      Width = 177
+      Left = 71
+      Top = 16
+      Width = 146
       Height = 21
       TabOrder = 0
       Text = 'LoginEdit'
     end
     object PasswordEdit: TEdit
-      Left = 8
-      Top = 72
-      Width = 177
+      Left = 71
+      Top = 40
+      Width = 146
       Height = 21
       PasswordChar = '*'
       TabOrder = 1
       Text = 'PasswordEdit'
     end
     object IpEdit: TEdit
-      Left = 8
-      Top = 112
-      Width = 137
+      Left = 71
+      Top = 67
+      Width = 99
       Height = 21
       TabOrder = 2
       Text = 'IpEdit'
@@ -92,12 +99,20 @@ object MainForm: TMainForm
       TabOrder = 4
     end
     object PortEdit: TEdit
-      Left = 149
-      Top = 112
+      Left = 175
+      Top = 67
       Width = 41
       Height = 21
       TabOrder = 5
       Text = 'PortEdit'
+    end
+    object DBEdit: TEdit
+      Left = 71
+      Top = 94
+      Width = 145
+      Height = 21
+      TabOrder = 6
+      Text = 'DBEdit'
     end
   end
   object UserLogin: TGroupBox

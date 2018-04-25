@@ -19,7 +19,7 @@ Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "A
 Name: "quicklaunchicon"; Description: "Create a &Quick Launch icon"; GroupDescription: "Additional icons:"; MinVersion: 4,4; Flags: unchecked
 
 [Files]
-Source: "{app}\ncompPOS.ini"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Flags: external skipifsourcedoesntexist uninsneveruninstall
+Source: "{app}\ncompPOS.ini"; DestDir: "{userappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Flags: external skipifsourcedoesntexist uninsneveruninstall
 Source: "{app}\client.txt"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Flags: external skipifsourcedoesntexist uninsneveruninstall
 Source: "{app}\footer.txt"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Flags: external skipifsourcedoesntexist uninsneveruninstall
 Source: "{app}\logo.bmp"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Flags: external skipifsourcedoesntexist uninsneveruninstall
