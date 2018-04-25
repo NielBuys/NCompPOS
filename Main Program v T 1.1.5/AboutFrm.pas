@@ -64,7 +64,7 @@ end;
 
 procedure TAboutForm.Label2Click(Sender: TObject);
 begin
-    If ShellExecute (0, '', pchar('http://www.ncomp.co.za/index.php/contact-us/contact-us'), '', '', SW_NORMAL) <= 32 then
+    If ShellExecute (0, '', pchar('http://www.ncomp.co.za/index.php/about-us/contact-us'), '', '', SW_NORMAL) <= 32 then
       showmessage('The Link Failed to open');
 end;
 
