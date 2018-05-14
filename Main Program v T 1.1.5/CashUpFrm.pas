@@ -145,6 +145,7 @@ begin
         begin
           showmessage('There is nothing to cashup!');
           Dataform2.CashUpTable.Close;
+          JvDBLookupCombo1.Enabled := True;
         end;
       end;
 end;

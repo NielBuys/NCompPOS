@@ -131,6 +131,7 @@ begin
         ShortDateFormat := 'yyyy/MM/dd';
         DateSeparator := '/';
         LongTimeFormat := 'HH:mm:ss';
+        DecimalSeparator := '.';
 
         VisibleStore := 'No';
         UVisibleStore := 'No';

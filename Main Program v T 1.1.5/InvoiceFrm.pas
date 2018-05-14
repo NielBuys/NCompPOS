@@ -561,7 +561,7 @@ begin
       end;
       Dataform2.Query3.Prepare;
       Dataform2.Query3.Open;
-      TotalStr := Strtofloat(Floattostrf(DataForm2.Query3.Fieldbyname('Total').asCurrency,ffFixed,17,2));
+      TotalStr := DataForm2.Query3.Fieldbyname('Total').asCurrency;
       Total.Caption := 'Total: ' + Floattostrf(DataForm2.Query3.Fieldbyname('Total').asCurrency,ffCurrency,17,2);
       if Dataform2.GlobalTableVat.Value <> 0 then
       begin
