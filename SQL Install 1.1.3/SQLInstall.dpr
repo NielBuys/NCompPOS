@@ -3,7 +3,7 @@ program SQLInstall;
 uses
   Forms,
   MainFrm in 'MainFrm.pas' {MainForm},
-  UtilsUnit in '..\..\NielUniversalUtils\UtilsUnit.pas';
+  UtilsUnit in '..\Main Program v T 1.1.5\UtilsUnit.pas';
 
 {$R *.res}
 

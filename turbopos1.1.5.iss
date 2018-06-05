@@ -23,21 +23,21 @@ Source: "{app}\Turbopos.ini"; DestDir: "{userappdata}\NCompPOS"; CopyMode: onlyi
 Source: "{app}\client.txt"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Flags: external skipifsourcedoesntexist uninsneveruninstall
 Source: "{app}\footer.txt"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Flags: external skipifsourcedoesntexist uninsneveruninstall
 Source: "{app}\logo.bmp"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Flags: external skipifsourcedoesntexist uninsneveruninstall
-Source: "u:\bron\ncomp POS\Main Program v T 1.1.5\ncompPOS.exe"; DestName: "Turbopos.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
-Source: "u:\bron\ncomp POS\turboposInstallFiles\client.txt"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
-Source: "u:\bron\ncomp POS\turboposInstallFiles\footer.txt"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
-Source: "u:\bron\ncomp POS\turboposInstallFiles\ncompPOS.ini"; DestName: "Turbopos.ini"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
-Source: "u:\bron\ncomp POS\Main Program v T 1.1.5\libmysql.dll"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
-Source: "u:\bron\ncomp POS\Main Program v T 1.1.5\mysql.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
-Source: "u:\bron\ncomp POS\Main Program v T 1.1.5\mysqldump.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
-Source: "u:\bron\ncomp POS\InstallFiles\Barcode.rav"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
-Source: "u:\bron\ncomp POS\InstallFiles\BarcodeSingle.rav"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
-Source: "u:\bron\ncomp POS\InstallFiles\Blank.bmp"; DestName: "logo.bmp"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
-Source: "u:\bron\ncomp POS\SQL Install 1.1.3\SQLInstall.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite; Flags: deleteafterinstall
+Source: "e:\Development\NCompPOS\Main Program v T 1.1.5\ncompPOS.exe"; DestName: "Turbopos.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
+Source: "e:\Development\NCompPOS\turboposInstallFiles\client.txt"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
+Source: "e:\Development\NCompPOS\turboposInstallFiles\footer.txt"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
+Source: "e:\Development\NCompPOS\turboposInstallFiles\ncompPOS.ini"; DestName: "Turbopos.ini"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
+Source: "e:\Development\NCompPOS\Main Program v T 1.1.5\libmysql.dll"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
+Source: "e:\Development\NCompPOS\Main Program v T 1.1.5\mysql.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
+Source: "e:\Development\NCompPOS\Main Program v T 1.1.5\mysqldump.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
+Source: "e:\Development\NCompPOS\InstallFiles\Barcode.rav"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
+Source: "e:\Development\NCompPOS\InstallFiles\BarcodeSingle.rav"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
+Source: "e:\Development\NCompPOS\InstallFiles\Blank.bmp"; DestName: "logo.bmp"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
+Source: "e:\Development\NCompPOS\SQL Install 1.1.3\SQLInstall.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite; Flags: deleteafterinstall
 ; Source: "S:\bron\ncomp POS\InstallFiles\crdat.bat"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder; Flags: deleteafterinstall
 ; Source: "S:\bron\ncomp POS\Main Program\structure.sql"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder; Flags: deleteafterinstall
 ; Source: "u:\bron\RiskfinBegrafnis\CDContent\ODBCSetup.exe"; DestDir: "{tmp}"; CopyMode: alwaysoverwrite; Flags: deleteafterinstall
-Source: "u:\bron\ncomp POS\turboposInstallFiles\Purchase Order example import file.csv"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
+Source: "e:\Development\NCompPOS\\turboposInstallFiles\Purchase Order example import file.csv"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
 
 [Icons]
 Name: "{group}\TurboPOS"; Filename: "{app}\Turbopos.exe"; WorkingDir: "{app}"

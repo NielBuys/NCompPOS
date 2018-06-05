@@ -91,7 +91,7 @@
 			<DCCReference Include="MainFrm.pas">
 				<Form>MainForm</Form>
 			</DCCReference>
-			<DCCReference Include="..\..\NielUniversalUtils\UtilsUnit.pas"/>
+			<DCCReference Include="..\Main Program v T 1.1.5\UtilsUnit.pas"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
