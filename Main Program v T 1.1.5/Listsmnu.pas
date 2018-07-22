@@ -1621,6 +1621,7 @@ begin
                     Clear;
                     Add('select * from stocktrnsferitem_db');
                     Add('where LinkID = ' + InttoStr(Dataform.StockTrnsferTableNr.Value));
+                    Add('and Qty <> 0');
                   end;
                   DataForm.StocktrnsferItemTable.Open;
                   JvProgressDialog1.Max := Dataform.StockTrnsferItemTable.RecordCount;

@@ -1412,7 +1412,7 @@ begin
       end
       else
       begin
-        AssignFile(F, Dataform2.UserDataPath + '/' + DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0'));
+        AssignFile(F, Dataform2.UserDataPath + '\NCompPOS\' + DataForm2.IniFile.ReadString ('ComportSection', 'Comport', '0'));
         Rewrite(F);
         if DataForm2.IniFile.ReadString ('ComportSection', 'Printer', '0') = 'EPSON' then
           Write(F, #27 + #112 + #0 + #25 + #250);

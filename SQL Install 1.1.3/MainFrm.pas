@@ -927,14 +927,9 @@ begin
           FileNameStr := 'Turbopos.ini';
         end;
 
-        if Fileexists(UserDataPath + '\NCompPOS\' + FileNameStr) then
-        begin
-          IniFile := TIniFile.Create (UserDataPath + '\NCompPOS\' + FileNameStr)
-        end
-        else
-        begin
-          IniFile := TIniFile.Create (FileNameStr);
-        end;
+        if not DirectoryExists(UserDataPath + '\NCompPOS') then
+          CreateDir(UserDataPath + '\NCompPOS');
+        IniFile := TIniFile.Create (UserDataPath + '\NCompPOS\' + FileNameStr)
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);

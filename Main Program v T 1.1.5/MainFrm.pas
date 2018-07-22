@@ -117,15 +117,9 @@ begin
         Dataform2.UserDataPath := GetSpecialFolder(CSIDL_APPDATA);
         Dataform2.ProgramPath := GetCurrentDir;
         Dataform2.AllUsersDataPath := GetSpecialFolder(CSIDL_COMMON_APPDATA);
-//        DataForm2.IniFile := TIniFile.Create (ChangeFileExt (Application.ExeName, '.ini'));
-        if Fileexists(Dataform2.UserDataPath + '\NCompPOS\' + ExtractFileName(ChangeFileExt(Application.ExeName, '.ini'))) then
-        begin
-          DataForm2.IniFile := TIniFile.Create (Dataform2.UserDataPath + '\NCompPOS\' + ExtractFileName(ChangeFileExt (Application.ExeName, '.ini')))
-        end
-        else
-        begin
-          DataForm2.IniFile := TIniFile.Create (ChangeFileExt (Application.ExeName, '.ini'));
-        end;
+        if not DirectoryExists(Dataform2.UserDataPath + '\NCompPOS') then
+          CreateDir(Dataform2.UserDataPath + '\NCompPOS');
+        DataForm2.IniFile := TIniFile.Create (Dataform2.UserDataPath + '\NCompPOS\' + ExtractFileName(ChangeFileExt (Application.ExeName, '.ini')));
 
         Dataform2.accessstr := 0;
         ShortDateFormat := 'yyyy/MM/dd';

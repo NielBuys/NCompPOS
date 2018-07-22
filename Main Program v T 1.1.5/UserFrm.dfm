@@ -65,10 +65,6 @@ object UserForm: TUserForm
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'User Setup'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label1: TLabel
         Left = 36
         Top = 217
@@ -241,10 +237,6 @@ object UserForm: TUserForm
     object TabSheet2: TTabSheet
       Caption = 'Printing Setup'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label3: TLabel
         Left = 264
         Top = 16
@@ -565,10 +557,6 @@ object UserForm: TUserForm
     object TabSheet3: TTabSheet
       Caption = 'Software Settings'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox4: TGroupBox
         Left = 3
         Top = 3
