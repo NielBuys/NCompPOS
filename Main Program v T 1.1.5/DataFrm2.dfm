@@ -113,7 +113,7 @@ object DataForm2: TDataForm2
       'Database=ncomp'
       'User_Name=root'
       'Password=djb115'
-      'Host=localhost'
+      'Host=192.168.9.71'
       'DriverID=MySQL')
     FetchOptions.AssignedValues = [evRecordCountMode]
     FetchOptions.RecordCountMode = cmTotal
@@ -2175,6 +2175,7 @@ object DataForm2: TDataForm2
     Top = 232
   end
   object StockHistoryTable: TADQuery
+    Filtered = True
     Connection = ADConnection
     UpdateOptions.AssignedValues = [uvEDelete, uvEInsert, uvEUpdate]
     UpdateOptions.EnableDelete = False
@@ -2183,28 +2184,32 @@ object DataForm2: TDataForm2
     SQL.Strings = (
       'select * from'
       
-        '(select TCStockNoLink as TCStockNo,BranchNo,st_adj_date as ItemD' +
-        'ate,st_adj_value as ItemValue,0 as ItemRef,'#39'Adjustment'#39' as ItemT' +
-        'ype, SyncHQ '
-      'from stockadjust_db'
-      'where BranchNo is null'
+        '(select 1 as orderint, TCStockNoLink as TCStockNo,BranchNo,st_ad' +
+        'j_date as ItemDate,st_adj_value as ItemValue,0 as ItemRef,'
+      
+        'Case st_adj_type when "Adj" then "Adjustment" when "Sync" then "' +
+        'Received from HQ" end as ItemType, cast(SyncHQ as unsigned) as S' +
+        'yncHQ from stockadjust_db'
       'union all'
       
-        'select invoiceitem_db.TCStockNo,invoiceitem_db.BranchNo,invoice_' +
-        'db.InvDate as ItemDate,invoiceitem_db.Qty as ItemValue,invoice_d' +
-        'b.InvNo as ItemRef,'#39'Purchase Inv'#39' as ItemType, invoice_db.SyncHQ' +
-        ' '
-      'from invoiceitem_db'
+        'select 0 as orderint, invoiceitem_db.TCStockNo,invoiceitem_db.Br' +
+        'anchNo,invoice_db.InvDate as ItemDate,invoiceitem_db.Qty as Item' +
+        'Value,'
+      
+        'invoice_db.InvNo as ItemRef,"Purchase Inv" as ItemType, cast(inv' +
+        'oice_db.SyncHQ as unsigned) as SyncHQ from invoiceitem_db'
       
         'inner join invoice_db on (invoice_db.Nr = invoiceitem_db.LinkID)' +
         ' and (invoice_db.BranchNo = invoiceitem_db.BranchNo)'
-      'where invoice_db.InvClose = '#39'PurcC'#39
+      'where  invoice_db.InvClose = "PurcC"'
       'union all'
       
-        'select invoiceitem_db.TCStockNo,invoiceitem_db.BranchNo,invoice_' +
-        'db.InvDate as ItemDate,invoiceitem_db.Qty as ItemValue,invoice_d' +
-        'b.InvNo as ItemRef,'#39'Invoice'#39' as ItemType, invoice_db.SyncHQ '
-      'from invoiceitem_db'
+        'select 2 as orderint, invoiceitem_db.TCStockNo,invoiceitem_db.Br' +
+        'anchNo,invoice_db.InvDate as ItemDate,invoiceitem_db.Qty as Item' +
+        'Value,'
+      
+        'invoice_db.InvNo as ItemRef,"Invoice" as ItemType, cast(invoice_' +
+        'db.SyncHQ as unsigned) as SyncHQ from invoiceitem_db'
       
         'inner join invoice_db on (invoice_db.Nr = invoiceitem_db.LinkID)' +
         ' and (invoice_db.BranchNo = invoiceitem_db.BranchNo)'
@@ -2213,59 +2218,70 @@ object DataForm2: TDataForm2
         ' "LaybC"))'
       'union all'
       
-        'select invoiceitem_db.TCStockNo,invoiceitem_db.BranchNo,invoice_' +
-        'db.InvDate as ItemDate,invoiceitem_db.Qty as ItemValue,invoice_d' +
-        'b.InvNo as ItemRef,'#39'Open Lay Buy'#39' as ItemType, invoice_db.SyncHQ' +
-        ' '
-      'from invoiceitem_db'
+        'select 2 as orderint, invoiceitem_db.TCStockNo,invoiceitem_db.Br' +
+        'anchNo,invoice_db.InvDate as ItemDate,invoiceitem_db.Qty as Item' +
+        'Value,'
+      
+        'invoice_db.InvNo as ItemRef,"Open Lay Buy" as ItemType, cast(inv' +
+        'oice_db.SyncHQ as unsigned) as SyncHQ from invoiceitem_db'
       
         'inner join invoice_db on (invoice_db.Nr = invoiceitem_db.LinkID)' +
         ' and (invoice_db.BranchNo = invoiceitem_db.BranchNo)'
       'where (invoice_db.InvClose = "LaybO")'
+      'union all'
+      
+        'SELECT 2 as orderint, stocktrnsferitem_db.TCStockNo, stocktrnsfe' +
+        'r_db.ToBranch as BranchNo, stocktrnsfer_db.Date as ItemDate, '
+      
+        'stocktrnsferitem_db.Qty as ItemValue,'#10'stocktrnsfer_db.Nr as Item' +
+        'Ref,"Branch Transfer" as ItemType, cast(Transfered as unsigned) ' +
+        'as SyncHQ FROM stocktrnsferitem_db'
+      
+        'inner join stocktrnsfer_db on (stocktrnsferitem_db.LinkID = stoc' +
+        'ktrnsfer_db.Nr)'
+      'where stocktrnsfer_db.Closed = "True"'
       ') a'
-      'order by ItemDate')
+      'order by ItemDate,OrderInt')
     Left = 728
     Top = 168
+    object StockHistoryTableorderint: TLargeintField
+      FieldName = 'orderint'
+      Origin = 'orderint'
+      Required = True
+    end
     object StockHistoryTableTCStockNo: TStringField
-      DisplayLabel = 'Stock No'
       FieldName = 'TCStockNo'
       Origin = 'TCStockNo'
     end
     object StockHistoryTableBranchNo: TIntegerField
-      DisplayLabel = 'Branch No'
       FieldName = 'BranchNo'
       Origin = 'BranchNo'
     end
     object StockHistoryTableItemDate: TLongWordField
-      DisplayLabel = 'Item Date'
       FieldName = 'ItemDate'
       Origin = 'ItemDate'
       DisplayFormat = '0000/00/00'
     end
     object StockHistoryTableItemValue: TBCDField
-      DisplayLabel = 'Item Value'
       FieldName = 'ItemValue'
       Origin = 'ItemValue'
       Precision = 10
       Size = 2
     end
     object StockHistoryTableItemRef: TLargeintField
-      DisplayLabel = 'Item Ref'
       FieldName = 'ItemRef'
       Origin = 'ItemRef'
       Required = True
     end
     object StockHistoryTableItemType: TStringField
-      DisplayLabel = 'Item Type'
       FieldName = 'ItemType'
       Origin = 'ItemType'
-      Required = True
-      Size = 12
+      Size = 16
     end
-    object StockHistoryTableSyncHQ: TLongWordField
-      DisplayLabel = 'Sync HQ'
+    object StockHistoryTableSyncHQ: TLargeintField
       FieldName = 'SyncHQ'
       Origin = 'SyncHQ'
+      DisplayFormat = '0000/00/00'
     end
   end
   object StockHistorySource: TDataSource

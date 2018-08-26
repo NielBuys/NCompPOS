@@ -562,7 +562,7 @@ object StockEditForm: TStockEditForm
       object JvDBGrid1: TJvDBGrid
         Left = 0
         Top = 0
-        Width = 532
+        Width = 655
         Height = 182
         DataSource = DataForm2.StockHistorySource
         TabOrder = 0
@@ -608,6 +608,7 @@ object StockEditForm: TStockEditForm
           item
             Expanded = False
             FieldName = 'SyncHQ'
+            Width = 64
             Visible = True
           end>
       end

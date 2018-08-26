@@ -416,12 +416,6 @@ type
     StockTakeDetailTableLocalQty: TFMTBCDField;
     GlobalTableSQLCount: TLongWordField;
     StockAdjustTableBranchNo: TIntegerField;
-    StockHistoryTableTCStockNo: TStringField;
-    StockHistoryTableBranchNo: TIntegerField;
-    StockHistoryTableItemDate: TLongWordField;
-    StockHistoryTableItemValue: TBCDField;
-    StockHistoryTableItemRef: TLargeintField;
-    StockHistoryTableItemType: TStringField;
     AccountsTableBranchNo: TLongWordField;
     AccountSearchBranchNo: TLongWordField;
     TransQueryBranchNo: TIntegerField;
@@ -441,7 +435,6 @@ type
     QRHTMLFilter1: TQRHTMLFilter;
     RvRenderHTML1: TRvRenderHTML;
     RvRenderText1: TRvRenderText;
-    StockHistoryTableSyncHQ: TLongWordField;
     GlobalTableLogo: TBlobField;
     GlobalTableHeader: TMemoField;
     GlobalTableFooter: TMemoField;
@@ -454,6 +447,14 @@ type
     BranchListQuerySource: TDataSource;
     BranchListQueryBranchName: TStringField;
     BranchListQueryNr: TLargeintField;
+    StockHistoryTableorderint: TLargeintField;
+    StockHistoryTableTCStockNo: TStringField;
+    StockHistoryTableBranchNo: TIntegerField;
+    StockHistoryTableItemDate: TLongWordField;
+    StockHistoryTableItemValue: TBCDField;
+    StockHistoryTableItemRef: TLargeintField;
+    StockHistoryTableItemType: TStringField;
+    StockHistoryTableSyncHQ: TLargeintField;
     procedure UserSourceStateChange(Sender: TObject);
     procedure StockSourceStateChange(Sender: TObject);
     procedure InvoiceSourceStateChange(Sender: TObject);
