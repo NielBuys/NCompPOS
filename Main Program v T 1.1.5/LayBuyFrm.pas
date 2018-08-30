@@ -92,11 +92,11 @@ type
     DBEdit25: TDBEdit;
     Label29: TLabel;
     DBEdit26: TDBEdit;
-    JvBitBtn12: TJvBitBtn;
+    DoPaymentBtn: TJvBitBtn;
     Label30: TLabel;
     PaymentDateEdit: TJvDateTimePicker;
     Label31: TLabel;
-    Edit4: TEdit;
+    PremiumEdt: TEdit;
     Label32: TLabel;
     DBEdit27: TDBEdit;
     JvBitBtn13: TJvBitBtn;
@@ -104,11 +104,11 @@ type
     Label33: TLabel;
     JvComboBox1: TJvComboBox;
     Label14: TLabel;
-    DBText2: TDBText;
+    LayBuyTotalDBText: TDBText;
     Label19: TLabel;
-    Label34: TLabel;
+    PaydValueLbl: TLabel;
     Label35: TLabel;
-    Label36: TLabel;
+    OwingValueLbl: TLabel;
     Label37: TLabel;
     JvComboBox2: TJvComboBox;
     Label38: TLabel;
@@ -146,7 +146,7 @@ type
     procedure JvBitBtn9Click(Sender: TObject);
     procedure JvBitBtn10Click(Sender: TObject);
     procedure JvBitBtn11Click(Sender: TObject);
-    procedure JvBitBtn12Click(Sender: TObject);
+    procedure DoPaymentBtnClick(Sender: TObject);
     procedure JvBitBtn13Click(Sender: TObject);
     procedure JvBitBtn14Click(Sender: TObject);
     procedure JvComboBox1Exit(Sender: TObject);
@@ -466,17 +466,17 @@ begin
           ChangeLayBuy;
 end;
 
-procedure TLayBuyForm.JvBitBtn12Click(Sender: TObject);
+procedure TLayBuyForm.DoPaymentBtnClick(Sender: TObject);
 var
       s: String;
 begin
-      If Owing >= StrtoFloat(Edit4.Text) then
+      If Owing >= StrtoFloat(PremiumEdt.Text) then
       begin
         If PTChanged <> '' then
         begin
           Dataform2.TransQuery.Close;
           Dataform2.Query1.Close;
-          s := '("Payment",' + Edit4.Text + ',' + InttoStr(DatetoIntDate(PaymentDateEdit.Date)) + ',' + InttoStr(Dataform2.InvoiceTable.FieldByName('InvNo').asInteger) + ',"' + JvComboBox1.Items[JvComboBox1.ItemIndex] + '","' + DataForm2.User_dbUserName.Value + '",' + InttoStr(Dataform2.InvoiceTable.FieldByName('BranchNo').asInteger) + ')';
+          s := '("Payment",' + PremiumEdt.Text + ',' + InttoStr(DatetoIntDate(PaymentDateEdit.Date)) + ',' + InttoStr(Dataform2.InvoiceTable.FieldByName('InvNo').asInteger) + ',"' + JvComboBox1.Items[JvComboBox1.ItemIndex] + '","' + DataForm2.User_dbUserName.Value + '",' + InttoStr(Dataform2.InvoiceTable.FieldByName('BranchNo').asInteger) + ')';
           with DataForm2.Query1.SQL do begin
             Clear;
             Add('insert into trans_db(Description,Ammount,Date,LinkID,PaymentType,PaymentBy,BranchNo) values ');
@@ -504,7 +504,7 @@ begin
           begin
             if (DataForm2.InvoiceTablestrState <> 'Edit') and (DataForm2.InvoiceTablestrState <> 'Insert') then
               Dataform2.InvoiceTable.Edit;
-            Dataform2.InvoiceTableDays120.Value := Dataform2.InvoiceTableDays120.Value - StrtoFloat(Edit4.Text);
+            Dataform2.InvoiceTableDays120.Value := Dataform2.InvoiceTableDays120.Value - StrtoFloat(PremiumEdt.Text);
             Dataform2.InvoiceTable.Post;
           end
           else
@@ -513,7 +513,7 @@ begin
             begin
               if (DataForm2.InvoiceTablestrState <> 'Edit') and (DataForm2.InvoiceTablestrState <> 'Insert') then
                 Dataform2.InvoiceTable.Edit;
-              Dataform2.InvoiceTableDays90.Value := Dataform2.InvoiceTableDays90.Value - StrtoFloat(Edit4.Text);
+              Dataform2.InvoiceTableDays90.Value := Dataform2.InvoiceTableDays90.Value - StrtoFloat(PremiumEdt.Text);
               Dataform2.InvoiceTable.Post;
             end
             else
@@ -522,14 +522,14 @@ begin
               begin
                 if (DataForm2.InvoiceTablestrState <> 'Edit') and (DataForm2.InvoiceTablestrState <> 'Insert') then
                   Dataform2.InvoiceTable.Edit;
-                Dataform2.InvoiceTableDays60.Value := Dataform2.InvoiceTableDays60.Value - StrtoFloat(Edit4.Text);
+                Dataform2.InvoiceTableDays60.Value := Dataform2.InvoiceTableDays60.Value - StrtoFloat(PremiumEdt.Text);
                 Dataform2.InvoiceTable.Post;
               end
               else
               begin
                 if (DataForm2.InvoiceTablestrState <> 'Edit') and (DataForm2.InvoiceTablestrState <> 'Insert') then
                   Dataform2.InvoiceTable.Edit;
-                Dataform2.InvoiceTableDays30.Value := Dataform2.InvoiceTableDays30.Value - StrtoFloat(Edit4.Text);
+                Dataform2.InvoiceTableDays30.Value := Dataform2.InvoiceTableDays30.Value - StrtoFloat(PremiumEdt.Text);
                 Dataform2.InvoiceTable.Post;
               end;
             end;
@@ -605,15 +605,15 @@ begin
           Dataform2.InvoiceItemTable.Open;
           Payed := Dataform2.Query2.FieldByName('Total').asCurrency;
 
-          Label34.Caption := Floattostrf(Payed,ffCurrency,10,2);
+          PaydValueLbl.Caption := Floattostrf(Payed,ffCurrency,10,2);
           Dataform2.Query2.Close;
           Owing := Dataform2.InvoiceTableInvTotal.Value - Payed;
-          Label36.Caption := Floattostrf(Owing,ffCurrency,10,2);
+          OwingValueLbl.Caption := Floattostrf(Owing,ffCurrency,10,2);
           if (Owing - Dataform2.InvoiceTablePremium.Value) < 0.10 then
             e := (Owing - Dataform2.InvoiceTablePremium.Value)
           else
             e := 0;
-          Edit4.Text := Floattostrf(Dataform2.InvoiceTablePremium.Value + e,ffFixed,17,2);
+          PremiumEdt.Text := Floattostrf(Dataform2.InvoiceTablePremium.Value + e,ffFixed,17,2);
           If not DataForm2.InvoiceTableInvDate.IsNull then
             InvoiceDateEdit.Date := StrtoDate(IntdatetoString(DataForm2.InvoiceTableInvDate.Value))
           else

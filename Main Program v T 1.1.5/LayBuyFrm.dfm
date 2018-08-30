@@ -25,7 +25,7 @@ object LayBuyForm: TLayBuyForm
     Top = 0
     Width = 721
     Height = 441
-    ActivePage = TabSheet1
+    ActivePage = TabSheet3
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Lay Buy details'
@@ -531,10 +531,6 @@ object LayBuyForm: TLayBuyForm
       Caption = 'Items / Age'
       ImageIndex = 1
       OnShow = TabSheet2Show
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object JvDBGrid1: TJvDBGrid
         Left = 0
         Top = 3
@@ -766,10 +762,6 @@ object LayBuyForm: TLayBuyForm
       ImageIndex = 2
       OnEnter = TabSheet3Enter
       OnShow = TabSheet3Show
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label14: TLabel
         Left = 32
         Top = 232
@@ -783,11 +775,12 @@ object LayBuyForm: TLayBuyForm
         Font.Style = [fsBold]
         ParentFont = False
       end
-      object DBText2: TDBText
+      object LayBuyTotalDBText: TDBText
         Left = 136
         Top = 232
-        Width = 81
-        Height = 17
+        Width = 113
+        Height = 13
+        AutoSize = True
         DataField = 'InvTotal'
         DataSource = DataForm2.InvoiceSource
         Font.Charset = DEFAULT_CHARSET
@@ -810,12 +803,12 @@ object LayBuyForm: TLayBuyForm
         Font.Style = [fsBold]
         ParentFont = False
       end
-      object Label34: TLabel
+      object PaydValueLbl: TLabel
         Left = 136
         Top = 256
-        Width = 46
+        Width = 26
         Height = 13
-        Caption = 'Label34'
+        Caption = '0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -836,12 +829,12 @@ object LayBuyForm: TLayBuyForm
         Font.Style = [fsBold]
         ParentFont = False
       end
-      object Label36: TLabel
+      object OwingValueLbl: TLabel
         Left = 136
         Top = 280
-        Width = 46
+        Width = 26
         Height = 13
-        Caption = 'Label36'
+        Caption = '0.00'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -12
@@ -942,8 +935,8 @@ object LayBuyForm: TLayBuyForm
           Height = 13
           Caption = 'Payment type:'
         end
-        object JvBitBtn12: TJvBitBtn
-          Left = 152
+        object DoPaymentBtn: TJvBitBtn
+          Left = 145
           Top = 120
           Width = 75
           Height = 25
@@ -951,7 +944,7 @@ object LayBuyForm: TLayBuyForm
           DoubleBuffered = True
           ParentDoubleBuffered = False
           TabOrder = 0
-          OnClick = JvBitBtn12Click
+          OnClick = DoPaymentBtnClick
           HotTrackFont.Charset = DEFAULT_CHARSET
           HotTrackFont.Color = clWindowText
           HotTrackFont.Height = -11
@@ -968,13 +961,13 @@ object LayBuyForm: TLayBuyForm
           TabOrder = 1
           DropDownDate = 39086.000000000000000000
         end
-        object Edit4: TEdit
+        object PremiumEdt: TEdit
           Left = 112
           Top = 56
           Width = 97
           Height = 21
           TabOrder = 2
-          Text = 'Edit4'
+          Text = 'PremiumEdt'
         end
         object JvBitBtn13: TJvBitBtn
           Left = 48
@@ -997,7 +990,7 @@ object LayBuyForm: TLayBuyForm
           Top = 88
           Width = 121
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 4
           OnExit = JvComboBox1Exit
           Items.Strings = (
@@ -1041,10 +1034,6 @@ object LayBuyForm: TLayBuyForm
     object TabSheet4: TTabSheet
       Caption = 'Initial Lay Buy Setup'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox3: TGroupBox
         Left = 192
         Top = 8
@@ -1180,7 +1169,7 @@ object LayBuyForm: TLayBuyForm
           Top = 112
           Width = 121
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 4
           OnExit = JvComboBox1Exit
           Items.Strings = (

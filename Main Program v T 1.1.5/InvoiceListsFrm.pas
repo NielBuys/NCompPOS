@@ -15,7 +15,7 @@ type
     Label2: TLabel;
     DBLookupComboBox1: TDBLookupComboBox;
     DateListEdit: TJvDateTimePicker;
-    Button1: TButton;
+    PrintDailyListBtn: TButton;
     GroupBox2: TGroupBox;
     Label3: TLabel;
     Label4: TLabel;
@@ -65,7 +65,7 @@ type
     QRLabel24: TQRLabel;
     CheckBox1: TCheckBox;
     JvBitBtn7: TJvBitBtn;
-    procedure Button1Click(Sender: TObject);
+    procedure PrintDailyListBtnClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure DailyListBeforePrint(Sender: TCustomQuickRep;
       var PrintReport: Boolean);
@@ -112,7 +112,7 @@ begin
           Close;
 end;
 
-procedure TInvoiceListsForm.Button1Click(Sender: TObject);
+procedure TInvoiceListsForm.PrintDailyListBtnClick(Sender: TObject);
 begin
       DataForm2.Query3.Close;
       s := 'WHERE (InvBy = "' + DataForm2.user_db.fieldbyname('UserName').asString + '") and';
@@ -121,7 +121,7 @@ begin
         Add('SELECT * FROM invoice_db');
         Add(s);
         Add('(InvDate = ' + InttoStr(DatetoIntDate(DateListEdit.Date)) + ')');
-        Add('and InvClose = "Close"');
+        Add('and (InvClose = "Close" or InvClose = "LaybC")');
         Add('Order by InvNo');
       end;
       DataForm2.Query3.Open;

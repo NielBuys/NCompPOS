@@ -50,7 +50,7 @@ object InvoiceListsForm: TInvoiceListsForm
       TabOrder = 0
     end
     object DateListEdit: TJvDateTimePicker
-      Left = 160
+      Left = 168
       Top = 56
       Width = 97
       Height = 21
@@ -60,14 +60,14 @@ object InvoiceListsForm: TInvoiceListsForm
       TabOrder = 1
       DropDownDate = 38827.000000000000000000
     end
-    object Button1: TButton
-      Left = 176
-      Top = 104
+    object PrintDailyListBtn: TButton
+      Left = 190
+      Top = 90
       Width = 75
       Height = 25
       Caption = 'Print List'
       TabOrder = 2
-      OnClick = Button1Click
+      OnClick = PrintDailyListBtnClick
     end
   end
   object GroupBox2: TGroupBox
@@ -336,7 +336,7 @@ object InvoiceListsForm: TInvoiceListsForm
         Frame.DrawRight = False
         Size.Values = (
           44.979166666666670000
-          42.333333333333330000
+          42.333333333333340000
           21.166666666666670000
           269.875000000000000000)
         Alignment = taLeftJustify
@@ -464,7 +464,7 @@ object InvoiceListsForm: TInvoiceListsForm
         Frame.DrawRight = False
         Size.Values = (
           44.979166666666670000
-          846.666666666666700000
+          846.666666666666800000
           169.333333333333300000
           145.520833333333300000)
         Alignment = taLeftJustify
@@ -594,7 +594,7 @@ object InvoiceListsForm: TInvoiceListsForm
           44.979166666666670000
           1439.333333333333000000
           169.333333333333300000
-          89.958333333333330000)
+          89.958333333333320000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -694,7 +694,7 @@ object InvoiceListsForm: TInvoiceListsForm
       ForceNewColumn = False
       ForceNewPage = False
       Size.Values = (
-        42.333333333333330000
+        42.333333333333340000
         1897.062500000000000000)
       PreCaluculateBandHeight = False
       KeepOnOnePage = False
@@ -713,7 +713,7 @@ object InvoiceListsForm: TInvoiceListsForm
           44.979166666666670000
           127.000000000000000000
           0.000000000000000000
-          74.083333333333330000)
+          74.083333333333340000)
         Alignment = taRightJustify
         AlignToBand = False
         AutoSize = True
@@ -778,7 +778,7 @@ object InvoiceListsForm: TInvoiceListsForm
           44.979166666666670000
           381.000000000000000000
           0.000000000000000000
-          74.083333333333330000)
+          74.083333333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -842,7 +842,7 @@ object InvoiceListsForm: TInvoiceListsForm
         Frame.DrawRight = False
         Size.Values = (
           44.979166666666670000
-          846.666666666666700000
+          846.666666666666800000
           0.000000000000000000
           142.875000000000000000)
         Alignment = taRightJustify
@@ -1035,7 +1035,7 @@ object InvoiceListsForm: TInvoiceListsForm
         Frame.DrawRight = False
         Size.Values = (
           44.979166666666670000
-          42.333333333333330000
+          42.333333333333340000
           0.000000000000000000
           10.583333333333330000)
         Alignment = taLeftJustify
@@ -1069,7 +1069,7 @@ object InvoiceListsForm: TInvoiceListsForm
           44.979166666666670000
           1706.562500000000000000
           0.000000000000000000
-          82.020833333333330000)
+          82.020833333333340000)
         Alignment = taLeftJustify
         AlignToBand = False
         AutoSize = True
@@ -1155,7 +1155,7 @@ object InvoiceListsForm: TInvoiceListsForm
         Frame.DrawRight = False
         Size.Values = (
           44.979166666666670000
-          613.833333333333300000
+          613.833333333333400000
           21.166666666666670000
           71.437500000000000000)
         Alignment = taLeftJustify
@@ -1358,7 +1358,7 @@ object InvoiceListsForm: TInvoiceListsForm
     SystemPrinter.UnitsFactor = 1.000000000000000000
     OnPrint = ReportPrint
     OnBeforePrint = ReportBeforePrint
-    Left = 104
-    Top = 112
+    Left = 40
+    Top = 120
   end
 end

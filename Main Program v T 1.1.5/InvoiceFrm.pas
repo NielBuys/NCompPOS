@@ -92,7 +92,7 @@ type
     Label22: TLabel;
     Label23: TLabel;
     DBEdit14: TDBEdit;
-    JvBitBtn1: TJvBitBtn;
+    LayBuyBtn: TJvBitBtn;
     CashEdit: TJvValidateEdit;
     CreditCardEdit: TJvValidateEdit;
     ChequesEdit: TJvValidateEdit;
@@ -221,7 +221,7 @@ type
       Shift: TShiftState);
     procedure OtherEditKeyPress(Sender: TObject; var Key: Char);
     procedure DBEdit14KeyPress(Sender: TObject; var Key: Char);
-    procedure JvBitBtn1Click(Sender: TObject);
+    procedure LayBuyBtnClick(Sender: TObject);
     procedure InvoiceItemGridDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure JvSpeedButton8Click(Sender: TObject);
@@ -709,7 +709,7 @@ procedure TInvoiceForm.FormShow(Sender: TObject);
 begin
       GroupBox5.Visible := StrtoBool(Dataform2.GlobalTableShowAdditions.Value);
       POSAdditions1.Enabled := StrtoBool(Dataform2.GlobalTableShowAdditions.Value);
-      JvBitBtn1.Visible := StrtoBool(Dataform2.GlobalTableLayBuyEnable.Value);
+      LayBuyBtn.Visible := StrtoBool(Dataform2.GlobalTableLayBuyEnable.Value);
       LayBuy1.Enabled := StrtoBool(Dataform2.GlobalTableLayBuyEnable.Value);
       if FromWhereFormOpen <> 'InvFind' then
       begin
@@ -1424,8 +1424,8 @@ end;
 
 procedure TInvoiceForm.LayBuy1Click(Sender: TObject);
 begin
-        JvBitBtn1.SetFocus;
-        JvBitBtn1.Click;
+        LayBuyBtn.SetFocus;
+        LayBuyBtn.Click;
 end;
 
 procedure TInvoiceForm.PrintReceipttoLPT();
@@ -2763,7 +2763,7 @@ begin
       end;
 end;
 
-procedure TInvoiceForm.JvBitBtn1Click(Sender: TObject);
+procedure TInvoiceForm.LayBuyBtnClick(Sender: TObject);
 var
      Persentage: String;
      e,e2: extended;

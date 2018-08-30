@@ -963,7 +963,7 @@ object InvoiceForm: TInvoiceForm
       Height = 13
       Caption = 'Other:'
     end
-    object JvBitBtn1: TJvBitBtn
+    object LayBuyBtn: TJvBitBtn
       Left = 578
       Top = 8
       Width = 75
@@ -975,7 +975,7 @@ object InvoiceForm: TInvoiceForm
       ParentShowHint = False
       ShowHint = True
       TabOrder = 4
-      OnClick = JvBitBtn1Click
+      OnClick = LayBuyBtnClick
       HotTrackFont.Charset = DEFAULT_CHARSET
       HotTrackFont.Color = clWindowText
       HotTrackFont.Height = -11
