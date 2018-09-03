@@ -1297,7 +1297,8 @@ begin
     if Dataform2.Query4.RecordCount <> 0 then
     begin
 //      showmessage(FloattoStr((AmmTendered + AmmTendered2)) + '---' + FloattoStr(TotalStr));
-      If ((AmmTendered + AmmTendered2) >= TotalStr) or (DataForm2.InvoiceTableInvoiceType.Value = 'LayBuy') or ((Dataform2.InvoiceTableGLDebNo.Value <> Dataform2.GlobalTableTCCashDebNo.Value) and (Dataform2.AccountsTableAllowCredit.Value = 'True')) then
+      If ((AmmTendered + AmmTendered2) >= TotalStr) or (DataForm2.InvoiceTableInvoiceType.Value = 'LayBuy') or
+      ((Dataform2.InvoiceTableGLDebNo.Value <> Dataform2.GlobalTableTCCashDebNo.Value) and (Dataform2.AccountsTableAllowCredit.Value = 'True')) then
       begin
         WriteCloseInfo;
         if StrtoBool(Dataform2.GlobalTableDefaultRecPrintChoice.Value) = False then

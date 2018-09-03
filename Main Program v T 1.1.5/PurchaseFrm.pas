@@ -863,7 +863,7 @@ begin
       Dataform2.ADConnection.StartTransaction;
       try
         CreateInvNo;
-        If Dataform2.InvoiceTableInvClose.Value = 'PurcO' then
+        If (Dataform2.InvoiceTableInvClose.Value = 'PurcO') then
         begin
           Dataform2.PurchaseItemTable.Refresh;
           DataForm2.PurchaseItemTable.First;
@@ -916,6 +916,20 @@ begin
           UpdateCredAcc();
 
           Dataform2.Query4.Close;
+        end;
+        if (Dataform2.InvoiceTableInvClose.Value = 'RecqO') then
+        begin
+          if Dataform2.InvoiceTableInvClose.Value <> 'RecqC' then
+          begin
+            Dataform2.InvoiceTable.Edit;
+            Dataform2.InvoiceTableInvClose.Value := 'RecqC'
+          end;
+          if Dataform2.InvoiceTableInvTotal.Value <> TotalStr then
+          begin
+            Dataform2.InvoiceTable.Edit;
+            Dataform2.InvoiceTableInvTotal.Value := TotalStr;
+          end;
+          SaveInvoice;
         end;
         Dataform2.ADConnection.Commit;
       finally
@@ -1357,7 +1371,7 @@ end;
 
 procedure TPurchaseForm.DoButtons();
 var
-      thirtyDays: String;
+      thirtyDays, Purchasetypestr: String;
       PreviousMonth:Integer;
       Datestore:TDateTime;
 begin
@@ -1378,12 +1392,21 @@ begin
         end
         else
           thirtyDays := '';
+        if Dataform2.GlobalTableBranchNo.Value <> 0 then
+        begin
+          Purchasetypestr := 'where (InvClose=''RecqO'' or InvClose=''RecqC'')';
+        end
+        else
+        begin
+          Purchasetypestr := 'where (InvClose=''PurcO'' or InvClose=''PurcC'')';
+        end;
+
         Dataform2.InvoiceTable.Close;
         with Dataform2.InvoiceTable.SQL do
         begin
           Clear;
           Add('select * from invoice_db');
-          Add('where (InvClose=''PurcO'' or InvClose=''PurcC'')');
+          Add(Purchasetypestr);
           Add(thirtyDays);
         end;
         DataForm2.InvoiceTable.Open;
@@ -1397,135 +1420,6 @@ begin
         JvDBGrid1.ReadOnly := False;
         JvDBGrid1.Columns.Items[6].Visible := True;
 
-{        if (Dataform2.GlobalTableBranchNo.Value <> 0) or (FromWhere = 'hqrecq') then
-        begin
-          If (FromWhere <> 'GRN') then
-          begin
-            Dataform2.InvoiceTable.Close;
-            with Dataform2.InvoiceTable.SQL do
-            begin
-              Clear;
-              Add('select * from invoice_db');
-              Add('where (InvClose=''RecqO'' or InvClose=''RecqC'' or InvClose=''RecqR'')');
-              Add(thirtyDays);
-            end;
-            DataForm2.InvoiceTable.Open;
-            Purchaseform.Caption := 'Stock Requisition';
-            GroupBox2.Visible := False;
-            JvBitBtn4.Caption := 'Save Stock Recq Changes';
-            JvBitBtn4.Enabled := False;
-            JvBitBtn3.Caption := 'Edit Stock Recq';
-            JvBitBtn3.Enabled := False;
-            JvBitBtn2.Caption := 'Create Stock Recq';
-            TabSheet2.Caption := 'Stock Requisition Details';
-            Tabsheet1.TabVisible := False;
-            JvSpeedButton2.Visible := False;
-            JvBitBtn10.Visible := False;
-            DBEdit10.Enabled := False;
-            JvBitBtn17.Caption := 'Print Request';
-            JvDBGrid1.ReadOnly := False;
-            JvDBGrid1.Columns.Items[6].Visible := True;
-            If FromWhere = 'hqrecq' then
-            begin
-              JvBitBtn11.Visible := False;
-              JvBitBtn2.Enabled := False;
-              JvBitBtn15.Visible := True;
-              JvBitBtn16.Visible := True;
-            end
-            else
-            begin
-              JvBitBtn11.Caption := 'Process Stock Recq';
-              JvBitBtn15.Visible := False;
-              JvBitBtn16.Visible := False;
-            end;
-          end
-          else
-          begin
-            Dataform2.InvoiceTable.Close;
-            with Dataform2.InvoiceTable.SQL do
-            begin
-              Clear;
-              Add('select * from invoice_db');
-              Add('where (InvClose="GRNO" or InvClose="GRNC")');
-              Add(thirtyDays);
-            end;
-            DataForm2.InvoiceTable.Open;
-            JvBitBtn4.Caption := 'Save GRN';
-            JvBitBtn4.Enabled := False;
-            JvBitBtn3.Caption := 'Edit GRN';
-            JvBitBtn3.Enabled := False;
-            JvBitBtn2.Visible := False;
-            JvBitBtn11.Caption := 'Close GRN';
-            JvBitBtn15.Visible := False;
-            JvBitBtn16.Visible := False;
-            JvSpeedButton2.Visible := False;
-            DBEdit10.Enabled := False;
-            JvDBGrid1.ReadOnly := True;
-            TabSheet2.Caption := 'GRN Details';
-            JvBitBtn17.Visible := False;
-            Tabsheet1.TabVisible := False;
-            Application.CreateForm(TGrnForm, GrnForm);
-            JvDBGrid1.Columns.Items[6].Visible := False;
-          end;
-        end
-        else
-        begin
-          If (FromWhere <> 'orders') then
-          begin
-            Dataform2.InvoiceTable.Close;
-            with Dataform2.InvoiceTable.SQL do
-            begin
-              Clear;
-              Add('select * from invoice_db');
-              Add('where (InvClose=''PurcO'' or InvClose=''PurcC'')');
-              Add(thirtyDays);
-            end;
-            DataForm2.InvoiceTable.Open;
-            TabSheet2.Caption := 'Purchase Inv Details';
-            Tabsheet1.TabVisible := True;
-            JvBitBtn11.Caption := 'Close Purchase Inv';
-            JvBitBtn4.Caption := 'Save Pruchase Inv Changes';
-            JvBitBtn14.Visible := False;
-            JvBitBtn15.Visible := False;
-            JvBitBtn16.Visible := False;
-            JvBitBtn10.Visible := False;
-            JvSpeedButton2.Visible := True;
-            JvBitBtn17.Caption := 'Print Purchase Inv';
-            DBEdit10.Enabled := True;
-            JvDBGrid1.ReadOnly := False;
-            JvDBGrid1.Columns.Items[6].Visible := True;
-          end
-          else
-          begin
-            Dataform2.InvoiceTable.Close;
-            with Dataform2.InvoiceTable.SQL do
-            begin
-              Clear;
-              Add('select * from invoice_db');
-              Add('where (InvClose=''OrdrO'' or InvClose=''OrdrC'')');
-              Add(thirtyDays);
-            end;
-            DataForm2.InvoiceTable.Open;
-            TabSheet2.Caption := 'Order Details';
-            Tabsheet1.TabVisible := True;
-            JvBitBtn11.Caption := 'Close Order';
-            JvBitBtn4.Caption := 'Save Order Changes';
-            JvBitBtn3.Caption := 'Edit Order';
-            JvBitBtn14.Visible := False;
-            JvBitBtn15.Caption := 'Create a Purch Inv from Order';
-            JvBitBtn15.Visible := True;
-            JvBitBtn16.Visible := False;
-            JvBitBtn10.Visible := False;
-            JvBitBtn2.Caption := 'Create Order';
-            JvBitBtn2.Visible := True;
-            JvSpeedButton2.Visible := True;
-            DBEdit10.Enabled := True;
-            JvBitBtn17.Caption := 'Print Order';
-            JvDBGrid1.ReadOnly := False;
-            JvDBGrid1.Columns.Items[6].Visible := False;
-            Tabsheet1.TabVisible := False;
-          end;
-        end;  }
 end;
 
 procedure TPurchaseForm.WriteHQInvItem(StockLink, LinkID: String);

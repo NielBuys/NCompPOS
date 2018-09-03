@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, QRCtrls, RpDefine, RpBase, RpSystem, QuickRpt, ExtCtrls, StdCtrls,
+  Dialogs, QRCtrls, RpDefine, RpBase, RpSystem, ExtCtrls, StdCtrls,
   Buttons, JvExButtons, JvBitBtn, ComCtrls, JvExComCtrls, JvDateTimePicker,
   DBCtrls, UtilsUnit, DateUtils, db;
 
@@ -15,66 +15,28 @@ type
     Label2: TLabel;
     DBLookupComboBox1: TDBLookupComboBox;
     DateListEdit: TJvDateTimePicker;
-    PrintDailyListBtn: TButton;
+    PrintDailyInvoiceListBtn: TButton;
     GroupBox2: TGroupBox;
     Label3: TLabel;
     Label4: TLabel;
     Fromdate: TJvDateTimePicker;
     ToDate: TJvDateTimePicker;
-    Button2: TButton;
-    DailyList: TQuickRep;
-    QRBand1: TQRBand;
-    QRLabel1: TQRLabel;
-    QRLabel5: TQRLabel;
-    QRLabel6: TQRLabel;
-    QRLabel7: TQRLabel;
-    QRLabel8: TQRLabel;
-    QRLabel9: TQRLabel;
-    QRLabel2: TQRLabel;
-    QRLabel16: TQRLabel;
-    QRBand2: TQRBand;
-    QRDBText1: TQRDBText;
-    QRLabel11: TQRLabel;
-    QRBand3: TQRBand;
-    QRLabel13: TQRLabel;
-    QRLabel14: TQRLabel;
-    QRDBText2: TQRDBText;
-    QRDBText6: TQRDBText;
-    QRLabel10: TQRLabel;
-    QRLabel12: TQRLabel;
-    QRLabel3: TQRLabel;
+    PrintInvListDateRange: TButton;
     BitBtn1: TBitBtn;
-    QRLabel4: TQRLabel;
-    QRLabel15: TQRLabel;
-    QRLabel17: TQRLabel;
-    QRLabel18: TQRLabel;
-    QRLabel19: TQRLabel;
-    QRLabel20: TQRLabel;
     JvBitBtn1: TJvBitBtn;
     JvBitBtn2: TJvBitBtn;
     JvBitBtn3: TJvBitBtn;
-    QRDBText3: TQRDBText;
-    QRLabel21: TQRLabel;
-    QRLabel22: TQRLabel;
-    QRDBText4: TQRDBText;
     JvBitBtn4: TJvBitBtn;
     Report: TRvSystem;
     JvBitBtn5: TJvBitBtn;
     JvBitBtn6: TJvBitBtn;
-    QRLabel23: TQRLabel;
-    QRLabel24: TQRLabel;
     CheckBox1: TCheckBox;
     JvBitBtn7: TJvBitBtn;
-    procedure PrintDailyListBtnClick(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure DailyListBeforePrint(Sender: TCustomQuickRep;
-      var PrintReport: Boolean);
+    PrintDailyLayBuyPaymentList: TButton;
+    procedure PrintDailyInvoiceListBtnClick(Sender: TObject);
+    procedure PrintInvListDateRangeClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure QRBand2BeforePrint(Sender: TQRCustomBand;
-      var PrintBand: Boolean);
-    procedure QRBand3BeforePrint(Sender: TQRCustomBand;
-      var PrintBand: Boolean);
     procedure JvBitBtn1Click(Sender: TObject);
     procedure JvBitBtn2Click(Sender: TObject);
     procedure JvBitBtn3Click(Sender: TObject);
@@ -85,11 +47,15 @@ type
     procedure JvBitBtn6Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure JvBitBtn7Click(Sender: TObject);
+    procedure PrintDailyLayBuyPaymentListClick(Sender: TObject);
   private
     procedure PrintTaxHeader(BReport: TBaseReport);
     procedure PrintTaxReport(BReport: TBaseReport);
     procedure PrintSalesReport();
     procedure SupplierStockReport(BReport: TBaseReport);
+    procedure PrintInvoiceList(BReport: TBaseReport);
+    procedure PrintLayBuyPaymentsList(BReport: TBaseReport);
+    procedure PrintPurchaseInvoiceList(BReport: TBaseReport);
     { Private declarations }
   public
     { Public declarations }
@@ -99,7 +65,7 @@ type
 
 var
   InvoiceListsForm: TInvoiceListsForm;
-  Fromwhere: string;
+  Fromwhere, ReportTitle: string;
   PageInt:Integer;
 
 implementation
@@ -112,25 +78,46 @@ begin
           Close;
 end;
 
-procedure TInvoiceListsForm.PrintDailyListBtnClick(Sender: TObject);
+procedure TInvoiceListsForm.PrintDailyInvoiceListBtnClick(Sender: TObject);
 begin
       DataForm2.Query3.Close;
-      s := 'WHERE (InvBy = "' + DataForm2.user_db.fieldbyname('UserName').asString + '") and';
+      s := 'WHERE (InvBy = "' + DataForm2.user_db.fieldbyname('UserName').asString + '")';
       with DataForm2.Query3.SQL do begin
         Clear;
-        Add('SELECT * FROM invoice_db');
+        Add('SELECT Nr, InvNo, BranchNo, InvDate, InvBy, ClientName, AmmTendered, Premium, RefNo, invoice_db.InvClose FROM invoice_db');
         Add(s);
-        Add('(InvDate = ' + InttoStr(DatetoIntDate(DateListEdit.Date)) + ')');
-        Add('and (InvClose = "Close" or InvClose = "LaybC")');
+        Add('and (InvDate = ' + InttoStr(DatetoIntDate(DateListEdit.Date)) + ')');
+        Add('and (InvClose = "Close")');
         Add('Order by InvNo');
       end;
       DataForm2.Query3.Open;
       Fromwhere := 'Inv';
-      QRLabel1.Caption := 'Daily Invoices for: ' + DataForm2.user_db.fieldbyname('UserName').asString + ' and for Date: ' + DatetoStr(DateListEdit.Date);
-      DailyList.Preview;
+      ReportTitle := 'Daily Invoices for: ' + DataForm2.user_db.fieldbyname('UserName').asString + ' and for Date: ' + DatetoStr(DateListEdit.Date);
+      PrintFromWhere := 'InvoiceList';
+      Report.Execute;
 end;
 
-procedure TInvoiceListsForm.Button2Click(Sender: TObject);
+procedure TInvoiceListsForm.PrintDailyLayBuyPaymentListClick(Sender: TObject);
+begin
+      DataForm2.Query3.Close;
+      s := 'WHERE (trans_db.PaymentBy = "' + DataForm2.user_db.fieldbyname('UserName').asString + '")';
+      with DataForm2.Query3.SQL do begin
+        Clear;
+        Add('select invoice_db.Nr, invoice_db.InvNo, invoice_db.BranchNo, trans_db.Date, trans_db.PaymentBy, invoice_db.ClientName,');
+        Add('invoice_db.AmmTendered, invoice_db.Premium, trans_db.Ammount, trans_db.Description, invoice_db.InvClose from trans_db');
+        Add('left join invoice_db on trans_db.LinkID = invoice_db.InvNo and invoice_db.BranchNo = trans_db.BranchNo');
+        Add(s);
+        Add('and (trans_db.Date = ' + InttoStr(DatetoIntDate(DateListEdit.Date)) + ')');
+        Add('Order by InvNo');
+      end;
+      DataForm2.Query3.Open;
+      Fromwhere := 'Inv';
+      ReportTitle := 'Daily Lay Buy Payments for: ' + DataForm2.user_db.fieldbyname('UserName').asString + ' and for Date: ' + DatetoStr(DateListEdit.Date);
+      PrintFromWhere := 'LayBuyPaymentsList';
+      Report.Execute;
+end;
+
+procedure TInvoiceListsForm.PrintInvListDateRangeClick(Sender: TObject);
 begin
       DataForm2.Query3.Close;
       with DataForm2.Query3.SQL do begin
@@ -143,31 +130,11 @@ begin
       end;
       DataForm2.Query3.Open;
       Fromwhere := 'Inv';
-      QRLabel1.Caption := 'Monthly Invoices from: ' + datetostr(FromDate.Date) + ' to: ' + DatetoStr(ToDate.Date);
-      DailyList.Preview;
+      ReportTitle := 'Monthly Invoices from: ' + datetostr(FromDate.Date) + ' to: ' + DatetoStr(ToDate.Date);
+      PrintFromWhere := 'InvoiceList';
+      Report.Execute;
 end;
 
-procedure TInvoiceListsForm.DailyListBeforePrint(Sender: TCustomQuickRep;
-  var PrintReport: Boolean);
-begin
-       Total := 0.00;
-       TotalVat := 0.00;
-       TotalWithoutVat := 0.00;
-       PayedTotal := 0;
-       OwedTotal := 0;
-       If (Fromwhere = 'PInv') then
-       begin
-         QRLabel17.Caption := '';
-         QRLabel18.Caption := '';
-         QRLabel19.Caption := '';
-         QRLabel20.Caption := '';
-       end
-       else
-       begin
-         QRLabel17.Caption := 'Payed';
-         QRLabel19.Caption := 'Owed';
-       end;
-end;
 
 procedure TInvoiceListsForm.FormShow(Sender: TObject);
 begin
@@ -183,92 +150,6 @@ begin
       InvoiceListsForm.FreeOnRelease;
 end;
 
-procedure TInvoiceListsForm.QRBand2BeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-var
-   invtotalstr,Tendered: Currency;
-begin
-       If (Fromwhere <> 'PInv') then
-       begin
-         QRLabel18.Caption := '';
-         QRLabel20.Caption := '';
-         Dataform2.Query2.Close;
-         with DataForm2.Query2.SQL do begin
-           Clear;
-           Add('SELECT SUM(Round(Price * Qty,2) - (Round(Price * Qty,2) * (Discount / 100))) as Total FROM invoiceitem_db');
-           Add('where LinkId = ' + inttostr(Dataform2.Query3.Fieldbyname('Nr').asInteger));
-           Add('and BranchNo = ' + inttostr(Dataform2.Query3.Fieldbyname('BranchNo').asInteger));
-         end;
-         Dataform2.Query2.Open;
-         invtotalstr := DataForm2.Query2.Fieldbyname('Total').asCurrency;
-         Tendered := Dataform2.Query3.FieldByName('AmmTendered').AsCurrency + Dataform2.Query3.FieldByName('Premium').AsCurrency;
-         if Tendered < invtotalstr then
-         begin
-           QRLabel10.Caption := Floattostrf((invtotalstr) - (invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value)),ffCurrency,17,2);
-           QRLabel12.Caption := Floattostrf(invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value) ,ffCurrency,17,2);
-           QRLabel3.Caption := Floattostrf(invtotalstr,ffCurrency,17,2);
-           QRLabel18.Caption := Floattostrf(Tendered,ffCurrency,17,2);
-           PayedTotal := PayedTotal + Tendered;
-           QRLabel20.Caption := Floattostrf(invtotalstr - Tendered,ffCurrency,17,2);
-           OwedTotal := OwedTotal + (invtotalstr - Tendered);
-         end
-         else
-         begin
-           QRLabel10.Caption := Floattostrf(invtotalstr - (DataForm2.Query2.Fieldbyname('Total').asCurrency * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value)),ffCurrency,17,2);
-           QRLabel12.Caption := Floattostrf(invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value) ,ffCurrency,17,2);
-           QRLabel3.Caption := Floattostrf(invtotalstr,ffCurrency,17,2);
-           QRLabel18.Caption := Floattostrf(invtotalstr,ffCurrency,17,2);
-           PayedTotal := PayedTotal + invtotalstr;
-           QRLabel20.Caption := Floattostrf(0,ffCurrency,17,2);
-         end;
-         Total := Total + invtotalstr;
-         TotalVat := TotalVat + (invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value));
-         TotalWithoutVat := TotalWithoutVat + (invtotalstr - (invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value)));
-       end
-       else
-       begin
-         Dataform2.Query2.Close;
-         with DataForm2.Query2.SQL do begin
-           Clear;
-           Add('SELECT SUM(Round(CostPrice * Qty,2) - (Round(CostPrice * Qty,2) * (Discount / 100))) as Total FROM invoiceitem_db');
-           Add('where LinkId = ' + inttostr(Dataform2.Query3.Fieldbyname('Nr').asInteger));
-           Add('and BranchNo = ' + inttostr(Dataform2.Query3.Fieldbyname('BranchNo').asInteger));
-         end;
-         Dataform2.Query2.Open;
-         QRLabel10.Caption := Floattostrf(DataForm2.Query2.Fieldbyname('Total').asCurrency,ffCurrency,17,2);
-         QRLabel12.Caption := Floattostrf(MyRoundTo(DataForm2.Query2.Fieldbyname('Total').asCurrency * Dataform2.GlobalTableVat.Value / 100, -2) ,ffCurrency,17,2);
-         QRLabel3.Caption := Floattostrf(DataForm2.Query2.Fieldbyname('Total').asFloat + (MyRoundTo(DataForm2.Query2.Fieldbyname('Total').asCurrency * Dataform2.GlobalTableVat.Value / 100, -2)),ffCurrency,17,2);
-         Total := Total + (DataForm2.Query2.Fieldbyname('Total').asCurrency + (DataForm2.Query2.Fieldbyname('Total').asCurrency * Dataform2.GlobalTableVat.Value / 100));
-         TotalVat := TotalVat + (DataForm2.Query2.Fieldbyname('Total').asCurrency * Dataform2.GlobalTableVat.Value / 100);
-         TotalWithoutVat := TotalWithoutVat + DataForm2.Query2.Fieldbyname('Total').asCurrency;
-       end;
-       QRLabel11.Caption := IntDatetoString(DataForm2.Query3.Fieldbyname('InvDate').asInteger);
-       If FromWhere = 'Layb' then
-       begin
-         DataForm2.Query2.Close;
-         with DataForm2.Query2.SQL do begin
-           Clear;
-           Add('SELECT Sum(Ammount) as Total FROM trans_db');
-           Add('where LinkID = ' + InttoStr(Dataform2.Query3.FieldByName('InvNo').asInteger));
-           Add('and BranchNo = ' + InttoStr(Dataform2.Query3.FieldByName('BranchNo').asInteger));
-           Add('and TransType = ''L''');
-         end;
-         Dataform2.Query2.Open;
-         QRLabel18.Caption := Floattostrf(DataForm2.Query2.Fieldbyname('Total').asCurrency,ffCurrency,17,2);
-         QrLabel20.Caption := Floattostrf(invtotalstr - DataForm2.Query2.Fieldbyname('Total').asCurrency,ffCurrency,17,2);
-       end;
-end;
-
-procedure TInvoiceListsForm.QRBand3BeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-begin
-       QRLabel15.Caption := Floattostrf(TotalWithoutVat,ffCurrency,17,2);
-       QRLabel4.Caption := Floattostrf(TotalVat,ffCurrency,17,2);
-       QRLabel13.Caption := Floattostrf(Total,ffCurrency,17,2);
-       QRLabel23.Caption := Floattostrf(PayedTotal,ffCurrency,17,2);
-       QrLabel24.Caption := Floattostrf(OwedTotal,ffCurrency,17,2);
-end;
-
 procedure TInvoiceListsForm.ReportBeforePrint(Sender: TObject);
 begin
         Report.BaseReport.SetPaperSize(DMPAPER_A4,0,0);
@@ -282,6 +163,12 @@ begin
         PrintTaxReport(Report.BaseReport);
       if PrintFromWhere = 'SupplierStock' then
         SupplierStockReport(Report.BaseReport);
+      if PrintFromWhere = 'InvoiceList' then
+        PrintInvoiceList(Report.BaseReport);
+      if PrintFromWhere = 'LayBuyPaymentsList' then
+        PrintLayBuyPaymentsList(Report.BaseReport);
+      if PrintFromWhere = 'PurchaseInvoiceList' then
+        PrintPurchaseInvoiceList(Report.BaseReport);
 end;
 
 procedure TInvoiceListsForm.JvBitBtn1Click(Sender: TObject);
@@ -297,8 +184,9 @@ begin
       end;
       DataForm2.Query3.Open;
       Fromwhere := 'Layb';
-      QRLabel1.Caption := 'Monthly Open Lay Buys from: ' + datetostr(FromDate.Date) + ' to: ' + DatetoStr(ToDate.Date);
-      DailyList.Preview;
+      ReportTitle := 'Monthly Open Lay Buys from: ' + datetostr(FromDate.Date) + ' to: ' + DatetoStr(ToDate.Date);
+      PrintFromWhere := 'InvoiceList';
+      Report.Execute;
 end;
 
 procedure TInvoiceListsForm.JvBitBtn2Click(Sender: TObject);
@@ -314,8 +202,9 @@ begin
       end;
       DataForm2.Query3.Open;
       Fromwhere := 'Layb';
-      QRLabel1.Caption := 'Monthly Closed Lay Buys from: ' + datetostr(FromDate.Date) + ' to: ' + DatetoStr(ToDate.Date);
-      DailyList.Preview;
+      ReportTitle := 'Monthly Closed Lay Buys from: ' + datetostr(FromDate.Date) + ' to: ' + DatetoStr(ToDate.Date);
+      PrintFromWhere := 'InvoiceList';
+      Report.Execute;
 end;
 
 procedure TInvoiceListsForm.JvBitBtn3Click(Sender: TObject);
@@ -331,8 +220,9 @@ begin
       end;
       DataForm2.Query3.Open;
       Fromwhere := 'PInv';
-      QRLabel1.Caption := 'Monthly Purchase Invoices from: ' + datetostr(FromDate.Date) + ' to: ' + DatetoStr(ToDate.Date);
-      DailyList.Preview;
+      ReportTitle := 'Monthly Purchase Invoices from: ' + datetostr(FromDate.Date) + ' to: ' + DatetoStr(ToDate.Date);
+      PrintFromWhere := 'PurchaseInvoiceList';
+      Report.Execute;
 end;
 
 procedure TInvoiceListsForm.JvBitBtn4Click(Sender: TObject);
@@ -823,5 +713,430 @@ begin
         end;
 end;
 
+procedure TInvoiceListsForm.PrintInvoiceList(BReport:TBaseReport);
+var
+        LineCount:Integer;
+       invtotalstr,Tendered: Currency;
+begin
+        with BReport do
+        begin
+          Total := 0.00;
+          TotalVat := 0.00;
+          TotalWithoutVat := 0.00;
+          PayedTotal := 0;
+          OwedTotal := 0;
+
+          LineCount := 0;
+          MarginLeft := 0.5;
+          MarginTop := 0.5;
+          SetFont('Arial',9);
+          Bold := True;
+          printLeft(Dataform2.GlobalTableReportTitle.Value, 0.5);
+          printRight(datetostr(date),6.25);
+          NewLine;
+          NewLine;
+          printLeft(ReportTitle,0.5);
+          Bold := False;
+          ClearTabs;
+          SetTab(0.5, pjCenter,0.6,0,0,0);
+          SetTab(NA, pjCenter,0.7,0,0,0);
+          SetTab(NA, pjCenter,0.7,0,0,0);
+          SetTab(NA, pjCenter,1.2,0,0,0);
+          SetTab(NA, pjCenter,0.8,0,0,0);
+          SetTab(NA, pjCenter,0.6,0,0,0);
+          SetTab(NA, pjCenter,0.8,0,0,0);
+          SetTab(NA, pjCenter,0.7,0,0,0);
+          SetTab(NA, pjCenter,0.7,0,0,0);
+          SetTab(NA, pjCenter,0.6,0,0,0);
+          NewLine;
+          NewLine;
+          Bold := True;
+          PrintTab('Inv No');
+          PrintTab('Date');
+          PrintTab('By');
+          PrintTab('Name');
+          PrintTab('Total Excl');
+          PrintTab('Vat');
+          PrintTab('Total Incl');
+          PrintTab('Payed');
+          PrintTab('Owed');
+          PrintTab('Ref No');
+          Bold := False;
+          NewLine;
+          ClearTabs;
+          SetTab(0.5, pjLeft,0.6,0,0,0);
+          SetTab(NA, pjLeft,0.7,0,0,0);
+          SetTab(NA, pjLeft,0.7,0,0,0);
+          SetTab(NA, pjLeft,1.2,0,0,0);
+          SetTab(NA, pjRight,0.8,0,0,0);
+          SetTab(NA, pjRight,0.6,0,0,0);
+          SetTab(NA, pjRight,0.8,0,0,0);
+          SetTab(NA, pjRight,0.7,0,0,0);
+          SetTab(NA, pjRight,0.7,0,0,0);
+          SetTab(NA, pjLeft,0.6,0,0,0);
+
+          DataForm2.Query3.first;
+
+          try
+            while not DataForm2.Query3.EOF do
+            begin
+              Inc(LineCount);
+              if LineCount > 58 then
+              begin
+                LineCount := 1;
+                NewPage;
+              end;
+
+              Dataform2.Query2.Close;
+              with DataForm2.Query2.SQL do begin
+                Clear;
+                Add('SELECT SUM(Round(Price * Qty,2) - (Round(Price * Qty,2) * (Discount / 100))) as Total FROM invoiceitem_db');
+                Add('where LinkId = ' + inttostr(Dataform2.Query3.Fieldbyname('Nr').asInteger));
+                Add('and BranchNo = ' + inttostr(Dataform2.Query3.Fieldbyname('BranchNo').asInteger));
+              end;
+              Dataform2.Query2.Open;
+              invtotalstr := DataForm2.Query2.Fieldbyname('Total').asCurrency;
+
+              if (Dataform2.Query3.FieldByName('InvClose').asString = 'LaybV')
+              or (Dataform2.Query3.FieldByName('InvClose').asString = 'LaybO')
+              or (Dataform2.Query3.FieldByName('InvClose').asString = 'LaybC') then
+              begin
+                Dataform2.Query2.Close;
+                with DataForm2.Query2.SQL do begin
+                  Clear;
+                  Add('select sum(Ammount) as TotalPayed from trans_db');
+                  Add('where LinkId = ' + inttostr(Dataform2.Query3.Fieldbyname('InvNo').asInteger));
+                  Add('and BranchNo = ' + inttostr(Dataform2.Query3.Fieldbyname('BranchNo').asInteger));
+                  Add('and TransType = ''L''');
+                end;
+                Dataform2.Query2.Open;
+                Tendered := DataForm2.Query2.Fieldbyname('TotalPayed').asCurrency;
+              end
+              else
+              begin
+                Tendered := Dataform2.Query3.FieldByName('AmmTendered').AsCurrency + Dataform2.Query3.FieldByName('Premium').AsCurrency;
+              end;
+
+              NewLine;
+              PrintTab(inttostr(Dataform2.Query3.FieldByName('InvNo').asInteger) + '/' + InttoStr(Dataform2.Query3.FieldByName('BranchNo').asInteger));
+              PrintTab(IntDatetoString(Dataform2.Query3.FieldByName('InvDate').asInteger));
+              PrintTab(Dataform2.Query3.FieldByName('InvBy').asString);
+              SetFont('Arial',8);
+              PrintTab(Dataform2.Query3.FieldByName('ClientName').asString);
+              SetFont('Arial',9);
+              PrintTab(Floattostrf((invtotalstr) - (invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value)),ffCurrency,17,2));
+              PrintTab(Floattostrf(invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value) ,ffCurrency,17,2));
+              PrintTab(Floattostrf(invtotalstr,ffCurrency,17,2));
+              if (Tendered < invtotalstr)
+                and not (Dataform2.Query3.FieldByName('InvClose').asString = 'LaybV') then
+              begin
+                PrintTab(Floattostrf(Tendered,ffCurrency,17,2));
+                PrintTab(Floattostrf(invtotalstr - Tendered,ffCurrency,17,2));
+                PayedTotal := PayedTotal + Tendered;
+                OwedTotal := OwedTotal + (invtotalstr - Tendered);
+              end
+              else
+              begin
+                PrintTab(Floattostrf(invtotalstr,ffCurrency,17,2));
+                PrintTab(Floattostrf(0,ffCurrency,17,2));
+                PayedTotal := PayedTotal + invtotalstr;
+              end;
+              SetFont('Arial',8);
+              PrintTab(Dataform2.Query3.FieldByName('RefNo').asString);
+              SetFont('Arial',9);
+
+              Total := Total + invtotalstr;
+              TotalVat := TotalVat + (invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value));
+              TotalWithoutVat := TotalWithoutVat + (invtotalstr - (invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value)));
+
+              DataForm2.Query3.Next;
+            end;
+          finally
+          end;
+          NewLine;
+          Bold := True;
+          PrintTab('');
+          PrintTab('');
+          PrintTab('');
+          PrintTab('');
+          PrintTab(Floattostrf(TotalWithoutVat,ffCurrency,17,2));
+          PrintTab(Floattostrf(TotalVat,ffCurrency,17,2));
+          PrintTab(Floattostrf(Total,ffCurrency,17,2));
+          PrintTab(Floattostrf(PayedTotal,ffCurrency,17,2));
+          PrintTab(Floattostrf(OwedTotal,ffCurrency,17,2));
+          PrintTab('');
+          Bold := False;
+          NewLine;
+          DataForm2.Query3.Close;
+          DataForm2.Query2.Close;
+        end;
+end;
+
+procedure TInvoiceListsForm.PrintPurchaseInvoiceList(BReport:TBaseReport);
+var
+        LineCount:Integer;
+       invtotalstr,Tendered: Currency;
+begin
+        with BReport do
+        begin
+          Total := 0;
+          TotalVat := 0;
+          TotalWithoutVat := 0;
+
+          LineCount := 0;
+          MarginLeft := 0.5;
+          MarginTop := 0.5;
+          SetFont('Arial',9);
+          Bold := True;
+          printLeft(Dataform2.GlobalTableReportTitle.Value, 0.5);
+          printRight(datetostr(date),6.25);
+          NewLine;
+          NewLine;
+          printLeft(ReportTitle,0.5);
+          Bold := False;
+          ClearTabs;
+          SetTab(0.5, pjCenter,0.6,0,0,0);
+          SetTab(NA, pjCenter,0.7,0,0,0);
+          SetTab(NA, pjCenter,0.7,0,0,0);
+          SetTab(NA, pjCenter,1.2,0,0,0);
+          SetTab(NA, pjCenter,0.9,0,0,0);
+          SetTab(NA, pjCenter,0.7,0,0,0);
+          SetTab(NA, pjCenter,0.9,0,0,0);
+          SetTab(NA, pjCenter,0.6,0,0,0);
+          NewLine;
+          NewLine;
+          Bold := True;
+          PrintTab('Inv No');
+          PrintTab('Date');
+          PrintTab('By');
+          PrintTab('Name');
+          PrintTab('Total Excl');
+          PrintTab('Vat');
+          PrintTab('Total Incl');
+          PrintTab('Ref No');
+          Bold := False;
+          NewLine;
+          ClearTabs;
+          SetTab(0.5, pjLeft,0.6,0,0,0);
+          SetTab(NA, pjLeft,0.7,0,0,0);
+          SetTab(NA, pjLeft,0.7,0,0,0);
+          SetTab(NA, pjLeft,1.2,0,0,0);
+          SetTab(NA, pjRight,0.9,0,0,0);
+          SetTab(NA, pjRight,0.7,0,0,0);
+          SetTab(NA, pjRight,0.9,0,0,0);
+          SetTab(NA, pjLeft,0.6,0,0,0);
+
+          DataForm2.Query3.first;
+
+          try
+            while not DataForm2.Query3.EOF do
+            begin
+              Inc(LineCount);
+              if LineCount > 58 then
+              begin
+                LineCount := 1;
+                NewPage;
+              end;
+
+              Dataform2.Query2.Close;
+              with DataForm2.Query2.SQL do begin
+                Clear;
+                Add('SELECT SUM(Round(CostPrice * Qty,2) - (Round(CostPrice * Qty,2) * (ifnull(Discount,0) / 100))) as Total FROM invoiceitem_db');
+                Add('where LinkId = ' + inttostr(Dataform2.Query3.Fieldbyname('Nr').asInteger));
+                Add('and BranchNo = ' + inttostr(Dataform2.Query3.Fieldbyname('BranchNo').asInteger));
+              end;
+              Dataform2.Query2.Open;
+              invtotalstr := DataForm2.Query2.Fieldbyname('Total').asCurrency;
+
+              NewLine;
+              PrintTab(inttostr(Dataform2.Query3.FieldByName('InvNo').asInteger) + '/' + InttoStr(Dataform2.Query3.FieldByName('BranchNo').asInteger));
+              PrintTab(IntDatetoString(Dataform2.Query3.FieldByName('InvDate').asInteger));
+              PrintTab(Dataform2.Query3.FieldByName('InvBy').asString);
+              SetFont('Arial',8);
+              PrintTab(Dataform2.Query3.FieldByName('ClientName').asString);
+              SetFont('Arial',9);
+              PrintTab(Floattostrf(invtotalstr,ffCurrency,17,2));
+              PrintTab(Floattostrf(MyRoundTo(invtotalstr * Dataform2.GlobalTableVat.Value / 100, -2) ,ffCurrency,17,2));
+              PrintTab(Floattostrf(invtotalstr + (MyRoundTo(invtotalstr * Dataform2.GlobalTableVat.Value / 100, -2)),ffCurrency,17,2));
+
+              SetFont('Arial',8);
+              PrintTab(Dataform2.Query3.FieldByName('RefNo').asString);
+              SetFont('Arial',9);
+
+              Total := Total + invtotalstr;
+              TotalVat := TotalVat + (invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value));
+              TotalWithoutVat := TotalWithoutVat + (invtotalstr - (invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value)));
+
+              DataForm2.Query3.Next;
+            end;
+          finally
+          end;
+          NewLine;
+          Bold := True;
+          PrintTab('');
+          PrintTab('');
+          PrintTab('');
+          PrintTab('');
+          PrintTab(Floattostrf(TotalWithoutVat,ffCurrency,17,2));
+          PrintTab(Floattostrf(TotalVat,ffCurrency,17,2));
+          PrintTab(Floattostrf(Total,ffCurrency,17,2));
+          PrintTab('');
+          Bold := False;
+          NewLine;
+          DataForm2.Query3.Close;
+          DataForm2.Query2.Close;
+        end;
+end;
+
+procedure TInvoiceListsForm.PrintLayBuyPaymentsList(BReport:TBaseReport);
+var
+        LineCount:Integer;
+       invtotalstr, totalpayed: Currency;
+begin
+        with BReport do
+        begin
+          Total := 0;
+          TotalVat := 0;
+          TotalWithoutVat := 0;
+          PayedTotal := 0;
+          OwedTotal := 0;
+
+          LineCount := 0;
+          MarginLeft := 0.5;
+          MarginTop := 0.5;
+          SetFont('Arial',9);
+          Bold := True;
+          printLeft(Dataform2.GlobalTableReportTitle.Value, 0.5);
+          printRight(datetostr(date),6.25);
+          NewLine;
+          NewLine;
+          printLeft(ReportTitle,0.5);
+          Bold := False;
+          ClearTabs;
+          SetTab(0.5, pjCenter,0.6,0,0,0);
+          SetTab(NA, pjCenter,0.7,0,0,0);
+          SetTab(NA, pjCenter,0.7,0,0,0);
+          SetTab(NA, pjCenter,1.2,0,0,0);
+          SetTab(NA, pjCenter,0.6,0,0,0);
+          SetTab(NA, pjCenter,0.8,0,0,0);
+          SetTab(NA, pjCenter,0.6,0,0,0);
+          SetTab(NA, pjCenter,0.8,0,0,0);
+          SetTab(NA, pjCenter,0.8,0,0,0);
+          SetTab(NA, pjCenter,0.7,0,0,0);
+
+          NewLine;
+          NewLine;
+          Bold := True;
+          PrintTab('Inv No');
+          PrintTab('Date');
+          PrintTab('By');
+          PrintTab('Name');
+          PrintTab('Payed');
+          PrintTab('Total Excl');
+          PrintTab('Vat');
+          PrintTab('Total Incl');
+          PrintTab('Owed');
+          PrintTab('Description');
+          Bold := False;
+          NewLine;
+          ClearTabs;
+          SetTab(0.5, pjLeft,0.6,0,0,0);
+          SetTab(NA, pjLeft,0.7,0,0,0);
+          SetTab(NA, pjLeft,0.7,0,0,0);
+          SetTab(NA, pjLeft,1.2,0,0,0);
+          SetTab(NA, pjRight,0.6,0,0,0);
+          SetTab(NA, pjRight,0.8,0,0,0);
+          SetTab(NA, pjRight,0.6,0,0,0);
+          SetTab(NA, pjRight,0.8,0,0,0);
+          SetTab(NA, pjRight,0.8,0,0,0);
+          SetTab(NA, pjLeft,0.7,0,0,0);
+
+          DataForm2.Query3.first;
+
+          try
+            while not DataForm2.Query3.EOF do
+            begin
+              Inc(LineCount);
+              if LineCount > 58 then
+              begin
+                LineCount := 1;
+                NewPage;
+              end;
+
+              Dataform2.Query2.Close;
+              with DataForm2.Query2.SQL do begin
+                Clear;
+                Add('SELECT SUM(Round(Price * Qty,2) - (Round(Price * Qty,2) * (Discount / 100))) as Total FROM invoiceitem_db');
+                Add('where LinkId = ' + inttostr(Dataform2.Query3.Fieldbyname('Nr').asInteger));
+                Add('and BranchNo = ' + inttostr(Dataform2.Query3.Fieldbyname('BranchNo').asInteger));
+              end;
+              Dataform2.Query2.Open;
+              invtotalstr := DataForm2.Query2.Fieldbyname('Total').asCurrency;
+
+              Dataform2.Query2.Close;
+              with DataForm2.Query2.SQL do begin
+                Clear;
+                Add('select sum(Ammount) as TotalPayed from trans_db');
+                Add('where LinkId = ' + inttostr(Dataform2.Query3.Fieldbyname('InvNo').asInteger));
+                Add('and BranchNo = ' + inttostr(Dataform2.Query3.Fieldbyname('BranchNo').asInteger));
+                Add('and TransType = ''L''');
+              end;
+              Dataform2.Query2.Open;
+              totalpayed := DataForm2.Query2.Fieldbyname('TotalPayed').asCurrency;
+
+              NewLine;
+              PrintTab(inttostr(Dataform2.Query3.FieldByName('InvNo').asInteger) + '/' + InttoStr(Dataform2.Query3.FieldByName('BranchNo').asInteger));
+              PrintTab(IntDatetoString(Dataform2.Query3.FieldByName('Date').asInteger));
+              PrintTab(Dataform2.Query3.FieldByName('PaymentBy').asString);
+              SetFont('Arial',8);
+              PrintTab(Dataform2.Query3.FieldByName('ClientName').asString);
+              SetFont('Arial',9);
+              PrintTab(Floattostrf(Dataform2.Query3.FieldByName('Ammount').AsCurrency,ffCurrency,17,2));
+              PrintTab(Floattostrf((invtotalstr) - (invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value)),ffCurrency,17,2));
+              PrintTab(Floattostrf(invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value) ,ffCurrency,17,2));
+              PrintTab(Floattostrf(invtotalstr,ffCurrency,17,2));
+              if Dataform2.Query3.FieldByName('InvClose').asString = 'LaybV' then
+              begin
+                PrintTab(Floattostrf(0,ffCurrency,17,2));
+                SetFont('Arial',8);
+                PrintTab('Cancelled');
+                SetFont('Arial',9);
+              end
+              else
+              begin
+                PrintTab(Floattostrf(invtotalstr - totalpayed,ffCurrency,17,2));
+                SetFont('Arial',8);
+                PrintTab(Dataform2.Query3.FieldByName('Description').asString);
+                SetFont('Arial',9);
+                OwedTotal := OwedTotal + (invtotalstr - totalpayed);
+              end;
+
+              PayedTotal := PayedTotal + Dataform2.Query3.FieldByName('Ammount').AsCurrency;
+              Total := Total + invtotalstr;
+              TotalVat := TotalVat + (invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value));
+              TotalWithoutVat := TotalWithoutVat + (invtotalstr - (invtotalstr * Dataform2.GlobalTableVat.Value / (100 + Dataform2.GlobalTableVat.Value)));
+
+              DataForm2.Query3.Next;
+            end;
+          finally
+          end;
+          NewLine;
+          Bold := True;
+          PrintTab('');
+          PrintTab('');
+          PrintTab('');
+          PrintTab('');
+          PrintTab(Floattostrf(PayedTotal,ffCurrency,17,2));
+          PrintTab(Floattostrf(TotalWithoutVat,ffCurrency,17,2));
+          PrintTab(Floattostrf(TotalVat,ffCurrency,17,2));
+          PrintTab(Floattostrf(Total,ffCurrency,17,2));
+          PrintTab(Floattostrf(OwedTotal,ffCurrency,17,2));
+          PrintTab('');
+          Bold := False;
+          NewLine;
+          DataForm2.Query3.Close;
+          DataForm2.Query2.Close;
+        end;
+end;
 
 end.

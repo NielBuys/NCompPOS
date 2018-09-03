@@ -25,7 +25,7 @@ object LayBuyForm: TLayBuyForm
     Top = 0
     Width = 721
     Height = 441
-    ActivePage = TabSheet3
+    ActivePage = TabSheet4
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Lay Buy details'

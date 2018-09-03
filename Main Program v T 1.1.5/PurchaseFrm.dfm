@@ -31,10 +31,6 @@ object PurchaseForm: TPurchaseForm
       ImageIndex = 1
       OnExit = TabSheet2Exit
       OnHide = TabSheet2Hide
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox1: TGroupBox
         Left = 3
         Top = 200
@@ -364,7 +360,7 @@ object PurchaseForm: TPurchaseForm
       end
       object PurchaseInvGrid: TJvDBGrid
         Left = 1
-        Top = 2
+        Top = 3
         Width = 757
         Height = 197
         DataSource = DataForm2.InvoiceSource
@@ -595,10 +591,6 @@ object PurchaseForm: TPurchaseForm
       ImageIndex = 2
       OnExit = TabSheet3Exit
       OnShow = TabSheet3Show
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object JvSpeedButton1: TJvSpeedButton
         Left = 376
         Top = 400
@@ -860,10 +852,6 @@ object PurchaseForm: TPurchaseForm
     object TabSheet1: TTabSheet
       Caption = 'Import Stock Items'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label10: TLabel
         Left = 24
         Top = 16
@@ -907,7 +895,7 @@ object PurchaseForm: TPurchaseForm
         Width = 249
         Height = 21
         Enabled = False
-        ItemHeight = 0
+        ItemHeight = 13
         TabOrder = 2
         Text = 'Select Sheet'
       end
@@ -1031,7 +1019,7 @@ object PurchaseForm: TPurchaseForm
     Caption = 'Purchase Inv to Branch Stock Transfer'
     TabOrder = 3
     object JvBitBtn13: TJvBitBtn
-      Left = 168
+      Left = 167
       Top = 16
       Width = 145
       Height = 25
