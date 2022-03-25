@@ -522,9 +522,9 @@ begin
             DataForm2.Query3.Active := False;
             with DataForm2.Query3.SQL do begin
                 Clear;
-                Add('insert into stock_db(Description,DateCreated,DateChanged,CostPrice,SalesPrice,Barcode,Qty,AlertQty,NonStockItem,StartingQty,TCStockNo,BranchNo,SyncHQ,BranchMainStockNo,st_created_by,st_changed_by,st_nontaxitem) values ');
+                Add('insert into stock_db(Description,DateCreated,DateChanged,CostPrice,SalesPrice,Barcode,Qty,AlertQty,NonStockItem,StartingQty,TCStockNo,BranchNo,SyncHQ,BranchMainStockNo,st_created_by,st_changed_by,st_nontaxitem,ModelNo) values ');
                 Add('(''' + FixSQLString(Dataform2.StockTableDescription.Value) + ''',' + InttoStr(datetoIntDate(Date)) + ',' + InttoStr(DatetoIntDate(Date)) + ',' + Floattostr(DataForm2.StockTableCostPrice.Value) + ',' + FloattoStr(DataForm2.StockTableSalesPrice.Value) + ',''' + DataForm2.StockTableBarcode.Value + ''',' + FloattoStr(Dataform2.StocktrnsferItemTableQty.Value) + ',' + Floattostr(DataForm2.StockTableAlertQty.Value) + ',''' + Dataform2.StockTableNonStockItem.Value + ''',');
-                Add(Floattostr(DataForm2.StockTableStartingQty.Value) + ',''' + DataForm2.StockTableTCStockNo.Value + ''',' + InttoStr(DataForm2.BranchTableNr.Value) + ',' + InttoStr(DataForm2.StockTableSyncHQ.Value) + ',' + InttoStr(DataForm2.StockTableNr.Value) + ',''' + Dataform2.User_dbUserName.Value + ''',''' + Dataform2.User_dbUserName.Value + ''',''' + Dataform2.StockTablest_nontaxitem.Value + ''')');
+                Add(Floattostr(DataForm2.StockTableStartingQty.Value) + ',''' + DataForm2.StockTableTCStockNo.Value + ''',' + InttoStr(DataForm2.BranchTableNr.Value) + ',' + InttoStr(DataForm2.StockTableSyncHQ.Value) + ',' + InttoStr(DataForm2.StockTableNr.Value) + ',''' + Dataform2.User_dbUserName.Value + ''',''' + Dataform2.User_dbUserName.Value + ''',''' + Dataform2.StockTablest_nontaxitem.Value + ''',''' + Dataform2.StockTableModelNo.Value + ''')');
             end;
             DataForm2.Query3.ExecSQL;
           end;
@@ -980,7 +980,6 @@ begin
            Dataform2.StocktrnsferItemTableBeforeQty.Value := Dataform2.StockTableQty.Value;
            DataForm2.StocktrnsferItemTableQty.Value := 1;
            DataForm2.StocktrnsferItemTableDescription.Value := Dataform2.StockTableDescription.Value;
-           Dataform2.StocktrnsferItemTableTCStockNo.Value := Dataform2.StockTableTCStockNo.Value;
            Dataform2.StocktrnsferItemTableTCStockNo.Value := Dataform2.StockTableTCStockNo.Value;
            DataForm2.StocktrnsferItemTable.Post;
            JvDBGrid3.SetFocus;

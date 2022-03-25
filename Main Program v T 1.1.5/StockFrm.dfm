@@ -164,7 +164,6 @@ object StockForm: TStockForm
       item
         Expanded = False
         FieldName = 'AvgCost'
-        Width = 64
         Visible = True
       end
       item
@@ -223,13 +222,11 @@ object StockForm: TStockForm
       item
         Expanded = False
         FieldName = 'AlertQty'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'StartingQty'
-        Width = 64
         Visible = True
       end
       item
@@ -241,25 +238,21 @@ object StockForm: TStockForm
       item
         Expanded = False
         FieldName = 'st_nontaxitem'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'st_created_by'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'st_changed_by'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'CreditorLink'
-        Width = 64
         Visible = True
       end
       item
@@ -539,7 +532,7 @@ object StockForm: TStockForm
     Top = 496
   end
   object RvSystem1: TRvSystem
-    TitleSetup = 'Output Options'
+    TitleSetup = 'Output'
     TitleStatus = 'Report Status'
     TitlePreview = 'Report Preview'
     DefaultDest = rdPrinter

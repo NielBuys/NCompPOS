@@ -1482,7 +1482,10 @@ begin
   If PrintQty = True then
   begin
     if StrtoBool(DataForm2.IniFile.ReadString ('Settings', 'Barcodetype', '-1')) = True then
-      RvSystem1.SystemPrinter.Copies := StrtoInt(Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat / 2,ffFixed,17,0))
+    begin
+      RvSystem1.SystemPrinter.Copies := StrtoInt(Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat / 2,ffFixed,17,0));
+//      showmessage(Inttostr(RvSystem1.SystemPrinter.Copies));
+    end
     else
       RvSystem1.SystemPrinter.Copies := StrtoInt(Floattostrf(Dataform2.StockTable.Fieldbyname('Qty').asFloat,ffFixed,17,0));
   end

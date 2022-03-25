@@ -23,19 +23,19 @@ Source: "{app}\ncompPOS.ini"; DestDir: "{userappdata}\NCompPOS"; CopyMode: onlyi
 Source: "{app}\client.txt"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Flags: external skipifsourcedoesntexist uninsneveruninstall
 Source: "{app}\footer.txt"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Flags: external skipifsourcedoesntexist uninsneveruninstall
 Source: "{app}\logo.bmp"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Flags: external skipifsourcedoesntexist uninsneveruninstall
-Source: "e:\Development\NCompPOS\Main Program v T 1.1.5\ncompPOS.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
-Source: "e:\Development\NCompPOS\InstallFiles\client.txt"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Permissions: users-full
-Source: "e:\Development\NCompPOS\InstallFiles\footer.txt"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Permissions: users-full
-Source: "e:\Development\NCompPOS\InstallFiles\ncompPOS.ini"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Permissions: users-full
-Source: "e:\Development\NCompPOS\Main Program v T 1.1.5\libmysql.dll"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
-Source: "e:\Development\NCompPOS\Main Program v T 1.1.5\mysql.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
-Source: "e:\Development\NCompPOS\Main Program v T 1.1.5\mysqldump.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
-Source: "e:\Development\NCompPOS\InstallFiles\Barcode.rav"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
-Source: "e:\Development\NCompPOS\InstallFiles\BarcodeSingle.rav"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
-Source: "e:\Development\NCompPOS\InstallFiles\Blank.bmp"; DestName: "logo.bmp"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Permissions: users-full
-Source: "e:\Development\NCompPOS\SQL Install 1.1.3\SQLInstall.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite; Flags: deleteafterinstall
+Source: "z:\Development\NCompPOS\Main Program v T 1.1.5\ncompPOS.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
+Source: "z:\Development\NCompPOS\InstallFiles\client.txt"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Permissions: users-full
+Source: "z:\Development\NCompPOS\InstallFiles\footer.txt"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Permissions: users-full
+Source: "z:\Development\NCompPOS\InstallFiles\ncompPOS.ini"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Permissions: users-full
+Source: "z:\Development\NCompPOS\Main Program v T 1.1.5\libmysql.dll"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
+Source: "z:\Development\NCompPOS\Main Program v T 1.1.5\mysql.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
+Source: "z:\Development\NCompPOS\Main Program v T 1.1.5\mysqldump.exe"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
+Source: "z:\Development\NCompPOS\InstallFiles\Barcode.rav"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
+Source: "z:\Development\NCompPOS\InstallFiles\BarcodeSingle.rav"; DestDir: "{app}"; CopyMode: onlyifdoesntexist
+Source: "z:\Development\NCompPOS\InstallFiles\Blank.bmp"; DestName: "logo.bmp"; DestDir: "{commonappdata}\NCompPOS"; CopyMode: onlyifdoesntexist; Permissions: users-full
+Source: "z:\Development\NCompPOS\SQL Install 1.1.3\SQLInstall.exe"; DestDir: "{app}"; CopyMode: alwaysoverwrite; Flags: deleteafterinstall
 ; Source: "u:\bron\RiskfinBegrafnis\CDContent\ODBCSetup.exe"; DestDir: "{tmp}"; CopyMode: alwaysoverwrite; Flags: deleteafterinstall
-Source: "e:\Development\NCompPOS\InstallFiles\Purchase Order example import file.csv"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
+Source: "z:\Development\NCompPOS\InstallFiles\Purchase Order example import file.csv"; DestDir: "{app}"; CopyMode: alwaysskipifsameorolder
 
 [Icons]
 Name: "{group}\NCompPOS"; Filename: "{app}\ncompPOS.exe"; WorkingDir: "{app}"

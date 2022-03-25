@@ -435,7 +435,7 @@ object StockTransferForm: TStockTransferForm
       HotTrackFont.Style = []
     end
     object SaveTransferBtn: TJvBitBtn
-      Left = 292
+      Left = 299
       Top = 88
       Width = 75
       Height = 25
@@ -648,8 +648,8 @@ object StockTransferForm: TStockTransferForm
     Top = 40
   end
   object MainMenu1: TMainMenu
-    Left = 536
-    Top = 56
+    Left = 528
+    Top = 40
     object Edit1: TMenuItem
       Caption = 'Options'
       object Viewonlyopentransfers1: TMenuItem
