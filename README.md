@@ -1,4 +1,6 @@
 # NCompPOS
+NCompPOS is in Maintenance mode. New features will be added to https://github.com/NielBuys/NCompPOSv2
+
 NCompPOS Provides Free Point of Sale Software Designed for the Small to Medium Sized Retailer. 
 Handling all your Point of Sale, Invoice and Back Office Needs. NCompPOS is Easy to Use and is Multibranch capable.  
 It can be Installed on More than One Computer, at a Specific Site. 
