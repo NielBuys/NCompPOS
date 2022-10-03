@@ -612,7 +612,6 @@ object StockEditForm: TStockEditForm
           item
             Expanded = False
             FieldName = 'SyncHQ'
-            Width = 64
             Visible = True
           end>
       end

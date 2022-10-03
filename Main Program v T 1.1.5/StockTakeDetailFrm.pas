@@ -62,6 +62,7 @@ implementation
 procedure TStockTakeDetailForm.AcceptandCloseStocktakeClick(Sender: TObject);
 var
       i:Integer;
+      CalculatedItemQty: Extended;
 begin
       if (DataForm2.User_db.FieldByName('Rights').asInteger > 3) then
       begin
@@ -96,11 +97,16 @@ begin
               end
               else
               begin
+                CalculatedItemQty := GetStockItemQtyFromHistory(Dataform2.StockTableTCStockNo.Value,Dataform2.StockTableBranchNo.Value);
+                if CalculatedItemQty <> Dataform2.StockTableQty.Value then
+                begin
+                  SetStockItemQtyFromHistory(CalculatedItemQty);
+                end;
                 Dataform2.Stocktakedetailtable.Edit;
-                Dataform2.StocktakedetailtableBeforeQty.asFloat := Dataform2.StocktakedetailtableLocalQty.asFloat;
+                Dataform2.StocktakedetailtableBeforeQty.asFloat := CalculatedItemQty;
                 Dataform2.Stocktakedetailtable.Post;
                 if Dataform2.StocktakedetailtableLocalQty.asFloat <> Dataform2.StocktakedetailtableQty.asFloat then
-                  AdjustLocalStockQty('Adj',Dataform2.StocktakedetailtableLocalQty.asFloat,Dataform2.StocktakedetailtableQty.asFloat);
+                  AdjustLocalStockQty('Adj',CalculatedItemQty,Dataform2.StocktakedetailtableQty.asFloat);
               end;
               Inc(i);
               ProgressBar.Position := i;
@@ -277,7 +283,7 @@ begin
           begin
             Clear;
             Add('select cast(stocktakedetail.StockTakeDetailID as UNSIGNED) as StockTakeDetailID,stocktakedetail.StockTakeID,stocktakedetail.TCStockNo,stocktakedetail.Qty,');
-            Add('stocktakedetail.BeforeQty,stocktakedetail.BranchNo, stock_db.Description, (stock_db.Qty - IFNULL(OpenLayBuy.OpenLayBQty,0)) as LocalQty from stocktakedetail');
+            Add('stocktakedetail.BeforeQty,stocktakedetail.BranchNo, stock_db.Description, stock_db.Qty as LocalQty from stocktakedetail');
             Add('left join stock_db on stock_db.TCStockNo = stocktakedetail.TCStockNo and stock_db.BranchNo = stocktakedetail.BranchNo');
   //          Add('left join (SELECT TCStockNo, Sum(stock_db.Qty) as StAtBrQty from stock_db where not BranchNo = ' + InttoStr(Dataform2.GlobalTableBranchNo.Value) + ' Group By TCStockNo)');
   //          Add('as StockAtBranch on stock_db.TCStockNo = StockAtBranch.TCStockNo');

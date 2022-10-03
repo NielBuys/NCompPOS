@@ -66,7 +66,7 @@
 						<VersionInfo Name="MajorVer">1</VersionInfo>
 						<VersionInfo Name="MinorVer">1</VersionInfo>
 						<VersionInfo Name="Release">5</VersionInfo>
-						<VersionInfo Name="Build">20</VersionInfo>
+						<VersionInfo Name="Build">21</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -78,7 +78,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">ncomp.co.za</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">NCompPOS</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">1.1.5.20</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">1.1.5.21</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

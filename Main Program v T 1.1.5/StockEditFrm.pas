@@ -125,11 +125,18 @@ begin
 end;
 
 procedure TStockEditForm.FormShow(Sender: TObject);
+var
+  CalculatedItemQty: Extended;
 begin
         DoNotRun := True;
         ShowHQQtyLeft();
         NonStockItemdisable();
-        ShowHistory();
+        CalculatedItemQty := GetStockItemQtyFromHistory(Dataform2.StockTableTCStockNo.Value,Dataform2.StockTableBranchNo.Value);
+        if CalculatedItemQty <> Dataform2.StockTableQty.Value then
+        begin
+          SetStockItemQtyFromHistory(CalculatedItemQty);
+        end;
+        showhistory();
         if Dataform2.StockTableBranchNo.Value <> Dataform2.GlobalTableBranchNo.Value then
           JvEdit1.Enabled := False;
         if DataForm2.User_db.FieldByName('Rights').asInteger > 4 then
@@ -236,37 +243,6 @@ begin
         Label16.Caption := Floattostr(PurchasedQtyAmm - SoldQtyAmm - OpenLayBuyQtyAmm - BranchQtyAmm + AdjustedQtyAmm);
         StartEditQty := strtoFloat(Label16.Caption);
         JvEdit1.Text := Label16.Caption;
-{      end
-      else
-      begin
-        PurchasedQtyAmm := 0;
-        Label25.Caption := '';
-        Label24.Caption := '';
-        SoldQtyAmm := StockForm.PerBranchSoldQTY(Dataform2.StockTableTCStockNo.Value,Dataform2.GlobalTableBranchNo.Value);
-  //      SoldHqQty(Dataform2.StockTableTCStockNo.Value);
-        Label22.Caption := Floattostr(SoldQtyAmm);
-        BranchQtyAmm := 0;
-        Label18.Caption := '';
-        Label19.Caption := '';
-        OpenLayBuyQtyAmm := InvoiceForm.OpenLayBuyQty(Dataform2.StockTableTCStockNo.Value,Dataform2.GlobalTableBranchNo.Value);
-        Label20.Caption := Floattostr(OpenLayBuyQtyAmm);
-        Label15.Caption := '';
-        AdjustedQtyAmm := StockForm.GlobalAdjustments(Dataform2.StockTableTCStockNo.Value,Dataform2.GlobaltableBranchNo.Value);
-        if AdjustedQtyAmm < 0 then
-        begin
-          Label29.Caption := '- Adj';
-          Label30.Caption := FloattoStr(AdjustedQtyAmm * -1);
-        end
-        else
-        begin
-          Label29.Caption := '+ Adj';
-          Label30.Caption := FloattoStr(AdjustedQtyAmm);
-        end;
-        Label16.Caption := FloattoStr(AdjustedQtyAmm - SoldQtyAmm - OpenLayBuyQtyAmm);
-//        showmessage(Label16.Caption);
-        StartEditQty := strtoFloat(Label16.Caption);
-        JvEdit1.Text := Label16.Caption;
-      end; }
 end;
 
 procedure TStockEditForm.NonStockItemdisable();
@@ -293,64 +269,7 @@ end;
 
 procedure TStockEditForm.ShowHistory();
 begin
-      Dataform2.StockHistoryTable.Close;
-      with Dataform2.StockHistoryTable.SQL do
-      begin
-        Clear;
-        Add('select * from');
-        Add('(select 1 as orderint, TCStockNoLink as TCStockNo,BranchNo,st_adj_date as ItemDate,st_adj_value as ItemValue,0 as ItemRef,');
-        Add('Case st_adj_type when "Adj" then "Adjustment" when "Sync" then "Received from HQ" end as ItemType, cast(SyncHQ as unsigned) as SyncHQ from stockadjust_db');
-        Add('where TCStockNoLink = "' + Dataform2.StockTableTCStockNo.Value + '"');
-        Add('and BranchNo = ' + InttoStr(Dataform2.StockTableBranchNo.Value));
-        Add('union all');
-        Add('select 0 as orderint, invoiceitem_db.TCStockNo,invoiceitem_db.BranchNo,invoice_db.InvDate as ItemDate,invoiceitem_db.Qty as ItemValue,invoice_db.InvNo as ItemRef,"Purchase Inv" as ItemType, cast(invoice_db.SyncHQ as unsigned) as SyncHQ from invoiceitem_db');
-        Add('inner join invoice_db on (invoice_db.Nr = invoiceitem_db.LinkID) and (invoice_db.BranchNo = invoiceitem_db.BranchNo)');
-        Add('where invoiceitem_db.TCStockNo = "' + Dataform2.StockTableTCStockNo.Value + '" and invoice_db.InvClose = "PurcC"');
-        Add('and invoiceitem_db.BranchNo = ' + InttoStr(Dataform2.StockTableBranchNo.Value));
-        Add('union all');
-        Add('select 2 as orderint, invoiceitem_db.TCStockNo,invoiceitem_db.BranchNo,invoice_db.InvDate as ItemDate,invoiceitem_db.Qty as ItemValue,invoice_db.InvNo as ItemRef,"Invoice" as ItemType, cast(invoice_db.SyncHQ as unsigned) as SyncHQ from invoiceitem_db');
-        Add('inner join invoice_db on (invoice_db.Nr = invoiceitem_db.LinkID) and (invoice_db.BranchNo = invoiceitem_db.BranchNo)');
-        Add('where invoiceitem_db.TCStockNo = "' + Dataform2.StockTableTCStockNo.Value + '" and ((invoice_db.InvClose = "Close") or (invoice_db.InvClose = "LaybC"))');
-        Add('and invoiceitem_db.BranchNo = ' + InttoStr(Dataform2.StockTableBranchNo.Value));
-        Add('union all');
-        Add('select 2 as orderint, invoiceitem_db.TCStockNo,invoiceitem_db.BranchNo,invoice_db.InvDate as ItemDate,invoiceitem_db.Qty as ItemValue,invoice_db.InvNo as ItemRef,"Open Lay Buy" as ItemType, cast(invoice_db.SyncHQ as unsigned) as SyncHQ from invoiceitem_db');
-        Add('inner join invoice_db on (invoice_db.Nr = invoiceitem_db.LinkID) and (invoice_db.BranchNo = invoiceitem_db.BranchNo)');
-        Add('where invoiceitem_db.TCStockNo = "' + Dataform2.StockTableTCStockNo.Value + '" and (invoice_db.InvClose = "LaybO")');
-        Add('and invoiceitem_db.BranchNo = ' + InttoStr(Dataform2.StockTableBranchNo.Value));
-        Add('union all');
-        Add('SELECT 2 as orderint, stocktrnsferitem_db.TCStockNo, stocktrnsfer_db.ToBranch as BranchNo, stocktrnsfer_db.Date as ItemDate, stocktrnsferitem_db.Qty as ItemValue,');
-        Add('stocktrnsfer_db.Nr as ItemRef,"Branch Transfer" as ItemType, cast(Transfered as unsigned) as SyncHQ FROM stocktrnsferitem_db');
-        Add('inner join stocktrnsfer_db on (stocktrnsferitem_db.LinkID = stocktrnsfer_db.Nr)');
-        Add('where stocktrnsfer_db.Closed = "True"');
-        Add('and stocktrnsferitem_db.TCStockNo = "' + Dataform2.StockTableTCStockNo.Value + '"');
-        Add('and stocktrnsfer_db.FromBranch = ' + InttoStr(Dataform2.StockTableBranchNo.Value));
-        Add(') a');
-        Add('order by ItemDate,OrderInt');
-
-{        Add('select * from');
-        Add('(select TCStockNoLink as TCStockNo,BranchNo,st_adj_date as ItemDate,st_adj_value as ItemValue,0 as ItemRef,Case st_adj_type when "Adj" then "Adjustment" when "Sync" then "Received from HQ" end as ItemType, SyncHQ from stockadjust_db');
-        Add('where TCStockNoLink = "' + Dataform2.StockTableTCStockNo.Value + '"');
-        Add('union all');
-        Add('select invoiceitem_db.TCStockNo,invoiceitem_db.BranchNo,invoice_db.InvDate as ItemDate,invoiceitem_db.Qty as ItemValue,invoice_db.InvNo as ItemRef,"Purchase Inv" as ItemType, invoice_db.SyncHQ from invoiceitem_db');
-        Add('inner join invoice_db on (invoice_db.Nr = invoiceitem_db.LinkID) and (invoice_db.BranchNo = invoiceitem_db.BranchNo)');
-        Add('where invoiceitem_db.TCStockNo = "' + Dataform2.StockTableTCStockNo.Value + '" and invoice_db.InvClose = "PurcC"');
-        Add('union all');
-        Add('select invoiceitem_db.TCStockNo,invoiceitem_db.BranchNo,invoice_db.InvDate as ItemDate,invoiceitem_db.Qty as ItemValue,invoice_db.InvNo as ItemRef,"Invoice" as ItemType, invoice_db.SyncHQ from invoiceitem_db');
-        Add('inner join invoice_db on (invoice_db.Nr = invoiceitem_db.LinkID) and (invoice_db.BranchNo = invoiceitem_db.BranchNo)');
-        Add('where invoiceitem_db.TCStockNo = "' + Dataform2.StockTableTCStockNo.Value + '" and ((invoice_db.InvClose = "Close") or (invoice_db.InvClose = "LaybC"))');
-        Add('union all');
-        Add('select invoiceitem_db.TCStockNo,invoiceitem_db.BranchNo,invoice_db.InvDate as ItemDate,invoiceitem_db.Qty as ItemValue,invoice_db.InvNo as ItemRef,"Open Lay Buy" as ItemType, invoice_db.SyncHQ from invoiceitem_db');
-        Add('inner join invoice_db on (invoice_db.Nr = invoiceitem_db.LinkID) and (invoice_db.BranchNo = invoiceitem_db.BranchNo)');
-        Add('where invoiceitem_db.TCStockNo = "' + Dataform2.StockTableTCStockNo.Value + '" and (invoice_db.InvClose = "LaybO")');
-        Add('union all');
-        Add('SELECT stocktrnsferitem_db.TCStockNo, stocktrnsfer_db.ToBranch as BranchNo, stocktrnsfer_db.Date as ItemDate, stocktrnsferitem_db.Qty as ItemValue,stocktrnsfer_db.Nr as ItemRef,"Branch Transfer" as ItemType, Transfered as SyncHQ FROM stocktrnsferitem_db');
-        Add('left join stocktrnsfer_db on (stocktrnsferitem_db.LinkID = stocktrnsfer_db.Nr)');
-        Add('where stocktrnsfer_db.Closed = "True"');
-        Add('and stocktrnsferitem_db.TCStockNo = "' + Dataform2.StockTableTCStockNo.Value + '"');
-        Add(') a');
-        Add('order by ItemDate');    }
-      end;
-      Dataform2.StockHistoryTable.Open;
+      OpenStockItemHistory(Dataform2.StockTableTCStockNo.Value,Dataform2.StockTableBranchNo.Value);
 end;
 
 procedure TStockEditForm.SetReadOnly();

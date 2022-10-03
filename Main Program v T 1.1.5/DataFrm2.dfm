@@ -2337,19 +2337,26 @@ object DataForm2: TDataForm2
     Connection = ADConnection
     SQL.Strings = (
       
-        'select cast(stocktakedetail.StockTakeDetailID as UNSIGNED) as St' +
-        'ockTakeDetailID,stocktakedetail.StockTakeID,stocktakedetail.TCSt' +
-        'ockNo,stocktakedetail.Qty,stocktakedetail.BeforeQty,stocktakedet' +
-        'ail.BranchNo, stock_db.Description, (stock_db.Qty - StockAtBranc' +
-        'h.StAtBrQty) as LocalQty from stocktakedetail'
+        ' select cast(stocktakedetail.StockTakeDetailID as UNSIGNED) as S' +
+        'tockTakeDetailID,stocktakedetail.StockTakeID,stocktakedetail.TCS' +
+        'tockNo,stocktakedetail.Qty,'
       
-        'left join stock_db on stock_db.TCStockNo = stocktakedetail.TCSto' +
-        'ckNo and stock_db.BranchNo is null'
+        ' stocktakedetail.BeforeQty,stocktakedetail.BranchNo, stock_db.De' +
+        'scription, stock_db.Qty as LocalQty from stocktakedetail'#10' left j' +
+        'oin stock_db on stock_db.TCStockNo = stocktakedetail.TCStockNo a' +
+        'nd stock_db.BranchNo = stocktakedetail.BranchNo'
       
-        'left join (SELECT TCStockNo, Sum(stock_db.Qty) as StAtBrQty from' +
-        ' stock_db where not BranchNo is null Group By TCStockNo)'
-      'as StockAtBranch on stock_db.TCStockNo = StockAtBranch.TCStockNo'
-      'order by StockTakedetailID')
+        '  left join (SELECT invoiceitem_db.TCStockNo, SUM(invoiceitem_db' +
+        '.Qty) as OpenLayBQty from invoiceitem_db inner join invoice_db o' +
+        'n (invoice_db.Nr = invoiceitem_db.LinkID) and (invoice_db.Branch' +
+        'No = invoiceitem_db.BranchNo)'
+      
+        '  where (invoice_db.InvClose = "LaybO") and (invoiceitem_db.Comm' +
+        'entSwi = "False") '
+      
+        'group by invoiceitem_db.TCStockNo) as OpenLayBuy on stock_db.TCS' +
+        'tockNo = OpenLayBuy.TCStockNo'
+      ' ')
     Left = 120
     Top = 504
     object StockTakeDetailTableStockTakeDetailID: TLargeintField
@@ -2375,19 +2382,17 @@ object DataForm2: TDataForm2
       FieldName = 'BeforeQty'
       Origin = 'BeforeQty'
     end
+    object StockTakeDetailTableLocalQty: TBCDField
+      FieldName = 'LocalQty'
+      Origin = 'Qty'
+      Precision = 8
+      Size = 2
+    end
     object StockTakeDetailTableDescription: TStringField
       FieldName = 'Description'
       Origin = 'Description'
       ReadOnly = True
       Size = 45
-    end
-    object StockTakeDetailTableLocalQty: TFMTBCDField
-      DisplayLabel = 'Local Qty'
-      FieldName = 'LocalQty'
-      Origin = 'LocalQty'
-      ReadOnly = True
-      Precision = 31
-      Size = 2
     end
     object StockTakeDetailTableBranchNo: TIntegerField
       FieldName = 'BranchNo'

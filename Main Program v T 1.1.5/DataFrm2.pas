@@ -413,7 +413,6 @@ type
     StockTakeDetailTableQty: TFloatField;
     StockTakeDetailTableBeforeQty: TFloatField;
     StockTakeDetailTableDescription: TStringField;
-    StockTakeDetailTableLocalQty: TFMTBCDField;
     GlobalTableSQLCount: TLongWordField;
     StockAdjustTableBranchNo: TIntegerField;
     AccountsTableBranchNo: TLongWordField;
@@ -455,6 +454,7 @@ type
     StockHistoryTableItemRef: TLargeintField;
     StockHistoryTableItemType: TStringField;
     StockHistoryTableSyncHQ: TLargeintField;
+    StockTakeDetailTableLocalQty: TBCDField;
     procedure UserSourceStateChange(Sender: TObject);
     procedure StockSourceStateChange(Sender: TObject);
     procedure InvoiceSourceStateChange(Sender: TObject);

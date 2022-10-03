@@ -1370,7 +1370,7 @@ begin
           Clear;
           Add('SELECT invoiceitem_db.TCStockNo, Sum(invoiceitem_db.Qty) as TotalQTy');
           Add('FROM invoiceitem_db inner join invoice_db on (invoice_db.Nr = invoiceitem_db.LinkID) and (invoice_db.BranchNo = invoiceitem_db.BranchNo)');
-          Add('where ((invoice_db.InvClose = "Close") or (invoice_db.InvClose = "LaybC") or (invoice_db.InvClose = "LaybO"))');
+          Add('where ((invoice_db.InvClose = "Close") or (invoice_db.InvClose = "LaybC"))');
           Add('and invoiceitem_db.TCStockNo = "' + TCStockNoStr + '"');
           Add('and invoice_db.BranchNo = ' + InttoStr(BranchNoInt));
           Add('Group By invoiceitem_db.TCStockNo');
