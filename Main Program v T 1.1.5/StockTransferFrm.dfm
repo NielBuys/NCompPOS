@@ -63,7 +63,7 @@ object StockTransferForm: TStockTransferForm
   object JvDBGrid1: TJvDBGrid
     Left = 0
     Top = 0
-    Width = 201
+    Width = 243
     Height = 121
     DataSource = DataForm2.StockTrnsferSource
     TabOrder = 6
@@ -93,21 +93,27 @@ object StockTransferForm: TStockTransferForm
       item
         Expanded = False
         FieldName = 'Date'
-        Width = 71
+        Width = 57
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'Sync'
         ReadOnly = True
-        Width = 71
+        Width = 57
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'Closed'
         ReadOnly = True
-        Width = 40
+        Width = 57
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PurchaseNr'
+        Width = 52
         Visible = True
       end>
   end
@@ -364,9 +370,9 @@ object StockTransferForm: TStockTransferForm
     HotTrackFont.Style = []
   end
   object GroupBox3: TGroupBox
-    Left = 208
+    Left = 249
     Top = 0
-    Width = 377
+    Width = 385
     Height = 121
     Caption = 'Create a Transfer'
     TabOrder = 0
@@ -504,7 +510,7 @@ object StockTransferForm: TStockTransferForm
     HotTrackFont.Style = []
   end
   object JvBitBtn11: TJvBitBtn
-    Left = 591
+    Left = 640
     Top = 8
     Width = 129
     Height = 25
@@ -520,7 +526,7 @@ object StockTransferForm: TStockTransferForm
     HotTrackFont.Style = []
   end
   object JvBitBtn12: TJvBitBtn
-    Left = 591
+    Left = 640
     Top = 88
     Width = 129
     Height = 25

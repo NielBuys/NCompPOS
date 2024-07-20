@@ -480,22 +480,45 @@ begin
 end;
 
 procedure TStockTransferForm.CloseTransfer();
+var
+    Passed: Boolean;
 begin
-      DataForm2.StockTable.DisableControls;
+      Passed := true;
       DataForm2.StocktrnsferItemTable.DisableControls;
       Dataform2.ADConnection.StartTransaction;
       try
         DataForm2.StocktrnsferItemTable.First;
         while not DataForm2.StocktrnsferItemTable.EOF do
         begin
-          if not Dataform2.StockTable.Locate('TCStockNo', DataForm2.StocktrnsferItemTableTCStockNo.Value,[]) then
+//          if not Dataform2.StockTable.Locate('TCStockNo', DataForm2.StocktrnsferItemTableTCStockNo.Value,[]) then
+//          begin
+//            if not Dataform2.StockTable.Locate('Nr', DataForm2.StocktrnsferItemTableStockNo.Value,[]) then
+//            begin
+//              showmessage('Run exits with error!');
+//              break;
+//            end;
+//          end;
+          if not DataForm2.StocktrnsferItemTableStockUpdated.isnull then
           begin
-            if not Dataform2.StockTable.Locate('Nr', DataForm2.StocktrnsferItemTableStockNo.Value,[]) then
-            begin
-              showmessage('Run exits with error!');
-              break;
-            end;
+            DataForm2.StocktrnsferItemTable.Next;
+            Continue;
           end;
+
+          DataForm2.Query1.Close;
+          with Dataform2.Query1.SQL do begin
+            Clear;
+            Add('select * from stock_db');
+            Add('where BranchNo = ' + InttoStr(Dataform2.GlobalTableBranchNo.Value));
+            Add('and TCStockNo = "' + DataForm2.StocktrnsferItemTableTCStockNo.Value + '"');
+          end;
+          DataForm2.Query1.Open;
+          If DataForm2.Query1.RecordCount < 1 then
+          begin
+              showmessage('HQ Stock Item not found - Run stopped! ' + DataForm2.StocktrnsferItemTableTCStockNo.Value);
+              Passed := false;
+              break;
+          end;
+
           DataForm2.Query2.Close;
           with Dataform2.Query2.SQL do begin
             Clear;
@@ -523,8 +546,8 @@ begin
             with DataForm2.Query3.SQL do begin
                 Clear;
                 Add('insert into stock_db(Description,DateCreated,DateChanged,CostPrice,SalesPrice,Barcode,Qty,AlertQty,NonStockItem,StartingQty,TCStockNo,BranchNo,SyncHQ,BranchMainStockNo,st_created_by,st_changed_by,st_nontaxitem,ModelNo) values ');
-                Add('(''' + FixSQLString(Dataform2.StockTableDescription.Value) + ''',' + InttoStr(datetoIntDate(Date)) + ',' + InttoStr(DatetoIntDate(Date)) + ',' + Floattostr(DataForm2.StockTableCostPrice.Value) + ',' + FloattoStr(DataForm2.StockTableSalesPrice.Value) + ',''' + DataForm2.StockTableBarcode.Value + ''',' + FloattoStr(Dataform2.StocktrnsferItemTableQty.Value) + ',' + Floattostr(DataForm2.StockTableAlertQty.Value) + ',''' + Dataform2.StockTableNonStockItem.Value + ''',');
-                Add(Floattostr(DataForm2.StockTableStartingQty.Value) + ',''' + DataForm2.StockTableTCStockNo.Value + ''',' + InttoStr(DataForm2.BranchTableNr.Value) + ',' + InttoStr(DataForm2.StockTableSyncHQ.Value) + ',' + InttoStr(DataForm2.StockTableNr.Value) + ',''' + Dataform2.User_dbUserName.Value + ''',''' + Dataform2.User_dbUserName.Value + ''',''' + Dataform2.StockTablest_nontaxitem.Value + ''',''' + Dataform2.StockTableModelNo.Value + ''')');
+                Add('(''' + FixSQLString(DataForm2.Query1.FieldbyName('Description').asString) + ''',' + InttoStr(datetoIntDate(Date)) + ',' + InttoStr(DatetoIntDate(Date)) + ',' + Floattostr(DataForm2.Query1.FieldbyName('CostPrice').asFloat) + ',' + FloattoStr(DataForm2.Query1.FieldbyName('SalesPrice').asFloat) + ',''' + DataForm2.Query1.FieldbyName('Barcode').asString + ''',' + FloattoStr(Dataform2.StocktrnsferItemTableQty.Value) + ',' + Floattostr(DataForm2.Query1.FieldbyName('AlertQty').asFloat) + ',''' + DataForm2.Query1.FieldbyName('NonStockItem').asString + ''',');
+                Add(Floattostr(DataForm2.Query1.FieldbyName('StartingQty').asFloat) + ',''' + DataForm2.Query1.FieldbyName('TCStockNo').asString + ''',' + InttoStr(DataForm2.BranchTableNr.Value) + ',' + InttoStr(DataForm2.Query1.FieldbyName('SyncHQ').asInteger) + ',' + InttoStr(DataForm2.Query1.FieldbyName('Nr').asInteger) + ',''' + Dataform2.User_dbUserName.Value + ''',''' + Dataform2.User_dbUserName.Value + ''',''' + DataForm2.Query1.FieldbyName('st_nontaxitem').asString + ''',''' + DataForm2.Query1.FieldbyName('ModelNo').asString + ''')');
             end;
             DataForm2.Query3.ExecSQL;
           end;
@@ -537,12 +560,20 @@ begin
           end;
           DataForm2.Query3.ExecSQL;
 
+          if (DataForm2.StocktrnsferItemTablestrState <> 'Edit') and (DataForm2.StocktrnsferItemTablestrState <> 'Insert') then
+            Dataform2.StocktrnsferItemTable.Edit;
+          DataForm2.StocktrnsferItemTableStockUpdated.Value := DatetoIntDate(date);
+          Dataform2.StocktrnsferItemTable.Post;
+
           DataForm2.StocktrnsferItemTable.Next;
         end;
-        if (DataForm2.StockTrnsferTablestrState <> 'Edit') and (DataForm2.StockTrnsferTablestrState <> 'Insert') then
-          Dataform2.StockTrnsferTable.Edit;
-        Dataform2.StockTrnsferTableClosed.Value := 'True';
-        Dataform2.StockTrnsferTable.Post;
+        if Passed = True then
+        begin
+          if (DataForm2.StockTrnsferTablestrState <> 'Edit') and (DataForm2.StockTrnsferTablestrState <> 'Insert') then
+            Dataform2.StockTrnsferTable.Edit;
+          Dataform2.StockTrnsferTableClosed.Value := 'True';
+          Dataform2.StockTrnsferTable.Post;
+        end;
         Dataform2.ADConnection.Commit;
       finally
         if DataForm2.ADConnection.InTransaction then
@@ -553,6 +584,7 @@ begin
       end;
       DataForm2.StocktrnsferItemTable.EnableControls;
       Dataform2.StockTable.EnableControls;
+      DataForm2.Query1.Close;
       DataForm2.Query2.Close;
 end;
 

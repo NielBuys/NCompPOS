@@ -393,62 +393,68 @@ object PurchaseForm: TPurchaseForm
             Expanded = False
             FieldName = 'BranchNo'
             Title.Caption = 'Branch No'
-            Width = 57
+            Width = 54
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'InvNo'
             Title.Caption = 'Inv No'
-            Width = 63
+            Width = 60
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'ClientName'
             Title.Caption = 'Name'
-            Width = 182
+            Width = 174
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'InvDate'
             Title.Caption = 'Inv Date'
-            Width = 71
+            Width = 68
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'InvBy'
             Title.Caption = 'Inv By'
-            Width = 106
+            Width = 101
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'InvTotal'
             Title.Caption = 'Inv Total'
-            Width = 69
+            Width = 66
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'InvClose'
             Title.Caption = 'Inv Close'
-            Width = 53
+            Width = 51
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'ShiftSet'
             Title.Caption = 'Send to TC'
-            Width = 63
+            Width = 60
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'SyncHQ'
-            Width = 68
+            Width = 65
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Nr'
+            Width = 32
             Visible = True
           end>
       end

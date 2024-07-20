@@ -110,10 +110,10 @@ object DataForm2: TDataForm2
   end
   object ADConnection: TADConnection
     Params.Strings = (
-      'Database=ncomp'
+      'Database=ncomphq'
       'User_Name=root'
       'Password=djb115'
-      'Host=192.168.9.71'
+      'Host=localhost'
       'DriverID=MySQL')
     FetchOptions.AssignedValues = [evRecordCountMode]
     FetchOptions.RecordCountMode = cmTotal
@@ -162,6 +162,7 @@ object DataForm2: TDataForm2
     Left = 496
     Top = 56
     object InvoiceTableNr: TADAutoIncField
+      DisplayLabel = 'ID'
       FieldName = 'Nr'
       Origin = 'Nr'
       ProviderFlags = [pfInWhere, pfInKey]
@@ -974,6 +975,11 @@ object DataForm2: TDataForm2
       Origin = 'FromBranch'
       Required = True
     end
+    object StockTrnsferTablePurchaseNr: TIntegerField
+      DisplayLabel = 'Purchase ID'
+      FieldName = 'PurchaseNr'
+      Origin = 'PurchaseNr'
+    end
   end
   object TransQuery: TADQuery
     Connection = ADConnection
@@ -1557,6 +1563,14 @@ object DataForm2: TDataForm2
       FieldName = 'Transfered'
       Origin = 'Transfered'
       DisplayFormat = '0000/00/00'
+    end
+    object StocktrnsferItemTableBranchNo: TIntegerField
+      FieldName = 'BranchNo'
+      Origin = 'BranchNo'
+    end
+    object StocktrnsferItemTableStockUpdated: TIntegerField
+      FieldName = 'StockUpdated'
+      Origin = 'StockUpdated'
     end
   end
   object AccountsTable: TADQuery

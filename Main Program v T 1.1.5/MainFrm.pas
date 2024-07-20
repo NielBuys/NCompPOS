@@ -312,6 +312,41 @@ begin
             Dataform2.Query4.ExecSQL;
           end;
           Dataform2.Query4.Close;
+
+   //******************//
+
+   //********* Add StockUpdated and PurchaseID to transfer tables*********//
+          Dataform2.Query4.Close;
+          with Dataform2.Query4.SQL do begin
+            Clear;
+            Add('select * from information_schema.COLUMNS');
+            Add('where TABLE_SCHEMA='''+ DataBaseStr +'''');
+            Add('and TABLE_NAME=''stocktrnsfer_db''');
+            Add('and COLUMN_NAME=''PurchaseNr''');
+          end;
+          Dataform2.Query4.Open;
+
+          If Dataform2.Query4.RecordCount = 0 then
+          begin
+            Dataform2.Query4.Close;
+            with Dataform2.Query4.SQL do
+            begin
+              Clear;
+              Add('ALTER TABLE `' + DataBaseStr + '`.`stocktrnsfer_db`');
+              Add('ADD COLUMN `PurchaseNr` INT(10) NULL AFTER `FromBranch`;');
+            end;
+            Dataform2.Query4.ExecSQL;
+            Dataform2.Query4.Close;
+            with Dataform2.Query4.SQL do
+            begin
+              Clear;
+              Add('ALTER TABLE `' + DataBaseStr + '`.`stocktrnsferitem_db`');
+              Add('ADD COLUMN `StockUpdated` INT(10) NULL AFTER `BranchNo`;');
+            end;
+            Dataform2.Query4.ExecSQL;
+          end;
+          Dataform2.Query4.Close;
+
    //******************//
 
           Dataform2.GlobalTable.Open;

@@ -778,13 +778,21 @@ begin
         begin
           Clear;
           Add('select * from stocktrnsfer_db');
+          Add('where PurchaseNr = ' + InttoStr(DataForm2.InvoiceTable.FieldByName('Nr').asInteger));
         end;
         Dataform2.StockTrnsferTable.Open;
+        If Dataform2.StockTrnsferTable.RecordCount > 0 then
+        begin
+          showmessage('Transfer already created for this Purchase!');
+          Dataform2.StockTrnsferTable.Close;
+          exit;
+        end;
         DataForm2.StockTrnsferTable.Insert;
         DataForm2.StockTrnsferTableToBranch.Value := DataForm2.BranchTableNr.Value;
         DataForm2.StockTrnsferTableDate.Value := DatetoIntDate(date);
         Dataform2.StockTrnsferTableClosed.Value := 'False';
         Dataform2.StockTrnsferTableFromBranch.Value := Dataform2.GlobalTableBranchNo.Value;
+        Dataform2.StockTrnsferTablePurchaseNr.Value := DataForm2.InvoiceTable.FieldByName('Nr').asInteger;
         Dataform2.StockTrnsferTable.Post;
         StockTransferForm.StocktrnsferItemOpen;
         Dataform2.PurchaseItemTable.DisableControls;

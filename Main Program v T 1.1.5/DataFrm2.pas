@@ -455,6 +455,9 @@ type
     StockHistoryTableItemType: TStringField;
     StockHistoryTableSyncHQ: TLargeintField;
     StockTakeDetailTableLocalQty: TBCDField;
+    StockTrnsferTablePurchaseNr: TIntegerField;
+    StocktrnsferItemTableBranchNo: TIntegerField;
+    StocktrnsferItemTableStockUpdated: TIntegerField;
     procedure UserSourceStateChange(Sender: TObject);
     procedure StockSourceStateChange(Sender: TObject);
     procedure InvoiceSourceStateChange(Sender: TObject);
