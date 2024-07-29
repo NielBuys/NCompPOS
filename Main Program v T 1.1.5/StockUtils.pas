@@ -66,7 +66,7 @@ begin
       begin
         Clear;
         Add('select * from');
-        Add('(select 1 as orderint, TCStockNoLink as TCStockNo,BranchNo,st_adj_date as ItemDate,st_adj_value as ItemValue,0 as ItemRef,');
+        Add('(select 1 as orderint, TCStockNoLink as TCStockNo,BranchNo,st_adj_date as ItemDate,st_adj_value as ItemValue,CAST(st_adj_fromref AS UNSIGNED) as ItemRef,');
         Add('Case st_adj_type when "Adj" then "Adjustment" when "Sync" then "Received from HQ" end as ItemType, cast(SyncHQ as unsigned) as SyncHQ from stockadjust_db');
         Add('where TCStockNoLink = "' + TCStockNoStr + '"');
         Add('and BranchNo = ' + InttoStr(BranchNo));

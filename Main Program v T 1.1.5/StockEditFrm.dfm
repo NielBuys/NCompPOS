@@ -559,10 +559,6 @@ object StockEditForm: TStockEditForm
     object TabSheet2: TTabSheet
       Caption = 'Item History'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object JvDBGrid1: TJvDBGrid
         Left = 0
         Top = 0
@@ -612,6 +608,7 @@ object StockEditForm: TStockEditForm
           item
             Expanded = False
             FieldName = 'SyncHQ'
+            Width = 64
             Visible = True
           end>
       end

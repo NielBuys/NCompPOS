@@ -1680,8 +1680,9 @@ begin
                           with Dataform2.Query1.SQL do
                           begin
                             Clear;
-                            Add('insert into stockadjust_db (TCStockNoLink,st_adj_by,st_adj_date,st_adj_value,st_adj_type,BranchNo) Values');
-                            Add('("' + Dataform2.StockTableTCStockNo.Value + '","' + Dataform2.User_dbUserName.Value + '",' + InttoStr(DatetoIntDate(date)) + ',' + floattostr(Dataform2.StockTableQty.Value) + ',"Sync",' + InttoStr(Dataform2.GlobalTableBranchNo.Value) + ')');
+                            Add('insert into stockadjust_db (TCStockNoLink,st_adj_by,st_adj_date,st_adj_value,st_adj_type,BranchNo,st_adj_fromref) Values');
+                            Add('("' + Dataform2.StockTableTCStockNo.Value + '","' + Dataform2.User_dbUserName.Value + '",' + InttoStr(DatetoIntDate(date)) + ',' +
+                                floattostr(Dataform2.StockTableQty.Value) + ',"Sync",' + InttoStr(Dataform2.GlobalTableBranchNo.Value) + ',"' + InttoStr(DataForm.StocktrnsferItemTable.Fieldbyname('Nr').asInteger) + '")');
                           end;
                           DataForm2.Query1.ExecSQL;
                         end
