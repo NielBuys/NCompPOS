@@ -1296,8 +1296,8 @@ begin
     Dataform2.Query4.Open;
     if Dataform2.Query4.RecordCount <> 0 then
     begin
-//      showmessage(FloattoStr((AmmTendered + AmmTendered2)) + '---' + FloattoStr(TotalStr));
-      If ((AmmTendered + AmmTendered2) >= TotalStr) or (DataForm2.InvoiceTableInvoiceType.Value = 'LayBuy') or
+ //     showmessage(FloattoStr((AmmTendered + AmmTendered2)) + '---' + FloattoStr(round(TotalStr * 100) / 100));
+      If ((AmmTendered + AmmTendered2) >= round(TotalStr * 100) / 100) or (DataForm2.InvoiceTableInvoiceType.Value = 'LayBuy') or
       ((Dataform2.InvoiceTableGLDebNo.Value <> Dataform2.GlobalTableTCCashDebNo.Value) and (Dataform2.AccountsTableAllowCredit.Value = 'True')) then
       begin
         WriteCloseInfo;
@@ -1995,7 +1995,7 @@ procedure TInvoiceForm.PrintA4(Report:TBaseReport);
 var
     count: Integer;
     strcomment: String;
-    SubTotal: Currency;
+    SubTotal, ItemTotal, DiscountTotal: Currency;
 begin
       with report do
       begin
@@ -2033,15 +2033,17 @@ begin
                 PrintTab(Floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat,ffFixed,17,2));
                 PrintTab(floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Price').asCurrency,ffFixed,17,2));
                 PrintTab(floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Discount').asFloat,ffFixed,17,2));
+                ItemTotal := Dataform2.InvoiceItemTable.Fieldbyname('Price').asCurrency * Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat;
+                DiscountTotal := ItemTotal * (Dataform2.InvoiceItemTable.Fieldbyname('Discount').asFloat / 100);
                 if Dataform2.GlobalTableVat.Value <> 0 then
                 begin
-                  PrintTab(Floattostrf((Dataform2.InvoiceItemTable.Fieldbyname('Price').asCurrency * Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat) * 100 / (Dataform2.GlobalTableVat.Value + 100),ffFixed,17,2));
-                  PrintTab(Floattostrf((Dataform2.InvoiceItemTable.Fieldbyname('Price').asCurrency * Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat) * Dataform2.GlobalTableVat.Value / (Dataform2.GlobalTableVat.Value + 100),ffFixed,17,2));
-                  PrintTab(Floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Price').asCurrency * Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat,ffFixed,17,2));
+                  PrintTab(Floattostrf((ItemTotal - DiscountTotal) * 100 / (Dataform2.GlobalTableVat.Value + 100),ffFixed,17,2));
+                  PrintTab(Floattostrf((ItemTotal - DiscountTotal) * Dataform2.GlobalTableVat.Value / (Dataform2.GlobalTableVat.Value + 100),ffFixed,17,2));
+                  PrintTab(Floattostrf(ItemTotal - DiscountTotal,ffFixed,17,2));
                 end
                 else
                 begin
-                  PrintTab(Floattostrf(Dataform2.InvoiceItemTable.Fieldbyname('Price').asCurrency * Dataform2.InvoiceItemTable.Fieldbyname('Qty').asFloat,ffFixed,17,2));
+                  PrintTab(Floattostrf(ItemTotal - DiscountTotal,ffFixed,17,2));
                 end;
                 PrintTab(Dataform2.InvoiceItemTableComment.Value);
               end

@@ -1229,9 +1229,12 @@ begin
       with Dataform2.Query4.SQL do
       begin
         Clear;
-        Add('select Nr, BranchNo,InvClose from invoice_db');
+        Add('select invoice_db.Nr, invoice_db.BranchNo, InvClose from invoice_db');
+        Add('left join (select LinkID, BranchNo, Count(Nr) as Qty from invoiceitem_db');
+	      Add('group by LinkID, BranchNo ) as LineCount on LineCount.LinkID = invoice_db.Nr and LineCount.BranchNo = invoice_db.BranchNo');
         Add('where InvClose = "Open"');
         Add('and InvBy = "' + Dataform2.User_dbUserName.Value + '"');
+        Add('and LineCount.Qty is null');
       end;
       Dataform2.Query4.Open;
       Dataform2.Query4.DisableControls;
