@@ -1,6 +1,6 @@
 [Login]
 Username=root
-Password=urrw
+Password=
 Ip=localhost
 Port=3306
 DataBase=ncomp
@@ -8,7 +8,7 @@ ULogin=root
 [BranchSetup]
 HQAddress=25.53.42.54
 HQUserName=root
-HQPassword=urrw
+HQPassword=
 HQPort=3306
 HQDataBase=ncomp
 [Settings]
