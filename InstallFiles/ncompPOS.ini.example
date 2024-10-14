@@ -1,0 +1,26 @@
+[Login]
+DataBase=ncomp
+[ComportSection]
+Enabled=0
+Comport=Driver A4
+Printer=None
+[Invoice]
+Agent=0
+InvNo=1
+[EMailSetup]
+smtpserver=
+fromemail=
+[TCSetup]
+TCCashDebNo=000002
+TCTaxId=97
+TCBankNo=102
+TCDateFormat=dd/MM/yyyy
+TCInputTaxId=98
+TCSalesAccountID=1
+TCCostofSalesId=4
+TCStockControlId=43
+TCLayBuyCredAccNo=76
+TCLayBuyDebAccNo=76
+TCBatchTypeID=21
+TCDebCntrlAccID=40
+TCCrdCntrlAccID=45
