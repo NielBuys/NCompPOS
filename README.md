@@ -1,10 +1,7 @@
 # NCompPOS
 NCompPOS is in Maintenance mode. New features will be added to https://github.com/NielBuys/NCompPOSv2
 
-NCompPOS Provides Free Point of Sale Software Designed for the Small to Medium Sized Retailer. 
-Handling all your Point of Sale, Invoice and Back Office Needs. NCompPOS is Easy to Use and is Multibranch capable.  
-It can be Installed on More than One Computer, at a Specific Site. 
-Its Features include Stock Report, Out of Stock Report, Invoice Creation, Purchase Invoice Creation, A4 Invoice support, Own logo for A4 Invoice, Invoice List, Till slip printer support, Basic Debtors, Basic Creditors, Lay Buy, Cash-up, Cash Drawer Support, Sales report and average sales per month report.
+NCompPOS is a free, easy-to-use Point of Sale software solution tailored for small to medium-sized retailers. It covers all your point-of-sale, invoicing, and back-office needs, and can be installed on multiple computers at a single site. Key features include stock management reports, out-of-stock alerts, invoice and purchase invoice creation, A4 invoice support with custom logos, invoice lists, till slip printing, basic debtors and creditors tracking, lay-by functionality, cash-up processes, cash drawer support, and detailed sales reports, including monthly average sales insights.
 
 # How to Install
 Download release from http://www.ncomp.co.za/index.php/ncomppos/overview.
