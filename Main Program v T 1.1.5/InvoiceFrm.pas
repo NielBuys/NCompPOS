@@ -1281,6 +1281,8 @@ end;
 procedure TInvoiceForm.CloseInvPros();
 var
   DoPrint:Boolean;
+const
+  EPSILON = 0.0001;
 begin
     FromWhereStatement := 'POS';
     ReceiptFromWhere := '';
@@ -1297,8 +1299,10 @@ begin
     if Dataform2.Query4.RecordCount <> 0 then
     begin
  //     showmessage(FloattoStr((AmmTendered + AmmTendered2)) + '---' + FloattoStr(round(TotalStr * 100) / 100));
-      If ((AmmTendered + AmmTendered2) >= round(TotalStr * 100) / 100) or (DataForm2.InvoiceTableInvoiceType.Value = 'LayBuy') or
-      ((Dataform2.InvoiceTableGLDebNo.Value <> Dataform2.GlobalTableTCCashDebNo.Value) and (Dataform2.AccountsTableAllowCredit.Value = 'True')) then
+      If (Abs((AmmTendered + AmmTendered2) - (round(TotalStr * 100) / 100)) < EPSILON)
+        or ((AmmTendered + AmmTendered2) > (round(TotalStr * 100) / 100))
+        or (DataForm2.InvoiceTableInvoiceType.Value = 'LayBuy')
+        or ((Dataform2.InvoiceTableGLDebNo.Value <> Dataform2.GlobalTableTCCashDebNo.Value) and (Dataform2.AccountsTableAllowCredit.Value = 'True')) then
       begin
         WriteCloseInfo;
         if StrtoBool(Dataform2.GlobalTableDefaultRecPrintChoice.Value) = False then
